@@ -1,5 +1,7 @@
 import { useState } from "react"
 import {getDeck, setDecks} from "../../deckState"
+import DeckModal from "../../Components/DeckModal/DeckModal.jsx";
+
 function Hinzufuegen(){
 
   const [decks, setLocalDecks] = useState(getDeck())
