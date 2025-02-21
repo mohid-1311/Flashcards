@@ -6,7 +6,7 @@ function NavBar() {
 
   const links = [
     {link: "./Startseite", label: "Startseite"},
-    {link: "./Hinzufügen", label: "Hinzufügen"},
+    {link: "./Hinzufuegen", label: "Hinzufügen"},
     {link: "./Verwaltung", label: "Verwaltung"},
     {link: "./Fortschritt", label: "Fortschritt"},
     {link: "./Importieren", label: "Importieren"},
