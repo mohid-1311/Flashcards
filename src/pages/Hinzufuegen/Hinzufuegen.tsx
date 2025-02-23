@@ -37,9 +37,18 @@ function Hinzufuegen(){
           </li>
         ))}
       </ul>
-      <button>
 
-      </button>
+      <button onClick={() => setShowModal(true)}>Stapel Auswählen</button>
+
+      {showModal && (
+        <DeckModal
+          setDecks={setLocalDecks}
+          decks={decks}
+          setDeckindex={setDeckIndex}
+          showModal={() => setShowModal(false)}
+        />
+      )}
+      
     </div>
   );
 }

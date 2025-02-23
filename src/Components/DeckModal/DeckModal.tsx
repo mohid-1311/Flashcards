@@ -22,6 +22,7 @@ function DeckModal({ setDecks, decks, setDeckindex, showModal } : DeckModalProps
 
   return(
     <div>
+      <button onClick={() => showModal}>Schließen</button>
       <div>
         <h2>Wähle ein Deck</h2>
         <label htmlFor="search">Suche ein Deck</label>
