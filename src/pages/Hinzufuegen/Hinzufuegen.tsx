@@ -19,6 +19,7 @@ function Hinzufuegen(){
       return deck;
     });
     setLocalDecks(updatedDeck)
+    setDecks(updatedDeck)
   }
 
   return(
@@ -48,7 +49,7 @@ function Hinzufuegen(){
           showModal={() => setShowModal(false)}
         />
       )}
-      
+
     </div>
   );
 }
