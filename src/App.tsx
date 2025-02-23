@@ -1,8 +1,9 @@
 import React from 'react';
+import Verwaltung from './pages/Verwaltung/Verwaltung';
 
 function App() {
   return (
-    <h1>Karteikartenanwendung</h1>
+    <Verwaltung />
   );
 }
 export default App;
