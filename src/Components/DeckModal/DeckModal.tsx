@@ -24,7 +24,7 @@ function DeckModal({ setDecks, decks, setDeckindex, showModal } : DeckModalProps
     <div>
       <div>
         <h2>Wähle ein Deck</h2>
-        <label htmlFor="search"></label>
+        <label htmlFor="search">Suche ein Deck</label>
         <input
           type="text"
           placeholder="Suche ein Deck..."
@@ -47,3 +47,4 @@ function DeckModal({ setDecks, decks, setDeckindex, showModal } : DeckModalProps
     </div>
   );
 }
+export default DeckModal
