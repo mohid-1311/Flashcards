@@ -10,7 +10,7 @@ function AddCardForm({ onAddCard }: AddCardFormProps){
   const [ausdruck, setAusdruck] = useState("")
   const [definition, setDefinition] = useState("")
 
-  function submitCard(e){
+  function submitCard(e : React.FormEvent<HTMLFormElement>){
     if(!ausdruck.trim() || !definition.trim()){
       alert("Bitte füllen Sie alle Felder aus.")
       return
