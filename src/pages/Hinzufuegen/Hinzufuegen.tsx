@@ -27,9 +27,9 @@ function Hinzufuegen(){
   }
 
   return(
-    <div>
+    <>
       {!showModal && (
-      <>
+      <div className={styles["hinzufuegen-container"]}>
         <div>
           <h2 className={styles["current-deck-header"]}>Aktueller Stapel:
             <span className={styles["current-deck-header-text"]}>{decks[deckIndex].name}</span>
@@ -39,17 +39,23 @@ function Hinzufuegen(){
         </div>
 
         {/* Hier werden alle Karten des ausgewählten Decks ausgegeben*/}
-        <ul>
+        <ul className={styles["card-list"]}>
           {decks[deckIndex].cards.map((card: {ausdruck: string, definition: string}, index: number) => (
-            <li key={index}>
+            <li key={index} className="card-item">
               Ausdruck: {card.ausdruck},
               Definition: {card.definition}
             </li>
           ))}
         </ul>
 
-        <button onClick={() => setShowModal(true)}>Stapel Auswählen</button>
-      </>
+        <button 
+          type="button"
+          onClick={() => setShowModal(true)}
+          className={styles["select-deck-button"]}
+        >
+          Stapel Auswählen
+        </button>
+      </div>
   )}
 
       {showModal && (
@@ -61,7 +67,7 @@ function Hinzufuegen(){
         />
       )}
 
-    </div>
+    </>
   );
 }
 export default Hinzufuegen
