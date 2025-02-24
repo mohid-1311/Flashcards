@@ -13,36 +13,44 @@ type DeckModalProps = {
   setDecks: React.Dispatch<React.SetStateAction<Deck[]>>;
   decks: Deck[];
   setDeckindex: React.Dispatch<React.SetStateAction<number>>; 
-  showModal: () => void;
+  closeModal: () => void;
 };
 
-function DeckModal({ setDecks, decks, setDeckindex, showModal } : DeckModalProps){
+function DeckModal({ setDecks, decks, setDeckindex, closeModal } : DeckModalProps){
 
   const [searchValue, setSearchValue] = useState("")
 
   return(
     <div>
-      <button onClick={() => showModal}>Schließen</button>
+      <button onClick={() => closeModal()}>Schließen</button>
       <div>
         <h2>Wähle ein Deck</h2>
         <label htmlFor="search">Suche ein Deck</label>
         <input
+          value={searchValue}
           type="text"
           placeholder="Suche ein Deck..."
           name="search"
+          onChange={(e) => setSearchValue(e.target.value)}
           />
           <ul>
-            {decks.map((deck, index) => (
-              <li 
-                key={index}
-                onClick={() => {
-                  setDeckindex(index);
-                  showModal();
-                }}
-              >
-                {deck.name}
-              </li>
-            ))}
+            {decks
+              .filter((deck) =>
+                searchValue.trim()
+                  ? deck.name.toLowerCase().includes(searchValue.toLowerCase())
+                  : true
+              )
+              .map((deck, index) => (
+                <li
+                  key={index}
+                  onClick={() => {
+                    setDeckindex(index);
+                    closeModal();
+                  }}
+                >
+                  {deck.name}
+                </li>
+              ))}
           </ul>
       </div>
     </div>
