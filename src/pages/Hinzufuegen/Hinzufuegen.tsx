@@ -30,31 +30,31 @@ function Hinzufuegen(){
     <>
       {!showModal && (
       <div className={styles["hinzufuegen-container"]}>
-        <div>
-          <h2 className={styles["current-deck-header"]}>Aktueller Stapel:
-            <span className={styles["current-deck-header-text"]}>{decks[deckIndex].name}</span>
-          </h2>
+        <div className={styles["deck-update-container"]}>
           {/* Formular für das Hinzufügen einer Karte */}
           <AddCardForm onAddCard={addCardToDeck} />
         </div>
 
-        {/* Hier werden alle Karten des ausgewählten Decks ausgegeben*/}
-        <ul className={styles["card-list"]}>
-          {decks[deckIndex].cards.map((card: {ausdruck: string, definition: string}, index: number) => (
-            <li key={index} className="card-item">
-              Ausdruck: {card.ausdruck},
-              Definition: {card.definition}
-            </li>
-          ))}
-        </ul>
-
-        <button 
-          type="button"
-          onClick={() => setShowModal(true)}
-          className={styles["select-deck-button"]}
-        >
-          Stapel Auswählen
-        </button>
+        <div className={styles["deck-anzeige"]}>
+            {/* Hier werden alle Karten des ausgewählten Decks ausgegeben*/}
+          <ul className={styles["card-list"]}>
+            {decks[deckIndex].cards.map((card: {ausdruck: string, definition: string}, index: number) => (
+              <li key={index} className={styles["card-item"]}>
+                Ausdruck: {card.ausdruck},
+                Definition: {card.definition}
+              </li>
+            ))}
+          </ul>
+          
+          <button 
+            type="button"
+            onClick={() => setShowModal(true)}
+            className={styles["select-deck-button"]}
+          >
+            Stapel Auswählen
+          </button>
+        </div>
+        
       </div>
   )}
 
@@ -66,7 +66,6 @@ function Hinzufuegen(){
           closeModal={() => setShowModal(false)}
         />
       )}
-
     </>
   );
 }

@@ -1,16 +1,18 @@
-.hinzufuegen{
-  display: flex;
-  flex-direction: column;
+*{
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box;
 }
 .hinzufuegen-container {
+  gap: 5rem;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  align-items: center;
   padding: 2rem;
   background-color: #f7f7f7;
   min-height: 100vh;
   font-family: Arial, sans-serif;
+  align-items: flex-start;
 }
 
 .current-deck-header {
@@ -24,7 +26,6 @@
 .card-list {
   list-style-type: none;
   padding: 0;
-  margin: 1rem 0;
   width: 100%;
   max-width: 500px;
   max-height: 300px;
@@ -49,6 +50,7 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  max-width: 500px;
 }
 
 .current-deck-header-text{
@@ -59,4 +61,20 @@
 
 .select-deck-button:hover {
   background-color: #0056b3;
+}
+
+.deck-anzeige {
+  display: flex;
+  gap: 1rem;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+
+.deck-update-container{
+  flex-grow: 1;
+  text-align: center;
 }

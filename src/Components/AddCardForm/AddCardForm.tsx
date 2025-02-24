@@ -24,28 +24,36 @@ function AddCardForm({ onAddCard }: AddCardFormProps){
     setDefinition("")
   }
   return(
-    <form onSubmit={submitCard}>
-      <div>
-        <label htmlFor="ausdruck">Ausdruck</label>
+    <form onSubmit={submitCard} className={styles["form-container"]}>
+      <h1></h1>
+      <div className={styles["form-group"]}>
+        <label htmlFor="ausdruck" className={styles["form-label"]}>Ausdruck</label>
         <input 
           type="text" 
           name="ausdruck" 
           value={ausdruck} 
           required
           onChange={e => setAusdruck(e.target.value)}
+          className={styles["form-input"]}
         />
       </div>
-      <div>
-        <label htmlFor="definition">Definition</label>
+      <div className={styles["form-group"]}>
+        <label htmlFor="definition" className={styles["form-label"]}>Definition</label>
         <textarea 
           name="definition" 
           value={definition}
           required
           onChange={(e) => setDefinition(e.target.value)}
+          className={styles["form-textarea"]}
         ></textarea>
       </div>
       <div className={styles["form-group"]}>
-        <button type="submit">Karteikarte erstellen</button>
+        <button 
+          type="submit" 
+          className={styles["form-button"]}
+          >
+            Karteikarte erstellen
+        </button>
       </div>
     </form>
   );
