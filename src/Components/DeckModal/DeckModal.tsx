@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./DeckModal.module.css"
 type Card = {
   ausdruck: string;
   definition: string;
@@ -21,10 +22,17 @@ function DeckModal({ setDecks, decks, setDeckindex, closeModal } : DeckModalProp
   const [searchValue, setSearchValue] = useState("")
 
   return(
-    <div>
-      <button onClick={() => closeModal()}>Schließen</button>
-      <div>
-        <h2>Wähle ein Deck</h2>
+    <div className={styles["modal-container"]}>
+
+      <button 
+        onClick={() => closeModal()}
+        className={styles["close-modal"]}
+      >
+        &times; {/* "X" */}
+      </button>
+
+      <div className={styles["modal-content"]}>
+        <h2 className={styles["modal-header"]}>Wähle ein Deck</h2>
         <label htmlFor="search">Suche ein Deck</label>
         <input
           value={searchValue}
@@ -32,8 +40,11 @@ function DeckModal({ setDecks, decks, setDeckindex, closeModal } : DeckModalProp
           placeholder="Suche ein Deck..."
           name="search"
           onChange={(e) => setSearchValue(e.target.value)}
+          className={styles["search-input"]}
           />
-          <ul>
+
+          {/*(Gefilterte)Decks anzeigen*/}
+          <ul className={styles["modal-list"]}>
             {decks
               .filter((deck) =>
                 searchValue.trim()
@@ -43,6 +54,7 @@ function DeckModal({ setDecks, decks, setDeckindex, closeModal } : DeckModalProp
               .map((deck, index) => (
                 <li
                   key={index}
+                  className={styles["modal-list-item"]}
                   onClick={() => {
                     setDeckindex(index);
                     closeModal();
