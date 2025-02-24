@@ -1,5 +1,7 @@
 import { useState } from "react";
 import styles from "./DeckModal.module.css"
+import { getDeck, setDecks} from "../../deckState"
+
 type Card = {
   ausdruck: string;
   definition: string;
@@ -11,15 +13,30 @@ type Deck = {
 };
 
 type DeckModalProps = {
-  setDecks: React.Dispatch<React.SetStateAction<Deck[]>>;
+  setLocalDecks: React.Dispatch<React.SetStateAction<Deck[]>>;
   decks: Deck[];
-  setDeckindex: React.Dispatch<React.SetStateAction<number>>; 
+  setDeckIndex: React.Dispatch<React.SetStateAction<number>>; 
   closeModal: () => void;
 };
 
-function DeckModal({ setDecks, decks, setDeckindex, closeModal } : DeckModalProps){
+function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModalProps){
 
   const [searchValue, setSearchValue] = useState("")
+
+  function addNewDeck(){
+    if(decks.some(deck => deck.name.toLowerCase() === searchValue.toLowerCase())){
+      alert("Deck already exists")
+      return
+    }
+    const newDeck = {name: searchValue, cards: []}
+
+    setLocalDecks((prevDecks) => {
+      const updatedDecks = [...prevDecks, newDeck]
+      setDeckIndex(updatedDecks.length-1)
+      setDecks(updatedDecks)
+      return updatedDecks
+    })
+  }
 
   return(
     <div className={styles["modal-container"]}>
@@ -56,7 +73,7 @@ function DeckModal({ setDecks, decks, setDeckindex, closeModal } : DeckModalProp
                   key={index}
                   className={styles["modal-list-item"]}
                   onClick={() => {
-                    setDeckindex(index);
+                    setDeckIndex(index);
                     closeModal();
                   }}
                 >
@@ -64,6 +81,8 @@ function DeckModal({ setDecks, decks, setDeckindex, closeModal } : DeckModalProp
                 </li>
               ))}
           </ul>
+
+          {searchValue && <button onClick={() => {addNewDeck(); closeModal()}}>Add new {searchValue} deck</button>}
       </div>
     </div>
   );

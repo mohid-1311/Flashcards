@@ -32,7 +32,7 @@ function Hinzufuegen(){
       <div className={styles["hinzufuegen-container"]}>
         <div className={styles["deck-update-container"]}>
           {/* Formular für das Hinzufügen einer Karte */}
-          <AddCardForm onAddCard={addCardToDeck} />
+          <AddCardForm onAddCard={addCardToDeck} deckIndex={deckIndex} decks={decks} />
         </div>
 
         <div className={styles["deck-anzeige"]}>
@@ -42,7 +42,7 @@ function Hinzufuegen(){
               <li 
                 key={index} 
                 className={styles["card-item"]}
-                onClick={}>
+                >
                 Ausdruck: {card.ausdruck}<br></br>
                 Definition: {card.definition}
               </li>
@@ -63,9 +63,9 @@ function Hinzufuegen(){
 
       {showModal && (
         <DeckModal
-          setDecks={setLocalDecks}
+          setLocalDecks={setLocalDecks}
           decks={decks}
-          setDeckindex={setDeckIndex}
+          setDeckIndex={setDeckIndex}
           closeModal={() => setShowModal(false)}
         />
       )}
