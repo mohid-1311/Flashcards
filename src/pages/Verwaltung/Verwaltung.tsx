@@ -1,93 +1,25 @@
-import React, { useState } from "react";
-import styles from "./Verwaltung.module.css";
+import React from "react"
+import styles from "./Verwaltung.module.css"
+import { getDeck, setDecks } from "../../deckState"
+
+type KarteikartenAttribute = "ausdruck" | "definition"
+
+let decks: {name: string, cards: {ausdruck: string, definition: string}[]}[]
 
 function Verwaltung(){
-  
-  const [decks, setDecks] = useState([ // temporary dummy data
-    {name: "Deck 1", color: "#3a9147", cards: [
-      {title: "Satz des Pythagoras", front: "a^2 + b^2 = c^2", back: "root(a^2 + b^2) = c"}, 
-      {title: "Satz des Pythagorasdasdsadadadadsadsadad2dadasdadsadsadsadasdasd saddowe9f843873f7f8 fs87 f7s8df78gsdf7g sdg7f7g8fg7s8 7gdsg7f 7g7gfd", front: "a^2 + b^2 = c^", back: "root(a^2 + b^2) = csadsadasdasdsadasdsadsadasdsada"}, 
-      {title: "Titel 1", front: "Vorderseite 1", back: "Rückseite 1"}
-    ]},
-    {name: "Deck 2", color: "#320147", cards: [
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"},
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"},
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"},
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"}, 
-      {title: "Titel 2", front: "Vorderseite 2", back: "Rückseite 2"},
-    ]},
-    {name: "Deck 3", color: "#420147", cards: [
-      {title: "Titel 3", front: "Vorderseite 3", back: "Rückseite 3"}, 
-      {title: "Titel 3", front: "Vorderseite 3", back: "Rückseite 3"}, 
-      {title: "Titel 3", front: "Vorderseite 3", back: "Rückseite 3"}, 
-      {title: "Titel 3", front: "Vorderseite 3", back: "Rückseite 3"}, 
-      {title: "Titel 3", front: "Vorderseite 3", back: "Rückseite 3"}, 
-      {title: "Titel 3", front: "Vorderseite 3", back: "Rückseite 3"}
-    ]},
-    {name: "Deck 4", color: "#520147", cards: [
-      {title: "Titel 4", front: "Vorderseite 4", back: "Rückseite 4"}, 
-      {title: "Titel 4", front: "Vorderseite 4", back: "Rückseite 4"}, 
-      {title: "Titel 4", front: "Vorderseite 4", back: "Rückseite 4"}, 
-      {title: "Titel 4", front: "Vorderseite 4", back: "Rückseite 4"}, 
-      {title: "Titel 4", front: "Vorderseite 4", back: "Rückseite 4"}, 
-      {title: "Titel 4", front: "Vorderseite 4", back: "Rückseite 4"}
-    ]},
-    {name: "Deck 5", color: "#620147", cards: [
-      {title: "Titel 5", front: "Vorderseite 5", back: "Rückseite 5"}, 
-      {title: "Titel 5", front: "Vorderseite 5", back: "Rückseite 5"}, 
-      {title: "Titel 5", front: "Vorderseite 5", back: "Rückseite 5"}, 
-      {title: "Titel 5", front: "Vorderseite 5", back: "Rückseite 5"}, 
-      {title: "Titel 5", front: "Vorderseite 5", back: "Rückseite 5"}, 
-      {title: "Titel 5", front: "Vorderseite 5", back: "Rückseite 5"}
-    ]},
-    {name: "Deck 6", color: "#620147", cards: [
-      {front: "Vorderseite 6", back: "Rückseite 6"},
-      {front: "Vorderseite 6", back: "Rückseite 6"},
-    ]},
-    {name: "Deck 7", color: "#620147", cards: [
-      {title: "Titel 7", front: "Vorderseite 7", back: "Rückseite 7"},
-      {title: "Titel 7", front: "Vorderseite 7", back: "Rückseite 7"},
-    ]},
-    {name: "Deck 8", color: "#620147", cards: [
-      {title: "Titel 8", front: "Vorderseite 8", back: "Rückseite 8"},
-      {title: "Titel 8", front: "Vorderseite 8", back: "Rückseite 8"},
-    ]},
-    {name: "Deck 9", color: "#620147", cards: [
-      {title: "Titel 9", front: "Vorderseite 9", back: "Rückseite 9"},
-      {title: "Titel 9", front: "Vorderseite 9", back: "Rückseite 9"},
-    ]},
-    {name: "Deck 10", color: "#620147", cards: [
-      {title: "Titel 10", front: "Vorderseite 10", back: "Rückseite 10"},
-      {title: "Titel 10", front: "Vorderseite 10", back: "Rückseite 10"},
-    ]}
-  ])
+  decks = getDeck()
 
   return (
     <>
       <div className={styles["verwaltung-rahmen"]}>
         <div className={styles["verwaltung-decks-liste"]}>
-          {decks.map((deck, index) => (
-            <div onClick={() => onClickDeck(deck.name, deck.cards)} key={index}>
+          <div>
+            +
+          </div>
+          {decks.map((deck: {name: string, cards: {ausdruck: string, definition: string}[]}, index: number) => (
+            <div onClick={() => onClickDeck(deck.name)} key={index}>
               {deck.name}
+              <button className={styles["verwaltung-deck-entfernen"]}>X</button>
             </div>
           ))}
         </div>
@@ -99,100 +31,245 @@ function Verwaltung(){
             <div className={styles["verwaltung-deck-karten-liste"]}>
               <table>
                 <tbody>
-                  {/* Wird später mit Karten gefüllt */}
+                  {/* Wird später mit Karteikarten gefüllt */}
                 </tbody>
               </table>
             </div>
           </div>
-          <div className={`${styles["verwaltung-karte-bearbeiten-rahmen"]} ${styles["hide"]}`}>
-            <h3>Karteikarte bearbeiten:</h3>
+          <div className={`${styles["verwaltung-karte-bearbeiten-rahmen"]} ${styles["verstecken"]}`}>
             {/* Wird später mit Infos der Karteikarte gefüllt */}
           </div>
         </div>
       </div>
     </>
-  );
+  )
 }
 
-function onClickDeck(deckName: string, cards: {title?: string, front: string, back: string}[]) {
-  const kartenListeElement = document.querySelector(`.${styles["verwaltung-deck-karten-liste"]} table tbody`);
+function onClickDeck(deckName: string) {
+  /* Karte-Bearbeiten Feld verstecken */
+  document.querySelector(`.${styles["verwaltung-karte-bearbeiten-rahmen"]}`)?.classList.add(styles["verstecken"])
+  document.querySelector(`.${styles["verwaltung-deck-karten-uebersicht"]}`)?.classList.remove(styles["bearbeiten-ausgeklappt"])
+
+  /* Wenn ein Deck existiert, dieses laden */
+  const deck = decks.find(deck => deck.name === deckName)
+  if(!deck) return
+
+  const kartenListeElement = document.querySelector(`.${styles["verwaltung-deck-karten-liste"]} > table > tbody`)
   
   /* Neue Tabellenzeilen erstellen */
   if (kartenListeElement) {
-    kartenListeElement.setAttribute("deck", deckName);
-    kartenListeElement.innerHTML = cards.map((card, index) => `
-      <tr key=${index}>
-        <td>${card.title || card.front}</td>
-        <td>${card.back}</td>
-        <td><button>X</button></td>
+    kartenListeElement.setAttribute("deckName", deckName)
+    kartenListeElement.innerHTML =
+    (`
+      <tr id="karte-hinzufuegen">
+        <td></td>
+        <td>+</td>
+        <td></td>
       </tr>
-    `).join("");
+    `) 
+    +
+    deck.cards.map((card, index) => `
+      <tr key=${index}>
+        <td>${card.ausdruck}</td>
+        <td>${card.definition}</td>
+        <td><button class=${styles["verwaltung-karte-entfernen"]} id="karten-liste-karte-entfernen-button">X</button></td>
+      </tr>
+    `).join("")
 
-    const rows = kartenListeElement.querySelectorAll("tr");
-    rows.forEach((row, index) => {
-      const key = row.attributes.getNamedItem("key")?.value;
-      const button = row.querySelector("button");
+    const reihen = kartenListeElement.querySelectorAll("tr")
+    reihen.forEach((reihe, index) => {
+      const key = reihe.attributes.getNamedItem("key")?.value
       
-      button?.addEventListener("click", () => onClickKarteEntfernen(key));
-      row?.addEventListener("click", () => onClickKarteBearbeiten(key, {title: cards[index].title, front: cards[index].front, back: cards[index].back}));
-    });
+      if (key) {
+        reihe?.addEventListener("click", (event) => onClickReihe(event, deckName, key))
+      } else {
+        reihe?.addEventListener("click", () => onClickKarteHinzufuegenInput(deckName))
+      }
+    })
+
+    /* Element mit dem aktuellen Wert der Suchleiste abrufen */
+    const suchleisteElement = (document.querySelector(`.${styles["verwaltung-deck-karten-suche"]} > input`) as HTMLInputElement)
+    if(!suchleisteElement) return
+    const suchleisteWert = suchleisteElement.value
+
+    if(suchleisteWert) {
+      onInputSuche()
+    }
   }
 }
 
-function onInputSuche(event : React.FormEvent<HTMLInputElement>) {
-  const target = event.target as HTMLInputElement;
-  const kartenListeElement = document.querySelector(`.${styles["verwaltung-deck-karten-liste"]} table tbody`);
-  const searchValue = target.value;
+function onInputSuche() {
+  /* Karte-Bearbeiten Feld verstecken */
+  document.querySelector(`.${styles["verwaltung-karte-bearbeiten-rahmen"]}`)?.classList.add(styles["verstecken"])
+  document.querySelector(`.${styles["verwaltung-deck-karten-uebersicht"]}`)?.classList.remove(styles["bearbeiten-ausgeklappt"])
 
-  const cards = kartenListeElement?.querySelectorAll("tr");
+  /* Element mit dem aktuellen Wert der Suchleiste abrufen */
+  const suchleisteElement = (document.querySelector(`.${styles["verwaltung-deck-karten-suche"]} > input`) as HTMLInputElement)
+  if(!suchleisteElement) return
+  const suchleisteWert = suchleisteElement.value
+  
+  const kartenListeElement = document.querySelector(`.${styles["verwaltung-deck-karten-liste"]} > table > tbody`)
+  if(!kartenListeElement) return
+  const cards = kartenListeElement?.querySelectorAll("tr")
+
   cards?.forEach(card => {
     /* Wenn die Infos der Karte Teile des Suchbegriffs enthalten, wird sie angezeigt, ansonsten ausgeblendet */
-    const kartenInhalt = Array.from(card.querySelectorAll("td")).map(td => td.textContent).join(" ");
+    const kartenInhalt = Array.from(card.querySelectorAll("td")).map(td => td.textContent).join(" ")
     
-    if (kartenInhalt.toLowerCase().includes(searchValue.toLowerCase())) {
-      card.style.display = "";
+    if (card.id === "karte-hinzufuegen" || kartenInhalt.toLowerCase().includes(suchleisteWert.toLowerCase())) {
+      card.style.display = ""
     } else {
-      card.style.display = "none";
+      card.style.display = "none"
     }
-  });
+  })
 }
 
-function onClickKarteEntfernen(index: string | undefined) {
-  const kartenListeElement = document.querySelector(`.${styles["verwaltung-deck-karten-liste"]} table tbody`)
+function onClickReihe(event : MouseEvent, deckName : string, kartenIndex: string) {
+  /* Wenn ein Deck existiert, dieses mit Karten laden */
+  const deck = decks.find(deck => deck.name === deckName)
+  if(!deck) return
 
-  /* Überprüfen, ob ein gültiger index gefunden wurde und ob der Nutzer die Karteikarte wirklich löschen möchte */
-  if (index && window.confirm("Möchtest Du diese Karteikarte wirklich löschen?")) {
-    kartenListeElement?.querySelector(`tr[key="${index}"]`)?.remove();
+  const card = deck.cards.find((_, index) => index.toString() === kartenIndex)
+  if(!card) return
+
+  const targetElement = event.target as HTMLElement
+  console.log(targetElement.id)
+  if (targetElement.id === "karten-liste-karte-entfernen-button") {
+    onClickKarteEntfernen(deckName, kartenIndex)
+  } else {
+    onClickKarteBearbeiten(deckName, kartenIndex)
   }
 }
 
-function onClickKarteBearbeiten(index: string | undefined, card: {title?: string, front: string, back: string}) {
-  const rahmenKlassen = document.querySelector(`.${styles["verwaltung-karte-bearbeiten-rahmen"]}`)?.classList;
-  rahmenKlassen?.remove(styles["hide"])
+function onClickKarteEntfernen(deckName : string, kartenIndex: string) {
+  /* Karte-Bearbeiten Feld verstecken */
+  document.querySelector(`.${styles["verwaltung-karte-bearbeiten-rahmen"]}`)?.classList.add(styles["verstecken"])
+  document.querySelector(`.${styles["verwaltung-deck-karten-uebersicht"]}`)?.classList.remove(styles["bearbeiten-ausgeklappt"])
 
-  document.querySelector(`.${styles["verwaltung-deck-karten-uebersicht"]}`)?.classList.add(styles["bearbeiten-ausgeklappt"]);
+  const kartenListeElement = document.querySelector(`.${styles["verwaltung-deck-karten-liste"]} > table > tbody`)
 
+  /* Überprüfen, ob ein gültiger Index gefunden wurde und ob der Nutzer die Karteikarte wirklich löschen möchte */
+  if (kartenIndex && window.confirm("Möchtest Du diese Karteikarte wirklich löschen?")) {
+    const deck = decks.find(deck => deck.name === deckName)
 
-  const bVorderseiteElement = document.querySelector(`div#bearbeiten-vorderseite div`)
-  const bRueckseiteElement = document.querySelector(`div#bearbeiten-rueckseite div`)
-  const bErstellungsdatumElement = document.querySelector(`div#bearbeiten-erstellungsdatum div`)
-  
+    if (deck) {
+      const kartenIndexNum = deck.cards.findIndex((_, index) => index.toString() === kartenIndex)
+      
+      if (kartenIndexNum !== -1) {
+        /* Karte löschen und Frontend aktualisieren */
+        deck.cards.splice(kartenIndexNum, 1)
+
+        setDecks(decks)
+        onClickDeck(deckName)
+      }
+    }
+  }
+}
+
+function onClickKarteBearbeiten(deckName : string, kartenIndex: string) {
+  /* Karteikarte aus deckName und kartenIndex raussuchen, falls nicht vorhanden, abbrechen */
+  const card = decks.find(deck => deck.name === deckName)?.cards.find((_, index) => index.toString() === kartenIndex)
+  if(!card) return
+
+  const rahmenElement = document.querySelector(`.${styles["verwaltung-karte-bearbeiten-rahmen"]}`)
+
   /* Daten in das Bearbeitungsfeld eintragen */
-  // #TODO Für alle Elemente der Karteikarte ein Feld erstellen
-  if(bVorderseiteElement) {
-    bVorderseiteElement.innerHTML = (`
-      ${card.front}
-    `);
+  if(rahmenElement) {
+    rahmenElement.classList.remove(styles["verstecken"])
+
+    document.querySelector(`.${styles["verwaltung-deck-karten-uebersicht"]}`)?.classList.add(styles["bearbeiten-ausgeklappt"])
+    
+    rahmenElement.innerHTML = (`
+      <h3>Karteikarte bearbeiten:</h3>
+      <div id="ausdruck">
+        <h4>Ausdruck:<button class=${styles["verwaltung-karte-bearbeiten-attribut"]}>✏️</button></h4>
+        <div>${card.ausdruck}</div>
+      </div>
+      <div id="definition">
+        <h4>Definition:<button class=${styles["verwaltung-karte-bearbeiten-attribut"]}>✏️</button></h4>
+        <div>${card.definition}</div>
+      </div>
+    `)
+
+    rahmenElement.querySelectorAll(`.${styles["verwaltung-karte-bearbeiten-attribut"]}`).forEach(buttonElement => {
+      const attributeName = (buttonElement.parentElement?.parentElement?.id as KarteikartenAttribute)
+      buttonElement.addEventListener("click", () => onClickAttributBearbeiten(deckName, kartenIndex, attributeName))
+    })
   }
-  if(bRueckseiteElement) {
-    bRueckseiteElement.innerHTML = (`
-      ${card.back}
-    `);
+}
+
+function onClickKarteHinzufuegenInput(deckName : string) {
+  /* Karte-Bearbeiten Feld verstecken */
+  document.querySelector(`.${styles["verwaltung-karte-bearbeiten-rahmen"]}`)?.classList.add(styles["verstecken"])
+  document.querySelector(`.${styles["verwaltung-deck-karten-uebersicht"]}`)?.classList.remove(styles["bearbeiten-ausgeklappt"])
+
+  const neueKarteElement = document.querySelector(`.${styles["verwaltung-deck-karten-liste"]} > table > tbody > tr#karte-hinzufuegen`)
+  
+  if(neueKarteElement) {
+    if(!neueKarteElement.querySelector("td")?.innerHTML) {
+
+      neueKarteElement.innerHTML = (`
+        <td><input type="text" placeholder="Ausdruck eingeben..." required class=${styles["verwaltung-karte-hinzufuegen"]} id="ausdruck" /></td>
+        <td><input type="text" placeholder="Definition eingeben..." required class=${styles["verwaltung-karte-hinzufuegen"]} id="definition" /></td>
+        <td><button class=${styles["verwaltung-karte-hinzufuegen"]}>+</button></td>
+      `)
+      
+      neueKarteElement.querySelector("td > button")?.addEventListener("click", () => onClickKarteHinzufuegen(deckName))
+    }
   }
-  if(bErstellungsdatumElement) {
-    bErstellungsdatumElement.innerHTML = (`
-      ${new Date().toLocaleDateString()}
-    `);
+}
+
+function onClickKarteHinzufuegen(deckName: string) {
+  const neueKarteElement = document.querySelector(`.${styles["verwaltung-deck-karten-liste"]} > table > tbody > tr#karte-hinzufuegen`)
+  
+  if(neueKarteElement) {
+    /* Alle Inputs einlesen und überprüfen, ob für alle Inputs ein Wert eingegeben wurde */
+    let attribute: { [key: string]: string } = {}
+    let attributeCount = 0
+
+    Array.from(neueKarteElement.querySelectorAll("td > input")).forEach(attributInputElement => {
+      if((attributInputElement as HTMLInputElement).value.length > 0) {
+        attribute[attributInputElement.id] = (attributInputElement as HTMLInputElement).value
+        attributeCount++
+      }
+    })
+
+    if(attributeCount === neueKarteElement.querySelectorAll("td > input").length) {
+      const deck = decks.find(deck => deck.name === deckName)
+      
+      if (deck) {
+        deck.cards.push({ ausdruck: attribute["ausdruck"], definition: attribute["definition"] })
+        setDecks(decks)
+        onClickDeck(deckName)
+      }
+    }
+  }
+}
+
+function onClickAttributBearbeiten(deckName: string, kartenIndex : string, attribut : KarteikartenAttribute) {
+  const deck = decks.find(deck => deck.name === deckName)
+
+  if (deck) {
+    const kartenIndexNum = deck.cards.findIndex((_, index) => index.toString() === kartenIndex)
+    
+    if (kartenIndexNum !== -1) {
+      const aktuellesAttribut = document.querySelector(`.${styles["verwaltung-karte-bearbeiten-rahmen"]} > div#${attribut} > div`)
+
+      const neuerWert = prompt(`Gib einen Neuen Wert für ${attribut.charAt(0).toUpperCase() + attribut.slice(1)} ein:`, aktuellesAttribut?.innerHTML)
+      
+      if (neuerWert) {
+        /* Neuen Wert zuweisen und Frontend aktualisieren */
+        deck.cards[kartenIndexNum][attribut] = neuerWert
+
+        setDecks(decks)
+        onClickDeck(deckName)
+        onClickKarteBearbeiten(deckName, kartenIndex)
+
+        if (aktuellesAttribut) {
+          aktuellesAttribut.innerHTML = neuerWert
+        }
+      }
+    }
   }
 }
 
