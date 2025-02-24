@@ -6,6 +6,7 @@ import Hinzufuegen from "./pages/Hinzufuegen/Hinzufuegen"
 import Verwaltung from "./pages/Verwaltung/Verwaltung"
 import Fortschritt from "./pages/Fortschritt/Fortschritt"
 import Importieren from "./pages/Importieren/Importieren"
+import Lernmodi from "./pages/Lernmodi/Lernmodi"
 function App() {
   return (
     <>
@@ -17,6 +18,7 @@ function App() {
           <Route path="/Verwaltung" element={<Verwaltung/>}></Route>
           <Route path="/Fortschritt" element={<Fortschritt/>}></Route>
           <Route path="/Importieren" element={<Importieren/>}></Route>
+          <Route path="/Lernmodi" element={<Lernmodi/>}></Route>
         </Routes>
       </div>
    </>

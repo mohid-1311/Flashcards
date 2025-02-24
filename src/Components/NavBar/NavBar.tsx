@@ -10,6 +10,7 @@ function NavBar() {
     {link: "./Verwaltung", label: "Verwaltung"},
     {link: "./Fortschritt", label: "Fortschritt"},
     {link: "./Importieren", label: "Importieren"},
+    {link: "./Lernmodi", label: "Lernmodi"},
   ]
 
   return (
