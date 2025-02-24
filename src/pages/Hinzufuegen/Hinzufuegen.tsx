@@ -39,8 +39,11 @@ function Hinzufuegen(){
             {/* Hier werden alle Karten des ausgewählten Decks ausgegeben*/}
           <ul className={styles["card-list"]}>
             {decks[deckIndex].cards.map((card: {ausdruck: string, definition: string}, index: number) => (
-              <li key={index} className={styles["card-item"]}>
-                Ausdruck: {card.ausdruck},
+              <li 
+                key={index} 
+                className={styles["card-item"]}
+                onClick={}>
+                Ausdruck: {card.ausdruck}<br></br>
                 Definition: {card.definition}
               </li>
             ))}
