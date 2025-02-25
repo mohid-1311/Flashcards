@@ -1,7 +1,7 @@
 div.verwaltung-rahmen {
     display: flex;
     justify-content: space-between;
-    height: 800px;
+    height: 85vh;
 }
 
 div.verwaltung-decks-liste {
@@ -39,6 +39,10 @@ div.verwaltung-decks-liste > div {
     border-radius: 20px;
 
     font-size: larger;
+}
+
+div.verwaltung-decks-liste > div.aktuelles-deck {
+    background-color: lightblue;
 }
 
 div.verwaltung-decks-liste > div:first-of-type {
@@ -79,9 +83,9 @@ div.verwaltung-deck-karten-uebersicht.bearbeiten-ausgeklappt {
     width: 60%;
 }
 
-div.verwaltung-deck-karten-suche {
+div.verwaltung-deck-karten-suchleiste {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 
     padding: 20px;
 
@@ -90,7 +94,7 @@ div.verwaltung-deck-karten-suche {
     background-color: gainsboro;
 }
 
-div.verwaltung-deck-karten-suche > input {
+div.verwaltung-deck-karten-suchleiste > input {
     position: relative;
     width: 40%;
 
@@ -113,16 +117,6 @@ div.verwaltung-deck-karten-liste {
     padding-inline: 20px 10px;
 }
 
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: gray;
-    border-radius: 5px;
-}
-
 div.verwaltung-deck-karten-liste > table > tbody > tr {
     display: inline-table;
 
@@ -133,6 +127,18 @@ div.verwaltung-deck-karten-liste > table > tbody > tr {
 
     border: 0;
     border-radius: 20px;
+}
+
+div.verwaltung-deck-karten-liste > table > tbody > tr.aktuelle-karte {
+    background-color: rgb(226, 71, 44);
+}
+
+div.verwaltung-deck-karten-liste > table > tbody > tr:hover {
+    cursor: pointer;
+    
+    background-color: rgb(226, 71, 44);
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Erstes Element der Karteikartenliste (Hinzufügen-Element) */
@@ -154,14 +160,6 @@ div.verwaltung-deck-karten-liste > table > tbody > tr > td {
     overflow-wrap: anywhere;
 }
 
-div.verwaltung-deck-karten-liste > table > tbody > tr:hover {
-    cursor: pointer;
-    
-    background-color: rgb(226, 71, 44);
-
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
 /* Button zum Löschen einer Karte */
 div.verwaltung-deck-karten-liste > table > tbody > tr > td:has(button) {
     width: 1%;
@@ -169,7 +167,7 @@ div.verwaltung-deck-karten-liste > table > tbody > tr > td:has(button) {
     white-space: nowrap;
 }
 
-div.verwaltung-deck-karten-liste > table > tbody > tr > td > input, div.verwaltung-deck-karten-liste > table > tbody > tr > td > input::placeholder {
+input.verwaltung-deck-hinzufuegen, input.verwaltung-karte-hinzufuegen {
     border: 0;
     border-radius: 5px;
 
@@ -180,7 +178,7 @@ div.verwaltung-deck-karten-liste > table > tbody > tr > td > input, div.verwaltu
     background-color: rgba(0, 0, 0, 0.05);
 }
 
-button.verwaltung-deck-entfernen, button.verwaltung-karte-hinzufuegen, button.verwaltung-karte-entfernen {
+button.verwaltung-deck-hinzufuegen, button.verwaltung-deck-entfernen, button.verwaltung-karte-hinzufuegen, button.verwaltung-karte-entfernen {
     aspect-ratio: 1 / 1;
 
     border: 0;
@@ -191,15 +189,15 @@ button.verwaltung-deck-entfernen {
     margin-left: 5px;
 }
 
-button.verwaltung-deck-entfernen:hover, button.verwaltung-karte-entfernen:hover {
+button.verwaltung-deck-hinzufuegen:hover, button.verwaltung-karte-hinzufuegen:hover {
     cursor: pointer;
-    background-color: red;
+    background-color: green;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-button.verwaltung-karte-hinzufuegen:hover {
+button.verwaltung-deck-entfernen:hover, button.verwaltung-karte-entfernen:hover {
     cursor: pointer;
-    background-color: green;
+    background-color: red;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -248,4 +246,15 @@ button.verwaltung-karte-bearbeiten-attribut {
 
 button.verwaltung-karte-bearbeiten-attribut:hover {
     cursor: pointer;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: gray;
+    border-radius: 5px;
 }
