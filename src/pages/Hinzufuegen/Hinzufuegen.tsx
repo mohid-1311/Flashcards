@@ -15,9 +15,9 @@ function Hinzufuegen(){
     Diese Funktion wird im Komponent AddCardForm benutzt, 
     um eine Karte im aktuell ausgewählten Deck hinzuzufügen 
   */
-  function addCardToDeck(newCard : {ausdruck: string, definition: string}){
+  function addCardToDeck(newCard : {ausdruck: string, definition: string}, ind : number){
     const updatedDeck = decks.map((deck: { name: string; cards: any[]}, index: number) => {
-      if (index === deckIndex){
+      if (index === ind){
         return {...deck, cards: [...deck.cards, newCard]}
       }
       return deck;
@@ -32,7 +32,7 @@ function Hinzufuegen(){
       <div className={styles["hinzufuegen-container"]}>
         <div className={styles["deck-update-container"]}>
           {/* Formular für das Hinzufügen einer Karte */}
-          <AddCardForm onAddCard={addCardToDeck} deckIndex={deckIndex} decks={decks} />
+          <AddCardForm onAddCard={addCardToDeck} deckIndex={deckIndex} decks={decks} deckName={""}/>
         </div>
 
         <div className={styles["deck-anzeige"]}>
