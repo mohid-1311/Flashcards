@@ -1,38 +1,47 @@
-import React, { useState, JSX } from "react"
+import React, { useState } from "react"
 import styles from "./Verwaltung.module.css"
 import { getDeck, setDecks } from "../../deckState"
-import { createRoot, Root } from "react-dom/client"
+import AddCardForm from "../../Components/AddCardForm/AddCardForm"
 
-type KarteikartenAttribute = "ausdruck" | "definition"
+type Card = {
+  ausdruck: string
+  definition: string
+}
 
-let decks: {name: string, cards: {ausdruck: string, definition: string}[]}[]
-let root: Root
+type Deck = {
+  name: string
+  cards: Card[]
+}
 
 function Verwaltung(){
   const [decks, setLocalDecks] = useState(getDeck())
 
-  const [deckIndex, setDeckIndex] = useState(0)
+  const [deckName, setDeckName] = useState("")
+  const [kartenIndex, setKartenIndex] = useState(-1)
 
-  function onClickDeckHinzufuegenInput() {
-    const neuesDeckElement = document.querySelector(`.${styles["verwaltung-decks-liste"]} > div#deck-hinzufuegen`)
+  const [neueKarteForm, setNeueKarteForm] = useState(false)
+
+  /* DEAKTIVIERT
+  function deckHinzufuegenForm() {
+    const neuesDeckElement = document.querySelector(`.${styles["decks-liste-container"]} > div#deck-hinzufuegen`)
     
     if(neuesDeckElement) {
       if(neuesDeckElement.innerHTML === "+") {
         neuesDeckElement.innerHTML = (`
-          <td><input type="text" placeholder="Name eingeben..." required class=${styles["verwaltung-deck-hinzufuegen"]} id="name" /></td>
-          <td><button class=${styles["verwaltung-deck-hinzufuegen"]}>+</button></td>
+          <td><input type="text" placeholder="Name eingeben..." required class=${styles["deck-hinzufuegen"]} id="name" /></td>
+          <td><button class=${styles["deck-hinzufuegen"]}>+</button></td>
         `)
         
-        neuesDeckElement.querySelector("button")?.addEventListener("click", () => onClickDeckHinzufuegen())
+        neuesDeckElement.querySelector("button")?.addEventListener("click", () => deckHinzufuegen())
       }
     }
   }
 
-  function onClickDeckHinzufuegen() {
-    const neuesDeckElement = document.querySelector(`.${styles["verwaltung-decks-liste"]} > div#deck-hinzufuegen`)
+  function deckHinzufuegen() {
+    const neuesDeckElement = document.querySelector(`.${styles["decks-liste-container"]} > div#deck-hinzufuegen`)
     
     if(neuesDeckElement) {
-      /* Alle Inputs einlesen und überprüfen, ob für alle Inputs ein Wert eingegeben wurde */
+      /* Alle Inputs einlesen und überprüfen, ob für alle Inputs ein Wert eingegeben wurde /
       let attribute: { [key: string]: string } = {}
       let attributeCount = 0
   
@@ -42,168 +51,176 @@ function Verwaltung(){
           attributeCount++
         }
       })
-      console.log(decks) //debug
+      
       if(attributeCount === neuesDeckElement.querySelectorAll("input").length) {
-        decks.push({name: attribute["name"], cards: []})
-        setLocalDecks(decks)
-        setDecks(decks)
+        setLocalDecks([...decks, {name: attribute["name"], cards: []}])
+        setDecks([...decks, {name: attribute["name"], cards: []}])
       }
     }
+  }*/
+
+  function setzeKarteAttribut(attribut: keyof Card, neuerWert: string) {
+    decks.find((deck: Deck) => deck.name === deckName).cards.map((card: Card, index: number) => {
+      if(index === kartenIndex) {
+        card[attribut] = neuerWert
+        setLocalDecks([...decks])
+        setDecks([...decks])
+      }
+    })
+  }
+
+  /* Von Mohids Komponente */
+  function addCardToDeck(newCard : {ausdruck: string, definition: string}){
+    const updatedDeck = decks.map((deck: { name: string; cards: any[]}) => {
+      if (deck.name === deckName){
+        return {...deck, cards: [...deck.cards, newCard]}
+      }
+      return deck;
+    });
+    setLocalDecks(updatedDeck)
+    setDecks(updatedDeck)
   }
 
   return (
     <>
-      <div className={styles["verwaltung-rahmen"]}>
-        <div className={styles["verwaltung-decks-liste"]}>
-          <div onClick={onClickDeckHinzufuegenInput} id="deck-hinzufuegen">+</div>
-          {decks.map((deck: {name: string, cards: {ausdruck: string, definition: string}[]}, index: number) => (
+      <div className={styles["verwaltung-container"]}>
+        <div className={styles["decks-liste-container"]}>
+          {/* Element zum Hinzufügen eines Kartendecks 
+          <div 
+            onClick={deckHinzufuegenForm} 
+            id="deck-hinzufuegen"
+          >+</div>
+          */}
+          {/* Für alle Kartendecks wird ein Element hinzugefügt */}
+          {decks.map((deck: Deck, index: number) => (
             <div 
-              onClick={(event) => onClickDeck(event, deck.name)} 
+              onClick={() => {
+                setDeckName(deck.name)
+                setKartenIndex(-1)
+                setNeueKarteForm(false)
+              }} 
               key={index} 
               id={deck.name.toLowerCase()}
+              className={deck.name === deckName ? styles["aktuelles-deck"] : undefined}
             >
               {deck.name}
-              <button className={styles["verwaltung-deck-entfernen"]}>
-                X
-              </button>
+              <button className={styles["deck-entfernen"]}>X</button>
             </div>
           ))}
         </div>
-        <div className={styles["verwaltung-deck-karten-rahmen"]}>
-          <div className={styles["verwaltung-deck-karten-uebersicht"]}>
-            <div className={styles["verwaltung-deck-karten-suchleiste"]}>
-              <div>Kein Deck ausgewählt!</div>
-              <input type="text" placeholder="Karteikarten durchsuchen..." onInput={onInputSuche}/>
+        <div className={styles["deck-karten-rahmen-container"]}>
+          <div className={styles["deck-karten-uebersicht-container"]}>
+            <div className={styles["deck-karten-suchleiste-container"]}>
+              <div>{deckName || "Kein Deck ausgewählt!"}</div>
+              <input type="text" placeholder="Karteikarten durchsuchen..." onInput={() => ""}/>
             </div>
-            <div className={styles["verwaltung-deck-karten-liste"]}>
+            <div className={styles["deck-karten-liste-container"]}>
               <table>
                 <tbody>
-                  {/* Wird später mit Karteikarten gefüllt */}
+                  {/* Zeile zum Hinzufügen einer Karte */ 
+                  deckName &&
+                  <tr 
+                    onClick={() => {
+                      setKartenIndex(-1)
+                      setNeueKarteForm(true)
+                    }}
+                    id="karte-hinzufuegen"
+                  >
+                    {neueKarteForm ? null : <td></td>}
+                    <td>
+                      {neueKarteForm ? 
+                        <AddCardForm onAddCard={addCardToDeck} deckIndex={0} decks={decks} />
+                        :
+                        "+"
+                      }
+                    </td>
+                    {neueKarteForm ? null : <td></td>}
+                  </tr>
+                  }
+                  {/* Für alle Karteikarten wird eine Zeile hinzugefügt */
+                  deckName && 
+                  decks.find((deck: Deck) => deck.name === deckName).cards.map((card: Card, index: number) => (
+                    <tr 
+                      onClick={() => {
+                        setKartenIndex(index)
+                        setNeueKarteForm(false)
+                      }}
+                      key={index} 
+                      className={index === kartenIndex ? styles["aktuelle-karte"] : undefined}
+                    >
+                      <td>{card.ausdruck}</td>
+                      <td>{card.definition}</td>
+                      <td>
+                        <button className={styles["karte-entfernen"]}>X</button>
+                      </td>
+                    </tr>
+                  ))
+                  }
                 </tbody>
               </table>
             </div>
           </div>
-          <div className={`${styles["verwaltung-karte-bearbeiten-rahmen"]} ${styles["verstecken"]}`}>
-            {/* Wird später mit Infos der Karteikarte gefüllt */}
+          <div className={`${styles["karte-bearbeiten-gruppe"]}`}>
+            {/* Für jedes Karteikarten-Attribut wird eine Eingabe hinzugefügt */}
+            <h3>Karteikarte bearbeiten:</h3>
+            {deckName && decks.find((deck: Deck) => deck.name === deckName).cards[kartenIndex] && (
+              <>
+                <h4>Ausdruck:</h4>
+                <textarea 
+                  className={styles["karte-bearbeiten-eingabe"]}
+                  name="ausdruck"
+                  value={decks.find((deck: Deck) => deck.name === deckName)?.cards[kartenIndex].ausdruck}
+                  placeholder="Ausdruck eingeben..."
+                  onChange={(e) => setzeKarteAttribut("ausdruck", e.target.value)}
+                >
+                </textarea>
+                <h4>Definition:</h4>
+                <textarea 
+                  className={styles["karte-bearbeiten-eingabe"]}
+                  name="definition"
+                  value={decks.find((deck: Deck) => deck.name === deckName)?.cards[kartenIndex].definition}
+                  placeholder="Definition eingeben..."
+                  onChange={(e) => setzeKarteAttribut("definition", e.target.value)}
+                >
+                </textarea>
+              </>
+            )}
           </div>
         </div>
       </div>
     </>
   )
 }
-/*
-function renderElement(cssPath: string, element: JSX.Element) {
-  if(!root) {
-    const rootElement = document.getElementById("root")
-    if(!rootElement) return
-    root = createRoot(rootElement)
-  }
 
-  root.render(element)
-}
-*/
-
-function onClickDeck(event: React.MouseEvent<HTMLDivElement, MouseEvent>, deckName: string) {
-  /* Je nachdem welche ID das angeklickte Element hat, wird die entsprechende Funktion aufgerufen */
-  const targetElement = (event.target as HTMLElement)
+// function onClickDeck(e: React.MouseEvent<HTMLDivElement, MouseEvent>, deckName: string) {
+//   /* Je nachdem welche ID das angeklickte Element hat, wird die entsprechende Funktion aufgerufen */
+//   const targetElement = (e.target as HTMLElement)
   
-  if (targetElement.className === styles["verwaltung-deck-entfernen"]) {
-    onClickDeckEntfernen(deckName)
-  } else {
-    onClickDeckAnzeigen(deckName)
-  }
-}
+//   if (targetElement.className === styles["deck-entfernen"]) {
+//     onClickDeckEntfernen(deckName)
+//   } else {
+//   }
+// }
 
-function onClickDeckAnzeigen(deckName: string) {
-  /* Karte-Bearbeiten Feld verstecken */
-  document.querySelector(`.${styles["verwaltung-karte-bearbeiten-rahmen"]}`)?.classList.add(styles["verstecken"])
-  document.querySelector(`.${styles["verwaltung-deck-karten-uebersicht"]}`)?.classList.remove(styles["bearbeiten-ausgeklappt"])
-
-  /* Wenn ein Deck existiert, dieses laden */
-  let deck = decks.find(deck => deck.name === deckName)
-  
-  /* Name des Decks anzeigen */
-  const deckAnzeigeElement = document.querySelector(`.${styles["verwaltung-deck-karten-suchleiste"]} > div`)
-
-  if (deckAnzeigeElement) {
-    deckAnzeigeElement.innerHTML = deck?.name || "Kein Deck ausgewählt!"
-  }
-
-  /* Aktuelles Deck in der Liste hervorheben */
-  document.querySelectorAll(`.${styles["verwaltung-decks-liste"]} > div`).forEach(element => {
-    if (element.id === deckName.toLowerCase()) {
-      element.classList.add(styles["aktuelles-deck"])
-    } else {
-      element.classList.remove(styles["aktuelles-deck"])
-    }
-  })
-
-  /* Neue Tabellenzeilen erstellen */
-  const kartenListeElement = document.querySelector(`.${styles["verwaltung-deck-karten-liste"]} > table > tbody`)
-  
-  if (kartenListeElement) {
-    if(!deck) {
-      kartenListeElement.innerHTML = ""
-      Array.from(kartenListeElement.attributes).forEach(attr => kartenListeElement.removeAttribute(attr.name))
-      return
-    }
-
-    kartenListeElement.setAttribute("deckName", deckName)
-    kartenListeElement.innerHTML = (`
-      <tr id="karte-hinzufuegen">
-        <td></td>
-        <td>+</td>
-        <td></td>
-      </tr>
-    `) 
-    +
-    deck.cards.map((card, index) => `
-      <tr key=${index}>
-        <td>${card.ausdruck}</td>
-        <td>${card.definition}</td>
-        <td><button class=${styles["verwaltung-karte-entfernen"]}>X</button></td>
-      </tr>
-    `).join("")
-
-    const reihen = kartenListeElement.querySelectorAll("tr")
-    reihen.forEach((reihe, index) => {
-      const key = reihe.attributes.getNamedItem("key")?.value
-      
-      if (key) {
-        reihe?.addEventListener("click", (event) => onClickReihe(event, deckName, key))
-      } else {
-        reihe?.addEventListener("click", () => onClickKarteHinzufuegenInput(deckName))
-      }
-    })
-
-    /* Element mit dem aktuellen Wert der Suchleiste abrufen */
-    const suchleisteElement = (document.querySelector(`.${styles["verwaltung-deck-karten-suchleiste"]} > input`) as HTMLInputElement)
-    if(!suchleisteElement) return
-    const suchleisteWert = suchleisteElement.value
-
-    if(suchleisteWert) onInputSuche()
-  }
-}
-
-function onClickDeckEntfernen(deckName: string) {
-  if(window.confirm("Möchtest Du dieses Karteikarten-Deck wirklich löschen?")) {
-    decks = decks.filter(deck => deck.name !== deckName)
-    setDecks(decks)
-    onClickDeckAnzeigen("")
-  }
-}
+// function onClickDeckEntfernen(deckName: string) {
+//   if(window.confirm("Möchtest Du dieses Karteikarten-Deck wirklich löschen?")) {
+//     decks = decks.filter(deck => deck.name !== deckName)
+//     setDecks(decks)
+//     onClickDeckAnzeigen("")
+//   }
+// }
 
 function onInputSuche() {
   /* Karte-Bearbeiten Feld verstecken */
-  document.querySelector(`.${styles["verwaltung-karte-bearbeiten-rahmen"]}`)?.classList.add(styles["verstecken"])
-  document.querySelector(`.${styles["verwaltung-deck-karten-uebersicht"]}`)?.classList.remove(styles["bearbeiten-ausgeklappt"])
+  document.querySelector(`.${styles["karte-bearbeiten-gruppe"]}`)?.classList.add(styles["verstecken"])
+  document.querySelector(`.${styles["deck-karten-uebersicht-container"]}`)?.classList.remove(styles["bearbeiten-ausgeklappt"])
 
   /* Element mit dem aktuellen Wert der Suchleiste abrufen */
-  const suchleisteElement = (document.querySelector(`.${styles["verwaltung-deck-karten-suchleiste"]} > input`) as HTMLInputElement)
+  const suchleisteElement = (document.querySelector(`.${styles["deck-karten-suchleiste-container"]} > input`) as HTMLInputElement)
   if(!suchleisteElement) return
   const suchleisteWert = suchleisteElement.value
   
-  const kartenListeElement = document.querySelector(`.${styles["verwaltung-deck-karten-liste"]} > table > tbody`)
+  const kartenListeElement = document.querySelector(`.${styles["deck-karten-liste-container"]} > table > tbody`)
   if(!kartenListeElement) return
   const cards = kartenListeElement?.querySelectorAll("tr")
 
@@ -219,164 +236,74 @@ function onInputSuche() {
   })
 }
 
-function onClickReihe(event : MouseEvent, deckName : string, kartenIndex: string) {
-  /* Wenn ein Deck existiert, dieses mit Karten laden */
-  const deck = decks.find(deck => deck.name === deckName)
-  if(!deck) return
+// function onClickReihe(e : MouseEvent, deckName : string, kartenIndex: string) {
+//   /* Wenn ein Deck existiert, dieses mit Karten laden */
+//   const deck = decks.find(deck => deck.name === deckName)
+//   if(!deck) return
 
-  const card = deck.cards.find((_, index) => index.toString() === kartenIndex)
-  if(!card) return
+//   const card = deck.cards.find((_, index) => index.toString() === kartenIndex)
+//   if(!card) return
 
-  /* Je nachdem welche ID das angeklickte Element hat, wird die entsprechende Funktion aufgerufen */
-  const targetElement = (event.target as HTMLElement)
+//   /* Je nachdem welche ID das angeklickte Element hat, wird die entsprechende Funktion aufgerufen */
+//   const targetElement = (e.target as HTMLElement)
   
-  if (targetElement.className === styles["verwaltung-karte-entfernen"]) {
-    onClickKarteEntfernen(deckName, kartenIndex)
-  } else {
-    onClickKarteBearbeiten(deckName, kartenIndex)
-  }
-}
+//   if (targetElement.className === styles["karte-entfernen"]) {
+//     onClickKarteEntfernen(deckName, kartenIndex)
+//   } else {
+//     onClickKarteBearbeiten(deckName, kartenIndex)
+//   }
+// }
 
-function onClickKarteBearbeiten(deckName : string, kartenIndex: string) {
-  /* Karteikarte aus deckName und kartenIndex raussuchen, falls nicht vorhanden, abbrechen */
-  const card = decks.find(deck => deck.name === deckName)?.cards.find((_, index) => index.toString() === kartenIndex)
-  if(!card) return
+// function onClickKarteEntfernen(deckName : string, kartenIndex: string) {
+//   /* Karte-Bearbeiten Feld verstecken */
+//   document.querySelector(`.${styles["karte-bearbeiten-gruppe"]}`)?.classList.add(styles["verstecken"])
+//   document.querySelector(`.${styles["deck-karten-uebersicht-container"]}`)?.classList.remove(styles["bearbeiten-ausgeklappt"])
 
-  /* Aktuelle Karte in der Liste hervorheben */
-  document.querySelectorAll(`.${styles["verwaltung-deck-karten-liste"]} > table > tbody > tr`).forEach(element => {
-    console.log(element.attributes.getNamedItem("key")?.value)
-    if (element.attributes.getNamedItem("key")?.value === kartenIndex) {
-      element.classList.add(styles["aktuelle-karte"])
-    } else {
-      element.classList.remove(styles["aktuelle-karte"])
-    }
-  })
+//   const kartenListeElement = document.querySelector(`.${styles["deck-karten-liste-container"]} > table > tbody`)
 
-  /* Daten in das Bearbeitungsfeld eintragen */
-  const rahmenElement = document.querySelector(`.${styles["verwaltung-karte-bearbeiten-rahmen"]}`)
+//   /* Überprüfen, ob ein gültiger Index gefunden wurde und ob der Nutzer die Karteikarte wirklich löschen möchte */
+//   if (kartenIndex && window.confirm("Möchtest Du diese Karteikarte wirklich löschen?")) {
+//     const deck = decks.find(deck => deck.name === deckName)
 
-  if(rahmenElement) {
-    rahmenElement.classList.remove(styles["verstecken"])
+//     if (deck) {
+//       const kartenIndexNum = deck.cards.findIndex((_, index) => index.toString() === kartenIndex)
+      
+//       if (kartenIndexNum !== -1) {
+//         /* Karte löschen und Frontend aktualisieren */
+//         deck.cards.splice(kartenIndexNum, 1)
 
-    document.querySelector(`.${styles["verwaltung-deck-karten-uebersicht"]}`)?.classList.add(styles["bearbeiten-ausgeklappt"])
+//         setDecks(decks)
+//         onClickDeckAnzeigen(deckName)
+//       }
+//     }
+//   }
+// }
+
+// function onClickAttributBearbeiten(deckName: string, kartenIndex : string, attribut : KarteikartenAttribute) {
+//   const deck = decks.find(deck => deck.name === deckName)
+
+//   if (deck) {
+//     const kartenIndexNum = deck.cards.findIndex((_, index) => index.toString() === kartenIndex)
     
-    rahmenElement.innerHTML = (`
-      <h3>Karteikarte bearbeiten:</h3>
-      <div id="ausdruck">
-        <h4>Ausdruck:<button class=${styles["verwaltung-karte-bearbeiten-attribut"]}>✏️</button></h4>
-        <div>${card.ausdruck}</div>
-      </div>
-      <div id="definition">
-        <h4>Definition:<button class=${styles["verwaltung-karte-bearbeiten-attribut"]}>✏️</button></h4>
-        <div>${card.definition}</div>
-      </div>
-    `)
+//     if (kartenIndexNum !== -1) {
+//       const aktuellesAttribut = document.querySelector(`.${styles["karte-bearbeiten-gruppe"]} > div#${attribut} > div`)
 
-    rahmenElement.querySelectorAll(`.${styles["verwaltung-karte-bearbeiten-attribut"]}`).forEach(buttonElement => {
-      const attributeName = (buttonElement.parentElement?.parentElement?.id as KarteikartenAttribute)
-      buttonElement.addEventListener("click", () => onClickAttributBearbeiten(deckName, kartenIndex, attributeName))
-    })
-  }
-}
-
-function onClickKarteEntfernen(deckName : string, kartenIndex: string) {
-  /* Karte-Bearbeiten Feld verstecken */
-  document.querySelector(`.${styles["verwaltung-karte-bearbeiten-rahmen"]}`)?.classList.add(styles["verstecken"])
-  document.querySelector(`.${styles["verwaltung-deck-karten-uebersicht"]}`)?.classList.remove(styles["bearbeiten-ausgeklappt"])
-
-  const kartenListeElement = document.querySelector(`.${styles["verwaltung-deck-karten-liste"]} > table > tbody`)
-
-  /* Überprüfen, ob ein gültiger Index gefunden wurde und ob der Nutzer die Karteikarte wirklich löschen möchte */
-  if (kartenIndex && window.confirm("Möchtest Du diese Karteikarte wirklich löschen?")) {
-    const deck = decks.find(deck => deck.name === deckName)
-
-    if (deck) {
-      const kartenIndexNum = deck.cards.findIndex((_, index) => index.toString() === kartenIndex)
+//       const neuerWert = prompt(`Gib einen Neuen Wert für ${attribut.charAt(0).toUpperCase() + attribut.slice(1)} ein:`, aktuellesAttribut?.innerHTML)
       
-      if (kartenIndexNum !== -1) {
-        /* Karte löschen und Frontend aktualisieren */
-        deck.cards.splice(kartenIndexNum, 1)
+//       if (neuerWert) {
+//         /* Neuen Wert zuweisen und Frontend aktualisieren */
+//         deck.cards[kartenIndexNum][attribut] = neuerWert
 
-        setDecks(decks)
-        onClickDeckAnzeigen(deckName)
-      }
-    }
-  }
-}
+//         setDecks(decks)
+//         onClickDeckAnzeigen(deckName)
+//         onClickKarteBearbeiten(deckName, kartenIndex)
 
-function onClickKarteHinzufuegenInput(deckName : string) {
-  /* Karte-Bearbeiten Feld verstecken */
-  document.querySelector(`.${styles["verwaltung-karte-bearbeiten-rahmen"]}`)?.classList.add(styles["verstecken"])
-  document.querySelector(`.${styles["verwaltung-deck-karten-uebersicht"]}`)?.classList.remove(styles["bearbeiten-ausgeklappt"])
-
-  const neueKarteElement = document.querySelector(`.${styles["verwaltung-deck-karten-liste"]} > table > tbody > tr#karte-hinzufuegen`)
-  
-  if(neueKarteElement) {
-    if(!neueKarteElement.querySelector("td")?.innerHTML) {
-
-      neueKarteElement.innerHTML = (`
-        <td><input type="text" placeholder="Ausdruck eingeben..." required class=${styles["verwaltung-karte-hinzufuegen"]} id="ausdruck" /></td>
-        <td><input type="text" placeholder="Definition eingeben..." required class=${styles["verwaltung-karte-hinzufuegen"]} id="definition" /></td>
-        <td><button class=${styles["verwaltung-karte-hinzufuegen"]}>+</button></td>
-      `)
-      
-      neueKarteElement.querySelector("td > button")?.addEventListener("click", () => onClickKarteHinzufuegen(deckName))
-    }
-  }
-}
-
-function onClickKarteHinzufuegen(deckName: string) {
-  const neueKarteElement = document.querySelector(`.${styles["verwaltung-deck-karten-liste"]} > table > tbody > tr#karte-hinzufuegen`)
-  
-  if(neueKarteElement) {
-    /* Alle Inputs einlesen und überprüfen, ob für alle Inputs ein Wert eingegeben wurde */
-    let attribute: { [key: string]: string } = {}
-    let attributeCount = 0
-
-    Array.from(neueKarteElement.querySelectorAll("td > input")).forEach(attributInputElement => {
-      if((attributInputElement as HTMLInputElement).value.length > 0) {
-        attribute[attributInputElement.id] = (attributInputElement as HTMLInputElement).value
-        attributeCount++
-      }
-    })
-
-    if(attributeCount === neueKarteElement.querySelectorAll("td > input").length) {
-      const deck = decks.find(deck => deck.name === deckName)
-      
-      if (deck) {
-        deck.cards.push({ ausdruck: attribute["ausdruck"], definition: attribute["definition"] })
-        setDecks(decks)
-        onClickDeckAnzeigen(deckName)
-      }
-    }
-  }
-}
-
-function onClickAttributBearbeiten(deckName: string, kartenIndex : string, attribut : KarteikartenAttribute) {
-  const deck = decks.find(deck => deck.name === deckName)
-
-  if (deck) {
-    const kartenIndexNum = deck.cards.findIndex((_, index) => index.toString() === kartenIndex)
-    
-    if (kartenIndexNum !== -1) {
-      const aktuellesAttribut = document.querySelector(`.${styles["verwaltung-karte-bearbeiten-rahmen"]} > div#${attribut} > div`)
-
-      const neuerWert = prompt(`Gib einen Neuen Wert für ${attribut.charAt(0).toUpperCase() + attribut.slice(1)} ein:`, aktuellesAttribut?.innerHTML)
-      
-      if (neuerWert) {
-        /* Neuen Wert zuweisen und Frontend aktualisieren */
-        deck.cards[kartenIndexNum][attribut] = neuerWert
-
-        setDecks(decks)
-        onClickDeckAnzeigen(deckName)
-        onClickKarteBearbeiten(deckName, kartenIndex)
-
-        if (aktuellesAttribut) {
-          aktuellesAttribut.innerHTML = neuerWert
-        }
-      }
-    }
-  }
-}
+//         if (aktuellesAttribut) {
+//           aktuellesAttribut.innerHTML = neuerWert
+//         }
+//       }
+//     }
+//   }
+// }
 
 export default Verwaltung
