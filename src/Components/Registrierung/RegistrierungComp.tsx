@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { setData } from "../../data"
 import styles from "./Anmeldung.module.css"
 function RegistrierungComp(){
 
@@ -13,11 +14,11 @@ function RegistrierungComp(){
 
   function login(e : React.FormEvent<HTMLFormElement>){
     e.preventDefault();
+    console.log(JSON.parse(localStorage.getItem("loginData") || "[]"))
 
-    const userData = localStorage.getItem("loginData")
-    const userArray = userData ? JSON.parse(userData) : []
+    const userArray: User[] = JSON.parse(localStorage.getItem("loginData") || "[]");
 
-    const userExists = userArray.some((user: User)=> user.uName === username)
+    const userExists = userArray.some((user: User)=> user.uName.toLowerCase() === username.toLowerCase())
     if (userExists){
       alert("Benutzername bereits vergeben")
       return
