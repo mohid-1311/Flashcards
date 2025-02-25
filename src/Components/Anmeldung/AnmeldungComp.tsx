@@ -16,11 +16,11 @@ function AnmeldungComp(){
 
           <div className="anmeldung-username">
             <label htmlFor="nutzername">Username</label>
-            <input type="text" name="" id="" />
+            <input type="text" name="" />
           </div>
           <div className="anmeldung-passwort">
             <label htmlFor="passwort">Passwort</label>
-            <input type="text" name="passwort" id="" />
+            <input type="text" name="passwort" />
           </div>
 
         </form>

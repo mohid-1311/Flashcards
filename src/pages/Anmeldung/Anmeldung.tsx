@@ -4,12 +4,11 @@ import AnmeldungComp from "../../Components/Anmeldung/AnmeldungComp";
 import RegistrierungComp from "../../Components/Registrierung/RegistrierungComp";
 function Anmeldung(){
   
-  
   const [anmeldung, setAnmeldung] = useState(false)
   const [registrierung, setRegistrierung] = useState(false)
 
   return(
-    <h1>Test</h1>
+    <RegistrierungComp></RegistrierungComp>
   );
 }
 export default Anmeldung

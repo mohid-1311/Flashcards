@@ -26,23 +26,26 @@ function RegistrierungComp(){
       alert("Erfolgreich registriert")
       const data = {uName: username, pw: passwort};
       userArray.push(data);
-      localStorage.setItem("login", userArray)
+      localStorage.setItem("loginData", JSON.stringify(userArray))
     }
 
   }
   return(
+    
     <div className="registrireung-container">
+      <h1>Registrierung</h1>
       <div className="registrierung-display">
-        <form onSubmit={(e) => login(e)}></form>
-        <div className="registrierung-username">
-          <label htmlFor="nutzername">Username</label>
-          <input type="text" name="nutzername" onChange={(e) => setUsername(e.target.value)}/>
-        </div>
-        <div className="registrierung-passwort">
-          <label htmlFor="passwort">Passwort</label>
-          <input type="text" name="passwort" onChange={(e) => setPasswort(e.target.value)}/>
-        <button type="submit">Registrieren</button>
-        </div>
+        <form onSubmit={(e) => login(e)}>
+          <div className="registrierung-username">
+            <label htmlFor="nutzername">Username</label>
+            <input type="text" name="nutzername" required onChange={(e) => setUsername(e.target.value)}/>
+          </div>
+          <div className="registrierung-passwort">
+            <label htmlFor="passwort">Passwort</label>
+            <input type="text" name="passwort" required onChange={(e) => setPasswort(e.target.value)}/>
+          <button type="submit">Registrieren</button>
+          </div>
+        </form>
       </div>
     </div>
   );
