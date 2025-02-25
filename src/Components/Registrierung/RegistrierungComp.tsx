@@ -1,0 +1,51 @@
+import { useState } from "react";
+import styles from "./Anmeldung.module.css"
+function RegistrierungComp(){
+
+  interface User {
+    uName: string;
+    pw: string;
+  }
+
+  const userArray: User[] = JSON.parse(localStorage.getItem("loginData") || "[]");
+  const [username, setUsername] = useState("")
+  const [passwort, setPasswort] = useState("")
+
+  function login(e : React.FormEvent<HTMLFormElement>){
+    e.preventDefault();
+
+    const userData = localStorage.getItem("loginData")
+    const userArray = userData ? JSON.parse(userData) : []
+
+    const userExists = userArray.some((user: User)=> user.uName === username)
+    if (userExists){
+      alert("Benutzername bereits vergeben")
+      return
+    }
+    else {
+      alert("Erfolgreich registriert")
+      const data = {uName: username, pw: passwort};
+      userArray.push(data);
+      localStorage.setItem("login", userArray)
+    }
+
+  }
+  return(
+    <div className="registrireung-container">
+      <div className="registrierung-display">
+        <form onSubmit={(e) => login(e)}></form>
+        <div className="registrierung-username">
+          <label htmlFor="nutzername">Username</label>
+          <input type="text" name="nutzername" onChange={(e) => setUsername(e.target.value)}/>
+        </div>
+        <div className="registrierung-passwort">
+          <label htmlFor="passwort">Passwort</label>
+          <input type="text" name="passwort" onChange={(e) => setPasswort(e.target.value)}/>
+        <button type="submit">Registrieren</button>
+        </div>
+      </div>
+    </div>
+  );
+
+}
+export default RegistrierungComp
