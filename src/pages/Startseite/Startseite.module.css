@@ -3,18 +3,11 @@
   box-sizing: border-box;
 }
 
-/* .start-flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  background-color: rgb(110, 207, 234);
-} */
-
 .flex-column, .flex-row {
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  /* background-color: rgb(110, 207, 234); */
+  background-color: #007bff;
 }
 
 .flex-column {
@@ -23,7 +16,8 @@
 
 .flex-row {
   flex-direction: row;
-  height: 35rem;
+  flex: 1;
+  height: 35rem; /*muss je nach höhe der Navbar geändert werden*/
 }
 
 .flex-column > *, .flex-row > * {

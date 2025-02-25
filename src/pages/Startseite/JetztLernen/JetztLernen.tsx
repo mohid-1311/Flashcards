@@ -31,7 +31,7 @@ let decks = [
   {name: "Info", color: "#FFFFFF", cards: []},
 ]
 
-function farbeGlaetten(hexcode: string, amount: number = 0.3) {
+function farbeGlaetten(hexcode: string, amount: number = 0.35) {
   let r = parseInt(hexcode.slice(1, 3), 16)
   r += (255 - r) * amount
   let g = parseInt(hexcode.slice(3, 5), 16)
@@ -42,17 +42,19 @@ function farbeGlaetten(hexcode: string, amount: number = 0.3) {
 }
 
 function JetztLernen() {
+  
+  
   return (
     <div className={styles["root"]}>
       <h1>Jetzt Lernen</h1>
       <div className={styles["deck-liste"]}>
         {decks.map(deck => {
           return (
-            <div className={styles["deck-liste-element"]} style={{backgroundColor: farbeGlaetten(deck.color, 0.5)}}>
-              <Link to={`/Lernen/${deck.name}`}>
+            <Link to={`/Lernen/${deck.name}`}>
+              <div className={styles["deck-liste-element"]} style={{backgroundColor: farbeGlaetten(deck.color)}}>
                 {deck.name}
-              </Link>
-            </div>
+              </div>
+            </Link>
           )
         })}
       </div>
