@@ -1,53 +1,58 @@
 import { useState } from "react";
 import { setData } from "../../data"
-import styles from "./Anmeldung.module.css"
-function RegistrierungComp(){
+import styles from "../Anmeldung/Anmeldung.module.css"
 
-  interface User {
-    uName: string;
-    pw: string;
-  }
+interface Props {
+  setAnmeldung: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-  const userArray: User[] = JSON.parse(localStorage.getItem("loginData") || "[]");
+interface User {
+  uName: string;
+  pw: string;
+}
+
+function RegistrierungComp({setAnmeldung} : Props){
+
   const [username, setUsername] = useState("")
   const [passwort, setPasswort] = useState("")
 
   function login(e : React.FormEvent<HTMLFormElement>){
     e.preventDefault();
-    console.log(JSON.parse(localStorage.getItem("loginData") || "[]"))
 
     const userArray: User[] = JSON.parse(localStorage.getItem("loginData") || "[]");
 
-    const userExists = userArray.some((user: User)=> user.uName.toLowerCase() === username.toLowerCase())
+    const userExists = userArray.some((user: User) => user.uName.toLowerCase() === username.toLowerCase())
     if (userExists){
       alert("Benutzername bereits vergeben")
       return
     }
     else {
       alert("Erfolgreich registriert")
-      const data = {uName: username, pw: passwort};
-      userArray.push(data);
-      localStorage.setItem("loginData", JSON.stringify(userArray))
+      setAnmeldung(true)
+      const data = {uName: username, pw: passwort}
+      userArray.push(data)
+      setData(userArray)
     }
-
   }
+
   return(
     
-    <div className="registrireung-container">
-      <h1>Registrierung</h1>
-      <div className="registrierung-display">
-        <form onSubmit={(e) => login(e)}>
-          <div className="registrierung-username">
+    <div className={styles["registrierung-container"]}>
+      <form onSubmit={(e) => login(e)} >
+        <div className={styles["registrierung-display"]}>
+          <h1>Registrierung</h1>
+          <div className={styles["registrierung-username"]}>
             <label htmlFor="nutzername">Username</label>
-            <input type="text" name="nutzername" required onChange={(e) => setUsername(e.target.value)}/>
+            <input type="text" name="nutzername" className={styles["nutzername-input"]} required onChange={(e) => setUsername(e.target.value)}/>
           </div>
-          <div className="registrierung-passwort">
+          <div className={styles["registrierung-passwort"]}>
             <label htmlFor="passwort">Passwort</label>
-            <input type="text" name="passwort" required onChange={(e) => setPasswort(e.target.value)}/>
-          <button type="submit">Registrieren</button>
+            <input type="text" name="passwort" className={styles["passwort-input"]}required onChange={(e) => setPasswort(e.target.value)}/>
           </div>
-        </form>
-      </div>
+          <button type="submit" className={styles["button-submit"]}>Registrieren</button>
+        </div>
+        <span onClick={(e) => (setAnmeldung(true))}>Zur Anmeldung</span>
+      </form>
     </div>
   );
 
