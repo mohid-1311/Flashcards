@@ -51,7 +51,7 @@ function JetztLernen() {
         {decks.map(deck => {
           return (
             <Link to={`/Lernen/${deck.name}`}>
-              <div className={styles["deck-liste-element"]} style={{backgroundColor: farbeGlaetten(deck.color)}}>
+              <div className={styles["deck-liste-element"]} /*style={{backgroundColor: farbeGlaetten(deck.color)}}*/>
                 {deck.name}
               </div>
             </Link>
