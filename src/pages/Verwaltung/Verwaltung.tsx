@@ -19,7 +19,7 @@ function Verwaltung(){
   const [deckName, setDeckName] = useState("")
   const [kartenIndex, setKartenIndex] = useState(-1)
 
-  const [neueKarteForm, setNeueKarteForm] = useState(false)
+  const [neueKarteFormular, setNeueKarteFormular] = useState(false)
 
   const [suchfilterDecks, setSuchfilterDecks] = useState("")
   const [suchfilterKarten, setSuchfilterKarten] = useState("")
@@ -62,15 +62,40 @@ function Verwaltung(){
     }
   }*/
 
-  function setzeKarteAttribut(attribut: keyof Card, neuerWert: string) {
+  function setzeKartenAttribut(attribut: keyof Card, neuerWert: string) {
     decks.find((deck: Deck) => deck.name === deckName).cards.map((card: Card, index: number) => {
       if(index === kartenIndex) {
         card[attribut] = neuerWert
+
         setLocalDecks([...decks])
         setDecks([...decks])
       }
       return card
     })
+  }
+
+  function deckEntfernen(deckName: string) {
+    if(window.confirm("Möchtest Du dieses Karteikarten-Deck wirklich löschen?")) {
+      setLocalDecks(decks.filter((deck: Deck) => (deck.name !== deckName)))
+      setDecks(decks.filter((deck: Deck) => (deck.name !== deckName)))
+    }
+  }
+
+  function karteEntfernen(kartenIndex: number) {
+    if(window.confirm("Möchtest Du diese Karteikarte wirklich löschen?")) {
+      const updatedDecks = decks.map((deck: Deck) => {
+        if (deck.name === deckName) {
+          return {
+            ...deck,
+            cards: deck.cards.filter((card: Card, index: number) => index !== kartenIndex)
+          };
+        }
+        return deck;
+      })
+
+      setLocalDecks(updatedDecks)
+      setDecks(updatedDecks)
+    }
   }
 
   function entsprichtSuchfilterDeck(deck: Deck) {
@@ -121,17 +146,27 @@ function Verwaltung(){
                 entsprichtSuchfilterDeck(deck)
                 &&
                 (<div 
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation()
                     setDeckName(deck.name)
                     setKartenIndex(-1)
-                    setNeueKarteForm(false)
+                    setNeueKarteFormular(false)
                   }} 
                   key={index} 
-                  id={deck.name.toLowerCase()}
                   className={deck.name === deckName ? styles["aktuelles-deck"] : undefined}
                 >
                   {deck.name}
-                  <button className={styles["deck-entfernen"]}>X</button>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setDeckName("")
+                      setKartenIndex(-1)
+                      deckEntfernen(deck.name)
+                    }}
+                    className={styles["deck-entfernen"]}
+                  >
+                    X
+                  </button>
                 </div>)
               ))
             }
@@ -155,14 +190,15 @@ function Verwaltung(){
                     deckName 
                     &&
                     (<tr 
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation()
                         setKartenIndex(-1)
-                        setNeueKarteForm(true)
+                        setNeueKarteFormular(true)
                       }}
                       id="karte-hinzufuegen"
                     >
                       <td>
-                        {neueKarteForm ? 
+                        {neueKarteFormular ? 
                           <AddCardForm onAddCard={addCardToDeck} deckIndex={-1} decks={decks} deckName={deckName} />
                           :
                           "+"
@@ -173,13 +209,14 @@ function Verwaltung(){
                   {/* Für alle Karteikarten wird eine Zeile hinzugefügt */
                     deckName 
                     && 
-                    decks.find((deck: Deck) => deck.name === deckName).cards.map((card: Card, index: number) => (
+                    decks.find((deck: Deck) => (deck.name === deckName)).cards.map((card: Card, index: number) => (
                       entsprichtSuchfilterKarte(card) 
                       && (
                         <tr 
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation()
                             setKartenIndex(index)
-                            setNeueKarteForm(false)
+                            setNeueKarteFormular(false)
                           }}
                           key={index} 
                           className={index === kartenIndex ? styles["aktuelle-karte"] : undefined}
@@ -187,7 +224,16 @@ function Verwaltung(){
                           <td>{card.ausdruck}</td>
                           <td>{card.definition}</td>
                           <td>
-                            <button className={styles["karte-entfernen"]}>X</button>
+                            <button 
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setKartenIndex(-1)
+                                karteEntfernen(index)
+                              }}
+                              className={styles["karte-entfernen"]}
+                            >
+                              X
+                            </button>
                           </td>
                         </tr>
                       )
@@ -203,25 +249,31 @@ function Verwaltung(){
             {
               deckName 
               && 
-              decks.find((deck: Deck) => deck.name === deckName).cards[kartenIndex] 
+              decks.find((deck: Deck) => (deck.name === deckName)).cards[kartenIndex] 
               && 
               (<>
                 <h4>Ausdruck:</h4>
                 <textarea 
                   className={styles["karte-bearbeiten-eingabe"]}
                   name="ausdruck"
-                  value={decks.find((deck: Deck) => deck.name === deckName)?.cards[kartenIndex].ausdruck}
+                  value={decks.find((deck: Deck) => (deck.name === deckName))?.cards[kartenIndex].ausdruck}
                   placeholder="Ausdruck eingeben..."
-                  onChange={(e) => setzeKarteAttribut("ausdruck", e.target.value)}
+                  onChange={(e) => {
+                    e.stopPropagation()
+                    setzeKartenAttribut("ausdruck", e.target.value)
+                  }}
                 >
                 </textarea>
                 <h4>Definition:</h4>
                 <textarea 
                   className={styles["karte-bearbeiten-eingabe"]}
                   name="definition"
-                  value={decks.find((deck: Deck) => deck.name === deckName)?.cards[kartenIndex].definition}
+                  value={decks.find((deck: Deck) => (deck.name === deckName))?.cards[kartenIndex].definition}
                   placeholder="Definition eingeben..."
-                  onChange={(e) => setzeKarteAttribut("definition", e.target.value)}
+                  onChange={(e) => {
+                    e.stopPropagation()
+                    setzeKartenAttribut("definition", e.target.value)
+                  }}
                 >
                 </textarea>
               </>)
@@ -240,14 +292,6 @@ function Verwaltung(){
 //   if (targetElement.className === styles["deck-entfernen"]) {
 //     onClickDeckEntfernen(deckName)
 //   } else {
-//   }
-// }
-
-// function onClickDeckEntfernen(deckName: string) {
-//   if(window.confirm("Möchtest Du dieses Karteikarten-Deck wirklich löschen?")) {
-//     decks = decks.filter(deck => deck.name !== deckName)
-//     setDecks(decks)
-//     onClickDeckAnzeigen("")
 //   }
 // }
 
