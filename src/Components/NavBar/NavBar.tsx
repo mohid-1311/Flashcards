@@ -1,6 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import styles from "NavBar.module.css"
+import styles from "./NavBar.module.css"
 
 function NavBar() {
 
@@ -14,7 +14,7 @@ function NavBar() {
 
   return (
     <nav>
-      <ul>
+      <ul className={styles["navbar-liste"]}>
         {links.map((link, index) => (
           <li key={index}><Link to={link.link}>{link.label}</Link></li>
         ))}
