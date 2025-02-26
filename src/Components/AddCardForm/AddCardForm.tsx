@@ -34,7 +34,7 @@ function AddCardForm({ onAddCard, deckIndex, decks }: AddCardFormProps){
   */
   function submitCard(e : React.FormEvent<HTMLFormElement>){
 
-    {/*Verhindert, dass die Seite neugeladen wird. States bleiben also erhalten*/}
+    /*Verhindert, dass die Seite neugeladen wird. States bleiben also erhalten*/
     e.preventDefault()
 
     if(!ausdruck.trim() || !definition.trim()){
