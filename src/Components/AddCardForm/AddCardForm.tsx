@@ -12,9 +12,10 @@ type Deck = {
 };
 
 interface AddCardFormProps {
-  onAddCard: (card: { ausdruck: string; definition: string }) => void;
+  onAddCard: (card: { ausdruck: string; definition: string }, deckIndex: number) => void;
   deckIndex: number;
   decks: Deck[]
+  deckName?: string
 }
 
 /*
@@ -24,7 +25,7 @@ function sliceHeader(text: string){
   return text.length <= 15 ? text : (text.slice(0, 12) + "...")
 }
 
-function AddCardForm({ onAddCard, deckIndex, decks }: AddCardFormProps){
+function AddCardForm({ onAddCard, deckIndex = 0, decks, deckName = ""}: AddCardFormProps){
   const [ausdruck, setAusdruck] = useState("")
   const [definition, setDefinition] = useState("")
 
@@ -43,7 +44,18 @@ function AddCardForm({ onAddCard, deckIndex, decks }: AddCardFormProps){
     }
     
     const newCard = { ausdruck, definition}
-    onAddCard(newCard);
+    
+    let index = deckIndex
+    if (deckName){
+      const foundIndex = decks.findIndex((deck) => deck.name === deckName)
+      if(foundIndex === -1 || foundIndex === undefined){
+        alert("Kein Deck gefunden")
+        return
+      }
+      index = foundIndex
+    }
+
+    onAddCard(newCard, index);
     setAusdruck("")
     setDefinition("")
   }
@@ -51,7 +63,7 @@ function AddCardForm({ onAddCard, deckIndex, decks }: AddCardFormProps){
   return(
     <form onSubmit={submitCard} className={styles["form-container"]}>
       <h1>
-        {sliceHeader(decks[deckIndex].name)} - Deck
+        {sliceHeader(deckName || decks[deckIndex].name)} - Deck
       </h1>
       <div className={styles["form-group"]}>
         {/*Ausdruck Eingabe*/}
