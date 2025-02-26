@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./DeckModal.module.css"
-import { getDeck, setDecks} from "../../deckState"
+import { setDecks} from "../../deckState"
 
 type Card = {
   ausdruck: string;
