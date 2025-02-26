@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { JSX, useState } from "react"
 import styles from "./Verwaltung.module.css"
 import { getDeck, setDecks } from "../../deckState"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
@@ -33,7 +33,7 @@ type Deck = {
  *  - Karteikarten-Bearbeitungsfeld
  * @return {JSX.Element}
  */
-function Verwaltung() {
+function Verwaltung(): JSX.Element {
   const [decks, setLocalDecks] = useState(getDeck())
 
   const [deckName, setDeckName] = useState("")
@@ -53,7 +53,7 @@ function Verwaltung() {
    * @param {string} neuerWert - Neuer Wert des Karten-Attributs
    * @returns {void}
    */
-  function setzeKartenAttribut(attribut: keyof Card, neuerWert: string) {
+  function setzeKartenAttribut(attribut: keyof Card, neuerWert: string): void {
     decks.find((deck: Deck) => deck.name === deckName).cards.map((card: Card, index: number) => {
       if(index === kartenIndex) {
         card[attribut] = neuerWert
@@ -279,40 +279,44 @@ function Verwaltung() {
             </div>
           </div>
           <div className={`${styles["karte-bearbeiten-container"]}`}>
-            {/* Für jedes Karteikarten-Attribut wird eine Eingabe hinzugefügt */}
-            <h3>Karteikarte bearbeiten:</h3>
-            {
-              deckName 
-              && 
-              decks.find((deck: Deck) => (deck.name === deckName)).cards[kartenIndex] 
-              && 
-              (<>
-                <h4>Ausdruck:</h4>
-                <textarea 
-                  className={styles["karte-bearbeiten-eingabe"]}
-                  name="ausdruck"
-                  value={decks.find((deck: Deck) => (deck.name === deckName))?.cards[kartenIndex].ausdruck}
-                  placeholder="Ausdruck eingeben..."
-                  onChange={(e) => {
-                    e.stopPropagation()
-                    setzeKartenAttribut("ausdruck", e.target.value)
-                  }}
-                >
-                </textarea>
-                <h4>Definition:</h4>
-                <textarea 
-                  className={styles["karte-bearbeiten-eingabe"]}
-                  name="definition"
-                  value={decks.find((deck: Deck) => (deck.name === deckName))?.cards[kartenIndex].definition}
-                  placeholder="Definition eingeben..."
-                  onChange={(e) => {
-                    e.stopPropagation()
-                    setzeKartenAttribut("definition", e.target.value)
-                  }}
-                >
-                </textarea>
-              </>)
-            }
+            <div className={`${styles["karte-bearbeiten-header"]}`}>
+              <h3>Karteikarte bearbeiten:</h3>
+            </div>
+            <div className={`${styles["karte-bearbeiten-flexbox"]}`}>
+              {/* Für jedes Karteikarten-Attribut wird eine Eingabe hinzugefügt */}
+              {
+                deckName 
+                && 
+                decks.find((deck: Deck) => (deck.name === deckName)).cards[kartenIndex] 
+                && 
+                (<>
+                  <h4>Ausdruck:</h4>
+                  <textarea 
+                    className={styles["karte-bearbeiten-eingabe"]}
+                    name="ausdruck"
+                    value={decks.find((deck: Deck) => (deck.name === deckName))?.cards[kartenIndex].ausdruck}
+                    placeholder="Ausdruck eingeben..."
+                    onChange={(e) => {
+                      e.stopPropagation()
+                      setzeKartenAttribut("ausdruck", e.target.value)
+                    }}
+                  >
+                  </textarea>
+                  <h4>Definition:</h4>
+                  <textarea 
+                    className={styles["karte-bearbeiten-eingabe"]}
+                    name="definition"
+                    value={decks.find((deck: Deck) => (deck.name === deckName))?.cards[kartenIndex].definition}
+                    placeholder="Definition eingeben..."
+                    onChange={(e) => {
+                      e.stopPropagation()
+                      setzeKartenAttribut("definition", e.target.value)
+                    }}
+                  >
+                  </textarea>
+                </>)
+              }
+            </div>
           </div>
         </div>
       </div>
