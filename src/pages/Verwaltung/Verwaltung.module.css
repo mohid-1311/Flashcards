@@ -50,8 +50,10 @@ input.karten-suchleiste {
 div.decks-liste-container {
     width: 15%;
 
-    border: 2px solid gainsboro;
+    /*border: 2px solid gainsboro;*/
     border-radius: 10px;
+
+    box-shadow: 0px 0px 5px gray;
 }
 
 /* Karteikartendecks-Liste (flexbox) */
@@ -114,8 +116,8 @@ div.deck-karten-liste-container {
     
     width: 70%;
 
-    border: 2px solid gainsboro;
     border-radius: 10px 10px 0 10px;
+    box-shadow: 0px 0px 5px gray;
 }
 
 /* Karteikartentabelle (flexbox) */
@@ -209,15 +211,16 @@ div.karte-bearbeiten-container {
     justify-content: flex-start;
 
     opacity: 1;
-    width: 30%;
+    width: 29%;
 
-    margin-top: 65px;
+    margin-top: 63px;
     padding: 8px;
 
     box-sizing: border-box;
 
-    border: 2px solid gainsboro;
     border-radius: 0 10px 10px 0;
+
+    box-shadow: 0px 0px 5px gray;
 }
 
 /* Überschrift der Karteikarten-Attribute */

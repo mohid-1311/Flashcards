@@ -3,17 +3,37 @@ import styles from "./Verwaltung.module.css"
 import { getDeck, setDecks } from "../../deckState"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
 
+/**
+ * Karteikarten-Typ mit Definition.
+ * 
+ * @typedef {Object} Card
+ * @property {string} ausdruck - Ausdruck der Karteikarte
+ * @property {string} definition - Definition des Ausdrucks der Karteikarte
+ */
 type Card = {
   ausdruck: string
   definition: string
 }
-
+/**
+ * Karteikartendeck-Typ mit Definition.
+ * 
+ * @typedef {Object} Deck
+ * @property {string} name - Name des Karteikartendecks
+ * @property {Card[]} cards - Liste mit Karten des Karteikartendecks
+ */
 type Deck = {
   name: string
   cards: Card[]
 }
 
-function Verwaltung(){
+/**
+ * Verwaltung-Komponente:
+ *  - Decks-Liste
+ *  - Karteikarten-Liste
+ *  - Karteikarten-Bearbeitungsfeld
+ * @return {JSX.Element}
+ */
+function Verwaltung() {
   const [decks, setLocalDecks] = useState(getDeck())
 
   const [deckName, setDeckName] = useState("")
@@ -24,6 +44,15 @@ function Verwaltung(){
   const [suchfilterDecks, setSuchfilterDecks] = useState("")
   const [suchfilterKarten, setSuchfilterKarten] = useState("")
 
+  /**
+   * Funktion, die bei neuer Eingabe in das Attribut-Textfeld aufgerufen wird,
+   * um den Wert in der entsprechenden Karteikarte zu aktualisieren.
+   * Bearbeitetes Decks wird synchronisiert.
+   * 
+   * @param {Card} attribut - Karten-Attribut, welches verändert werden soll
+   * @param {string} neuerWert - Neuer Wert des Karten-Attributs
+   * @returns {void}
+   */
   function setzeKartenAttribut(attribut: keyof Card, neuerWert: string) {
     decks.find((deck: Deck) => deck.name === deckName).cards.map((card: Card, index: number) => {
       if(index === kartenIndex) {
@@ -36,14 +65,30 @@ function Verwaltung(){
     })
   }
 
-  function deckEntfernen(deckName: string) {
+  /**
+   * Funktion, die beim Klicken auf den Entfernen-Button der Decks 
+   * aufgerufen wird, um diese nach einem Dialogfenster zu löschen.
+   * Bearbeitetes Decks wird synchronisiert.
+   *
+   * @param {string} deckName - Name des Decks 
+   * @return {void}
+   */
+  function deckEntfernen(deckName: string): void {
     if(window.confirm("Möchtest Du dieses Karteikarten-Deck wirklich löschen?")) {
       setLocalDecks(decks.filter((deck: Deck) => (deck.name !== deckName)))
       setDecks(decks.filter((deck: Deck) => (deck.name !== deckName)))
     }
   }
 
-  function karteEntfernen(kartenIndex: number) {
+  /**
+   * Funktion, die beim Klicken auf den Entfernen-Button der Karteikarten 
+   * aufgerufen wird, um diese nach einem Dialogfenster zu löschen.
+   * Bearbeitetes Decks wird synchronisiert.
+   *
+   * @param {number} kartenIndex - Index der Karteikarte 
+   * @return {void}
+   */
+  function karteEntfernen(kartenIndex: number): void {
     if(window.confirm("Möchtest Du diese Karteikarte wirklich löschen?")) {
       const updatedDecks = decks.map((deck: Deck) => {
         if (deck.name === deckName) {
@@ -60,20 +105,41 @@ function Verwaltung(){
     }
   }
 
-  function entsprichtSuchfilterDeck(deck: Deck) {
+  /**
+   * Funktion, die überprüft, ob jedes, durch ein Leerzeichen getrenntes Wort 
+   * der Suchleiste mit dem Inhalt eines Decks übereinstimmt.
+   *
+   * @param {Deck} deck - Das zu überprüfende Deck
+   * @return {boolean} - True, wenn das Deck dem Suchfilter entspricht
+   */
+  function entsprichtSuchfilterDeck(deck: Deck): boolean {
     return suchfilterDecks.split(" ").every(suchbegriff => 
       `${deck.name}`.toLowerCase().includes(suchbegriff.toLowerCase())
     )
   }
 
-  function entsprichtSuchfilterKarte(card: Card) {
+  /**
+   * Funktion, die überprüft, ob jedes, durch ein Leerzeichen getrenntes Wort 
+   * der Suchleiste mit dem Inhalt einer Karteikarte übereinstimmt.
+   *
+   * @param {Card} card - Die zu überprüfende Karte
+   * @return {boolean} - True, wenn die Karteikarte dem Suchfilter entspricht
+   */
+  function entsprichtSuchfilterKarte(card: Card): boolean {
     return suchfilterKarten.split(" ").every(suchbegriff => 
       `${card.ausdruck} ${card.definition}`.toLowerCase().includes(suchbegriff.toLowerCase())
     )
   }
 
+  /**
+   * Funktion, die eine neue Karte zu dem aktuell ausgewählten Deck hinzufügt.
+   * Bearbeitetes Deck wird synchronisiert.
+   *
+   * @param {Card} newCard - neue Karte
+   * @return {void}
+   */
   /* Von Mohids Komponente */
-  function addCardToDeck(newCard : {ausdruck: string, definition: string}){
+  function addCardToDeck(newCard : {ausdruck: string, definition: string}): void {
     const updatedDeck = decks.map((deck: { name: string; cards: any[]}) => {
       if (deck.name === deckName){
         return {...deck, cards: [...deck.cards, newCard]}
@@ -84,15 +150,23 @@ function Verwaltung(){
     setDecks(updatedDeck)
   }
 
-  function sliceHeader(text: string){
+  /**
+   * Funktion, die den Text auf eine bestimmte Länge kürzt.
+   *
+   * @param {string} text - Der zu kürzende Text
+   * @return {string} - Der gekürzte Text
+   */
+  function sliceHeader(text: string): string {
     return text.length <= 20 ? text : (text.slice(0, 17) + "...")
   }
 
+  /* Eigentliches JSX-Element mit dem Inhalt der Seite */
   return (
     <>
       <div className={styles["verwaltung-container"]}>
         <div className={styles["decks-liste-container"]}>
           <div className={styles["decks-liste-header"]}>
+            {/* Decks-Suchleiste */}
             <input
               className={styles["decks-suchleiste"]} 
               type="text" 
@@ -135,7 +209,8 @@ function Verwaltung(){
         <div className={styles["deck-karten-rahmen-container"]}>
           <div className={styles["deck-karten-liste-container"]}>
             <div className={styles["deck-karten-header"]}>
-              <div>{deckName || "Kein Deck ausgewählt!"}</div>
+              <div>{deckName || "Deck wählen!"}</div>
+              {/* Karteikarten-Suchleiste */}
               <input 
                 className={styles["karten-suchleiste"]} 
                 type="text" 
