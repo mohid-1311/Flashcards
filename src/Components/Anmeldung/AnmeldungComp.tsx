@@ -10,9 +10,10 @@ interface User {
 interface Props {
   setAnmeldung: React.Dispatch<React.SetStateAction<boolean>>;
   setShowNav: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAuthentificated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function AnmeldungComp({setAnmeldung, setShowNav} : Props){
+function AnmeldungComp({setAnmeldung, setShowNav, setIsAuthentificated} : Props){
 
   const [username, setUsername] = useState("")
   const [passwort, setPasswort] = useState("")
@@ -26,7 +27,9 @@ function AnmeldungComp({setAnmeldung, setShowNav} : Props){
     const userExists = userArray.some((user: User) => user.uName === username && user.pw === passwort)
 
     if(userExists){
+      localStorage.setItem("isAuthenticated", "true")
       navigate("/Startseite")
+      setIsAuthentificated(true)
       setShowNav(false)
       return
     }

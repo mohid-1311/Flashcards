@@ -7,40 +7,36 @@ import Verwaltung from "./pages/Verwaltung/Verwaltung"
 import Fortschritt from "./pages/Fortschritt/Fortschritt"
 import Importieren from "./pages/Importieren/Importieren"
 import Anmeldung from "./pages/Anmeldung/Anmeldung"
+import { ProtectedRoute } from "./Authentifiziert"
 
 function App() {
 
   const location = useLocation()
   const navigate = useNavigate()
-  const [showNav, setShowNav] = useState(false)
-  let showNavBar = true
-  useEffect(() => {
-    navigate("/Anmeldung")
-    showNavBar = location.pathname.toLowerCase() === "/anmeldung"
-    if(showNavBar){
-      setShowNav(true)
-    }
-  }, [])
-
+  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem("isAuthenticated") === "true")
+  const [showNav, setShowNav] = useState(location.pathname.toLowerCase() === "/anmeldung");
 
   useEffect(() => {
-    showNavBar = location.pathname.toLowerCase() === "/anmeldung"
-    if(showNavBar){
-      setShowNav(true)
+    if(!isAuthenticated){
+      navigate("/Anmeldung")
     }
-  }, [location])
+  }, [isAuthenticated, navigate])
+
+  useEffect(() => {
+    setShowNav(location.pathname.toLowerCase() === "/anmeldung");
+  }, [location]);
 
   return (
     <>
       <div>
         {!showNav && (<NavBar/>)}
         <Routes>
-          <Route path="/Anmeldung" element={<Anmeldung setShowNav={setShowNav}/>} />
-          <Route path="/Startseite" element={<Startseite/>}></Route>
-          <Route path="/Hinzufuegen" element={<Hinzufuegen/>}></Route>
-          <Route path="/Verwaltung" element={<Verwaltung/>}></Route>
-          <Route path="/Fortschritt" element={<Fortschritt/>}></Route>
-          <Route path="/Importieren" element={<Importieren/>}></Route>
+          <Route path="/Anmeldung" element={<Anmeldung setShowNav={setShowNav} setIsAuthentificated={setIsAuthenticated}/>} />
+          <Route path="/Startseite" element={ProtectedRoute(<Startseite/>)}></Route>
+          <Route path="/Hinzufuegen" element={ProtectedRoute(<Hinzufuegen/>)}></Route>
+          <Route path="/Verwaltung" element={ProtectedRoute(<Verwaltung/>)}></Route>
+          <Route path="/Fortschritt" element={ProtectedRoute(<Fortschritt/>)}></Route>
+          <Route path="/Importieren" element={ProtectedRoute(<Importieren/>)}></Route>
         </Routes>
       </div>
    </>
