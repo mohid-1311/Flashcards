@@ -2,7 +2,6 @@
   margin: 0; 
   padding: 0; 
   box-sizing: border-box;
-  background-color: #f7f7f7;
 }
 .hinzufuegen-container {
   gap: 5rem;
@@ -11,7 +10,7 @@
   justify-content: space-around;
   padding: 2rem;
   background-color: #f7f7f7;
-  min-height: 80vh;
+  min-height: 100vh;
   font-family: Arial, sans-serif;
   align-items: flex-start;
 }
