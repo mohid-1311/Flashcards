@@ -9,9 +9,10 @@ interface User {
 
 interface Props {
   setAnmeldung: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowNav: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function AnmeldungComp({setAnmeldung} : Props){
+function AnmeldungComp({setAnmeldung, setShowNav} : Props){
 
   const [username, setUsername] = useState("")
   const [passwort, setPasswort] = useState("")
@@ -26,6 +27,7 @@ function AnmeldungComp({setAnmeldung} : Props){
 
     if(userExists){
       navigate("/Startseite")
+      setShowNav(false)
       return
     }
     alert("Ungültige Eingabewerte")
