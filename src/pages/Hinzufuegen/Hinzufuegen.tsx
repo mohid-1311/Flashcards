@@ -3,6 +3,7 @@ import {getDeck, setDecks} from "../../deckState"
 import DeckModal from "../../Components/DeckModal/DeckModal";
 import styles from "./Hinzufuegen.module.css"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
+import DisplayCard from "../../Components/DisplayCard/DisplayCard";
 function Hinzufuegen(){
   
   const [decks, setLocalDecks] = useState(getDeck())
@@ -57,7 +58,7 @@ function Hinzufuegen(){
             Stapel Auswählen
           </button>
         </div>
-        
+
       </div>
   )}
 
@@ -69,6 +70,7 @@ function Hinzufuegen(){
           closeModal={() => setShowModal(false)}
         />
       )}
+
     </>
   );
 }
