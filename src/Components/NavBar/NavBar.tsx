@@ -1,6 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import styles from "NavBar.module.css"
+import styles from "./NavBar.module.css"
 
 function NavBar() {
 
@@ -14,11 +14,17 @@ function NavBar() {
 
   return (
     <nav>
-      <ul>
-        {links.map((link, index) => (
-          <li key={index}><Link to={link.link}>{link.label}</Link></li>
-        ))}
-      </ul>
+      <h3>
+        <ul className={styles["link-liste"]}>
+          {links.map((link, index) => (
+            <Link className={styles["link"]} to={link.link}>
+              <li key={index} className={styles["link-text"]}>
+                {link.label}
+              </li>
+            </Link>
+          ))}
+        </ul>
+      </h3>
     </nav>
   )
 }
