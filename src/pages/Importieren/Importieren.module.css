@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 61.6px);
+  width: 100vw;
+  padding: 16px;
+}
+
+.container {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.container > * {
+  text-align: center;
+  flex: 1;
+  height: 100%
+}
