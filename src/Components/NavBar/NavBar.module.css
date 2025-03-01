@@ -2,3 +2,19 @@
 .navbar-liste {
     background-color: aliceblue;
 }
+
+
+.logout-button {
+    padding: 0.25rem;
+    background: rgb(220, 143, 0);
+    border: none;
+    color: #ffffff;
+    border-radius: 3px;
+    transition: background-color 0.2s ease;
+}
+
+.logout-button:hover {
+    background-color: rgb(169, 110, 0);
+    cursor: pointer
+}
+  

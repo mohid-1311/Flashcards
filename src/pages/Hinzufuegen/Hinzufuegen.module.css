@@ -64,6 +64,22 @@
   background-color: #0056b3;
 }
 
+.verwaltung-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  margin-top: 15px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.verwaltung-button:hover {
+  background-color: #d43f3f;
+}
+
 .deck-anzeige {
   display: flex;
   gap: 1rem;

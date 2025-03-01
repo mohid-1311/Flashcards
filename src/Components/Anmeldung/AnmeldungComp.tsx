@@ -17,10 +17,11 @@ function AnmeldungComp({setAnmeldung, setShowNav, setIsAuthentificated} : Anmeld
     const userExists = userArray.some((user: User) => user.uName === username && user.pw === passwort)
 
     if(userExists){
+      localStorage.setItem("user", username)
       localStorage.setItem("isAuthenticated", "true")
-      navigate("/Startseite")
       setIsAuthentificated(true)
       setShowNav(false)
+      navigate("/Startseite")
       return
     }
     alert("Ungültige Eingabewerte")

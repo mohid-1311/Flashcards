@@ -21,7 +21,7 @@ export type AddCardFormProps = {
   deckName?: string
 }
 
-export type AnmeldungCompProps {
+export type AnmeldungCompProps = {
   setAnmeldung: React.Dispatch<React.SetStateAction<boolean>>;
   setShowNav: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAuthentificated: React.Dispatch<React.SetStateAction<boolean>>;
