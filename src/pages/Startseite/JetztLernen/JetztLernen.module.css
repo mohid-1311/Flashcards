@@ -28,6 +28,7 @@ h1 {
 }
 
 .deck-liste-element {
+  list-style-type: none;
   font-size: 1.5rem;
   margin: 10px;
   border: 2px solid rgb(64, 64, 64);
