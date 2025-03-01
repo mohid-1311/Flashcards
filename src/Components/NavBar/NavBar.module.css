@@ -12,11 +12,18 @@
   justify-content: center;
   align-items: center;
   padding: 20px;
-  background-color: #0056b3;
+  background-color: #007bff;
+  
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.2s ease-in-out;
 }
 
 .link:hover {
-  background-color: #1066c3;
+  background-color: #006ade;
+  
+  text-decoration: underline;
+  text-decoration-color: white;
 }
 
 .link-text {
