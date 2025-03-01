@@ -1,19 +1,9 @@
 import { useState } from "react";
 import styles from "./Anmeldung.module.css"
 import { useNavigate } from "react-router-dom";
+import { User, AnmeldungCompProps } from "../../types";
 
-interface User {
-  uName: string
-  pw: string
-}
-
-interface Props {
-  setAnmeldung: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowNav: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsAuthentificated: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function AnmeldungComp({setAnmeldung, setShowNav, setIsAuthentificated} : Props){
+function AnmeldungComp({setAnmeldung, setShowNav, setIsAuthentificated} : AnmeldungCompProps){
 
   const [username, setUsername] = useState("")
   const [passwort, setPasswort] = useState("")
@@ -43,14 +33,31 @@ function AnmeldungComp({setAnmeldung, setShowNav, setIsAuthentificated} : Props)
           <h1>Anmeldung</h1>
           <div className={styles["anmeldung-username"]}>
             <label htmlFor="nutzername" >Username</label>
-            <input type="text" className={styles["nutzername-input"]} name="" onChange={(e) => setUsername(e.target.value)}/>
+            <input 
+              type="text" 
+              className={styles["nutzername-input"]} 
+              name="nutzername" 
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
           </div>
+
           <div className={styles["anmeldung-passwort"]}>
             <label htmlFor="passwort">Passwort</label>
-            <input type="text" className={styles["nutzername-passwort"]}name="passwort" onChange={(e) => setPasswort(e.target.value)}/>
+            <input 
+              type="password" 
+              className={styles["nutzername-passwort"]}
+              name="passwort" 
+              onChange={(e) => setPasswort(e.target.value)}
+              required
+            />
           </div>
-          <button type="submit" className={styles["button-submit"]}>Anmelden</button>
+
+          <button type="submit" className={styles["button-submit"]}>
+            Anmelden
+          </button>
         </div>
+
         <span onClick={(e) => (setAnmeldung(false))}>Zur Registrierung</span>
       </form>
     </div>

@@ -1,17 +1,14 @@
 import { useState } from "react";
 import { setData } from "../../data"
+import { SetAnmeldung } from "../../types";
 import styles from "../Anmeldung/Anmeldung.module.css"
-
-interface Props {
-  setAnmeldung: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
 interface User {
   uName: string;
   pw: string;
 }
 
-function RegistrierungComp({setAnmeldung} : Props){
+function RegistrierungComp({setAnmeldung} : SetAnmeldung){
 
   const [username, setUsername] = useState("")
   const [passwort, setPasswort] = useState("")
