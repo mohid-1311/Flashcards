@@ -9,6 +9,7 @@ type Card = {
 
 type Deck = {
   name: string;
+  user: string;
   cards: Card[];
 };
 
@@ -21,6 +22,7 @@ type DeckModalProps = {
 
 function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModalProps){
 
+  const currentUser = localStorage.getItem("user")?.toLowerCase() || ""
   const [searchValue, setSearchValue] = useState("")
 
   function addNewDeck(){
@@ -28,7 +30,7 @@ function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModa
       alert("Deck already exists")
       return
     }
-    const newDeck = {name: searchValue, cards: []}
+    const newDeck = {name: searchValue, user: currentUser, cards: []}
 
     setLocalDecks((prevDecks) => {
       const updatedDecks = [...prevDecks, newDeck]
