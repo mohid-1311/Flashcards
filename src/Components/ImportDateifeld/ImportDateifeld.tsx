@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./ImportDateifeld.module.css"
-import {getDeck, setDecks} from "../../deckState"
+import {setDecks} from "../../deckState"
 
 function ImportDateifeld({decks, setLocalDecks}: {decks: any, setLocalDecks: any}) {
   
