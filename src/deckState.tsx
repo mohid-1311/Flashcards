@@ -4,6 +4,7 @@
 let decks = [
   { 
     name: "Mathe", 
+    user: "Florian",
     cards: [
       { ausdruck: "Albert Einstein", definition: "Mathematiker" },
       { ausdruck: "Relationen", definition: "Keine Ahnung" }
@@ -11,6 +12,7 @@ let decks = [
   },
   { 
     name: "Englisch", 
+    user: "Mohid",
     cards: [
       { ausdruck: "Hello", definition: "Hallo" },
       { ausdruck: "Goodbye", definition: "Auf Wiedersehen" }
@@ -18,6 +20,7 @@ let decks = [
   },
   { 
     name: "Deutsch", 
+    user: "Mohid",
     cards: [
       { ausdruck: "Goethe", definition: "Dichter" },
       { ausdruck: "Schiller", definition: "Dichter" }
@@ -25,6 +28,7 @@ let decks = [
   },
   { 
     name: "Physik", 
+    user: "Moritz",
     cards: [
       { ausdruck: "Marie Curie", definition: "Physikerin" },
       { ausdruck: "ABC", definition: "Buchstaben" },

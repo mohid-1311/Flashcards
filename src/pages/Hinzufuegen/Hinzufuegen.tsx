@@ -3,9 +3,22 @@ import {getDeck, setDecks} from "../../deckState"
 import DeckModal from "../../Components/DeckModal/DeckModal";
 import styles from "./Hinzufuegen.module.css"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
+import DisplayCard from "../../Components/DisplayCard/DisplayCard";
 function Hinzufuegen(){
+
+  type Card = {
+    ausdruck: string;
+    definition: string;
+  }
+  type Deck = {
+    name: string;
+    user: string;
+    cards: Card[];
+  }
   
-  const [decks, setLocalDecks] = useState(getDeck())
+  const currentUser = localStorage.getItem("user")?.toLowerCase()
+
+  const [decks, setLocalDecks] = useState(getDeck().filter((deck: Deck) => deck.user === currentUser?.toLowerCase()))
 
   const [deckIndex, setDeckIndex] = useState(0)
 
@@ -57,9 +70,9 @@ function Hinzufuegen(){
             Stapel Auswählen
           </button>
         </div>
-        
+
       </div>
-  )}
+     )}
 
       {showModal && (
         <DeckModal
@@ -69,6 +82,7 @@ function Hinzufuegen(){
           closeModal={() => setShowModal(false)}
         />
       )}
+
     </>
   );
 }
