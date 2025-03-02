@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex-direction: column; 
+    gap: 10px; 
+  }
+  
+  .button {
+    padding: 10px 20px;
+    background-color: darkblue;
+    color: white;
+    border: 2px solid blue; 
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: red;
+  }
+  
