@@ -1,18 +1,47 @@
 .container {
-    display: flex;
-    flex-direction: column; 
-    gap: 10px; 
-  }
-  
-  .button {
-    padding: 10px 20px;
-    background-color: darkblue;
-    color: white;
-    border: 2px solid blue; 
-    cursor: pointer;
-  }
-  
-  .button:hover {
-    background-color: red;
-  }
-  
+  display: flex;
+  flex-direction: column; 
+  gap: 10px; 
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: darkblue;
+  color: white;
+  border: 2px solid blue; 
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: red;
+}
+
+.infoIcon {
+  margin-left: 20px; 
+  font-size: 18px;
+  color: darkblue;
+  position: relative;
+}
+
+.tooltip {
+  display: none; 
+  position: absolute;
+  left: 110%; 
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: lightgrey;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 5px;
+  white-space: nowrap; 
+  z-index: 1; 
+}
+
+.infoIcon:hover .tooltip {
+  display: block; 
+}
