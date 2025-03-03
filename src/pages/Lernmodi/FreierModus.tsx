@@ -39,7 +39,7 @@ function FreierModus() {
   return (
     <>
       <div className={styles.container}>
-        <h2>Klassischer Modus - {selectedDeck.name} </h2>
+        <h2>Freier Modus - {selectedDeck.name} </h2>
         <div className={styles.deckContainer}>
           
           {selectedDeck.cards.length > 0 && (
