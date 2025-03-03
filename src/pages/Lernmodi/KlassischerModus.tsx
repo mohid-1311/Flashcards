@@ -12,7 +12,8 @@ interface Deck {
   cards: Card[];
 }
 
-const deckName = "Mathe"; // Variable mit dem Namen des zu verwendenden Decks
+//
+const deckName = "Mathe"; //Deck muss übergeben werden!
 
 
 function KlassischerModus() {
@@ -27,7 +28,7 @@ function KlassischerModus() {
     if (currentIndex < selectedDeck.cards.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      setCurrentIndex(0); // Falls das Ende des Decks erreicht ist, gehe zurück zum Anfang
+      setCurrentIndex(0); //Loop zum Anfang zurück
     }
   };
 
@@ -52,7 +53,7 @@ function KlassischerModus() {
           )}
         </div>
         {selectedDeck.cards.length > 0 && (
-          <div className={styles['button-container']}>
+          <div className={styles.buttonContainer}>
             <button className={`${styles.button} ${styles.falsch}`} onClick={handleNextCard}>Falsch</button>
             <button className={`${styles.button} ${styles.schwer}`} onClick={handleNextCard}>Schwer</button>
             <button className={`${styles.button} ${styles.richtig}`} onClick={handleNextCard}>Richtig</button>
