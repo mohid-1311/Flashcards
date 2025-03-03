@@ -1,21 +1,24 @@
 // import React from "react"
 import { Link, useNavigate } from "react-router-dom"
 import styles from "./NavBar.module.css"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons"
 
 function NavBar() {
 
   const navigate = useNavigate()
-  function handleLogout(){
+  function handleLogout() {
     localStorage.setItem('isAuthenticated', "false")
     navigate("/Anmeldung")
+
   }
 
   const links = [
-    {link: "./Startseite", label: "Startseite"},
-    {link: "./Hinzufuegen", label: "Hinzufügen"},
-    {link: "./Verwaltung", label: "Verwaltung"},
-    {link: "./Fortschritt", label: "Fortschritt"},
-    {link: "./Importieren", label: "Importieren"},
+    { link: "./Startseite", label: "Startseite" },
+    { link: "./Hinzufuegen", label: "Hinzufügen" },
+    { link: "./Verwaltung", label: "Verwaltung" },
+    { link: "./Fortschritt", label: "Fortschritt" },
+    { link: "./Importieren", label: "Importieren" },
   ]
 
   return (
@@ -29,14 +32,16 @@ function NavBar() {
               </li>
             </Link>
           ))}
-          <li>
-          <button 
-           className={styles["logout-button"]}
-           onClick={handleLogout}>
-            Abmelden
-          </button>
-        </li>
-      </ul>
+          <Link onClick={handleLogout} className={styles["logout-link"]} to="./Anmeldung">
+            <li key={links.length} className={styles["logout-link-text"]}>
+              <button
+                className={styles["logout-button"]}
+                onClick={() => handleLogout}>
+                <FontAwesomeIcon className={styles["logout-icon"]} icon={faRightFromBracket} size="lg" />
+              </button>
+            </li>
+          </Link>
+        </ul>
       </h3>
     </nav>
   )
