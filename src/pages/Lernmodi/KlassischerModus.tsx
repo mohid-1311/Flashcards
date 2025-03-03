@@ -38,12 +38,12 @@ function KlassischerModus() {
   return (
     <>
       <div className={styles.container}>
-        <h2>Klassischer Modus</h2>
+        <h2>Klassischer Modus - {selectedDeck.name} </h2>
         <div className={styles.deckContainer}>
-          <h3>{selectedDeck.name}</h3>
+          
           {selectedDeck.cards.length > 0 && (
             
-                <button onClick={handleToggleDefinition} className={styles.cardButton}>
+                <button onClick={handleToggleDefinition} className={styles.card}>
                   {showDefinition
                     ? selectedDeck.cards[currentIndex].definition
                     : selectedDeck.cards[currentIndex].ausdruck}
