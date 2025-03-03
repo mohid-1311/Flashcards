@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getDeck } from '../../deckState';
+import { getDeck } from '../../deckState'; 
 import styles from './KlassischerModus.module.css';
 
 interface Card {
