@@ -56,7 +56,7 @@ export function getDecks(){
 export function setDecks(newDecks : typeof decks){
   const user = localStorage.getItem("user")?.toLowerCase()
   for (let deck of newDecks) {
-    if (deck.user === undefined) {
+    if (!deck.user) {
       deck.user = user || "default" // default verhalten ist verbesserungswürdig
     }
   }
