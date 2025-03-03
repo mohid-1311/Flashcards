@@ -1,4 +1,4 @@
-* {
+.flexContainer, .flexContainer * {
   box-sizing: border-box;
 }
 
@@ -25,6 +25,8 @@
   flex-wrap: wrap;
   align-items: flex-start;
   overflow-y: auto;
+  text-align: center;
+  font-style: italic;
 }
 
 .dropzone:hover {
@@ -38,7 +40,7 @@
   align-items: center;
 }
 
-button {
+.importButton {
   margin: 16px;
   padding: 8px 24px;
   background-color: #007bff;
@@ -49,11 +51,6 @@ button {
   font-size: 16px;
 }
 
-button:hover {
+.importButton:hover {
   background-color: #006ade;
-} 
-
-p {
-  text-align: center;
-  font-style: italic;
 }

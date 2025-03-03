@@ -46,6 +46,7 @@
 
 .logout-button {
   padding: 0.25rem;
+  margin: 0;
   border: none;
   background: inherit;
   border-radius: 3px;
