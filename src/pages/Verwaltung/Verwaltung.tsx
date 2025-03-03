@@ -1,6 +1,6 @@
 import { JSX, useState } from "react"
 import styles from "./Verwaltung.module.css"
-import { getDeck, setDecks } from "../../deckState"
+import { getDecks, setDecks } from "../../deckState"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
 
 /**
@@ -34,7 +34,7 @@ type Deck = {
  * @return {JSX.Element}
  */
 function Verwaltung(): JSX.Element {
-  const [decks, setLocalDecks] = useState(getDeck())
+  const [decks, setLocalDecks] = useState(getDecks())
 
   const [deckName, setDeckName] = useState("")
   const [kartenIndex, setKartenIndex] = useState(-1)

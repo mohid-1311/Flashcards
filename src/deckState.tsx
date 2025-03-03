@@ -1,3 +1,5 @@
+import { Deck } from "./types";
+
 /*
   Default Decks zu Testzwecken angelegt
 */
@@ -40,9 +42,11 @@ let decks = [
   Wenn Decks im LocalStorage gespeichert sind, werden sie geladen,
   ansonsten werden die Default Decks verwendet
 */
-export function getDeck(){
+export function getDecks(){
   const storedDeck = localStorage.getItem("decks")
-  return storedDeck ? JSON.parse(storedDeck) : decks; 
+  const user = localStorage.getItem("user")?.toLowerCase()
+  const allDecks = storedDeck ? JSON.parse(storedDeck) : decks; 
+  return allDecks.filter((deck: Deck) => deck.user.toLowerCase() === user)
 }
 
 /*
@@ -50,6 +54,12 @@ export function getDeck(){
   - Wenn sich die lokalen Decks verändern, sollte diese Funktion dazu aufgerufen werden, um den localStorage auf neustem Stand zu halten
 */
 export function setDecks(newDecks : typeof decks){
+  const user = localStorage.getItem("user")?.toLowerCase()
+  for (let deck of newDecks) {
+    if (deck.user === undefined) {
+      deck.user = user || "default" // default verhalten ist verbesserungswürdig
+    }
+  }
   decks = newDecks
   localStorage.setItem("decks", JSON.stringify(newDecks)); 
 }

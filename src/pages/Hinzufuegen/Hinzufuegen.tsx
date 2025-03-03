@@ -1,5 +1,5 @@
 import { useState } from "react"
-import {getDeck, setDecks} from "../../deckState"
+import {getDecks, setDecks} from "../../deckState"
 import { Card, Deck } from "../../types"; 
 import DeckModal from "../../Components/DeckModal/DeckModal";
 import styles from "./Hinzufuegen.module.css"
@@ -12,7 +12,7 @@ function Hinzufuegen(){
   
   const currentUser = localStorage.getItem("user")?.toLowerCase()
 
-  const [decks, setLocalDecks] = useState(getDeck().filter((deck: Deck) => deck.user.toLowerCase() === currentUser) || [])
+  const [decks, setLocalDecks] = useState(getDecks().filter((deck: Deck) => deck.user.toLowerCase() === currentUser) || [])
 
   const [deckIndex, setDeckIndex] = useState(0)
 
