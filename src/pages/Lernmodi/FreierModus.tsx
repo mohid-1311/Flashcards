@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getDeck } from '../../deckState'; // Überprüfe, ob der Pfad korrekt ist
+import { getDeck } from '../../deckState';
 import styles from './KlassischerModus.module.css';
 
 interface Card {
