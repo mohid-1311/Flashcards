@@ -138,14 +138,14 @@ input.deck-hinzufuegen {
     border: 0;
     border-radius: 5px;
 
-    width: 100%;
+    width: 90%;
 
     padding: 2px;
     
     background-color: rgba(0, 0, 0, 0.05);
 }
 
-button.deck-hinzufuegen:hover {
+button.deck-hinzufuegen:enabled:hover {
     cursor: pointer;
     background-color: green;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -240,12 +240,12 @@ div.deck-karten-tabelle > table > tbody > tr > td {
     overflow-wrap: anywhere;
 }
 
-/* Buttons fürs Entfernen eines Decks/einer Karte */
+/* Buttons fürs Entfernen/Hinzufügen eines Decks/einer Karte */
 button.deck-entfernen {
     margin-left: 5px;
 }
 
-button.deck-entfernen, button.karte-entfernen {
+button.deck-hinzufuegen, button.deck-entfernen, button.karte-entfernen {
     aspect-ratio: 1 / 1;
 
     height: 22px;

@@ -36,7 +36,7 @@ type Deck = {
  */
 function Verwaltung(): JSX.Element {
   const [decks, setLocalDecks] = useState(getDecks())
-
+  
   const [deckName, setDeckName] = useState("")
   const [kartenIndex, setKartenIndex] = useState(-1)
 
@@ -77,6 +77,7 @@ function Verwaltung(): JSX.Element {
    */
   function deckHinzufuegen(deckName: string): void {
     const neueDecks = [...decks, {name: deckName, user: localStorage.getItem("user"), cards: []}]
+    
     setLocalDecks(neueDecks)
     setDecks(neueDecks)
   }
@@ -205,6 +206,7 @@ function Verwaltung(): JSX.Element {
                     name="neues-deck"
                     onSubmit={(e) => {
                       e.preventDefault()
+                      
                       deckHinzufuegen(((e.target as HTMLFormElement).elements[0] as HTMLInputElement).value)
                       setNeuesDeckFormular(false)
                     }}
@@ -215,6 +217,15 @@ function Verwaltung(): JSX.Element {
                       placeholder="Name eingeben..." 
                       required
                       className={styles["deck-hinzufuegen"]}
+                      onChange={(e) => {
+                        const buttonElement = (((e.target as HTMLInputElement).parentElement as HTMLFormElement).elements[1] as HTMLButtonElement)
+                        
+                        if (decks.some((deck: Deck) => deck.name.toLowerCase() === e.target.value.toLowerCase())) {
+                          buttonElement.disabled = true
+                        } else {
+                          buttonElement.disabled = false
+                        }
+                      }}
                     />
                     <button
                       className={styles["deck-hinzufuegen"]} 
@@ -228,34 +239,36 @@ function Verwaltung(): JSX.Element {
               }
             </div>
             }
-            {/* Für alle Kartendecks wird ein Element hinzugefügt */
-              decks.find((deck: Deck) => (deck.user === localStorage.getItem("user")))?.filter((deck: Deck, index: number) => (
-                entsprichtSuchfilterDeck(deck)
-                &&
-                (<div 
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setDeckName(deck.name)
-                    setKartenIndex(-1)
-                    setNeueKarteFormular(false)
-                  }} 
-                  key={index} 
-                  className={deck.name === deckName ? styles["aktuelles-deck"] : undefined}
-                >
-                  {sliceHeader(deck.name)}
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setDeckName("")
-                      setKartenIndex(-1)
-                      deckEntfernen(deck.name)
-                    }}
-                    className={styles["deck-entfernen"]}
-                  >
-                    X
-                  </button>
-                </div>)
-              ))
+            {/* Für alle Karteikartendecks wird ein Element hinzugefügt */
+              decks.filter((deck: Deck, index: number) => (deck.user === localStorage.getItem("user"))).map((deck: Deck, index: number) => {
+                if (entsprichtSuchfilterDeck(deck)) {
+                  return (
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setDeckName(deck.name)
+                        setKartenIndex(-1)
+                        setNeueKarteFormular(false)
+                      }} 
+                      key={index} 
+                      className={(deck.name === deckName) ? styles["aktuelles-deck"] : undefined}
+                    >
+                      {sliceHeader(deck.name)}
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setDeckName("")
+                          setKartenIndex(-1)
+                          deckEntfernen(deck.name)
+                        }}
+                        className={styles["deck-entfernen"]}
+                      >
+                        X
+                      </button>
+                    </div>
+                  )
+                }
+              })
             }
           </div>
         </div>
@@ -297,7 +310,7 @@ function Verwaltung(): JSX.Element {
                   {/* Für alle Karteikarten wird eine Zeile hinzugefügt */
                     deckName 
                     && 
-                    decks.find((deck: Deck) => (deck.name === deckName && deck.user === localStorage.getItem("user")))?.cards?.filter((card: Card, index: number) => (
+                    decks.find((deck: Deck) => (deck.name === deckName && deck.user === localStorage.getItem("user")))?.cards?.map((card: Card, index: number) => (
                       entsprichtSuchfilterKarte(card) 
                       && (
                         <tr 

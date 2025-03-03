@@ -50,6 +50,7 @@
   "devDependencies": {
     "@types/react-fontawesome": "^1.6.8",
     "@types/react-router-dom": "^5.3.3",
+    "fortawesome": "^0.0.1-security",
     "gh-pages": "^6.3.0"
   }
 }
