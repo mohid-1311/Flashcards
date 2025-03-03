@@ -36,7 +36,7 @@ div.deck-karten-header {
 }
 
 div.decks-liste-header {
-    padding: 5px;
+    padding: 20px;
 
     border-radius: 8px 8px 0 0;
 
@@ -47,7 +47,6 @@ div.decks-liste-header {
 input.decks-suchleiste {
     width: 100%;
 
-    margin-block: 5px;
     padding: 0.3em;
 
     border: 0;
@@ -72,10 +71,9 @@ div.decks-liste-container {
 
     width: 15%;
 
-    /*border: 2px solid gainsboro;*/
     border-radius: 10px;
 
-    box-shadow: 0px 0px 5px gray;
+    box-shadow: 0px 0px 20px gainsboro;
 }
 
 /* Karteikartendecks-Liste (flexbox) */
@@ -139,7 +137,7 @@ div.deck-karten-liste-container {
     width: 70%;
 
     border-radius: 10px 10px 0 10px;
-    box-shadow: 0px 0px 5px gray;
+    box-shadow: 0px 0px 20px gainsboro;
 }
 
 /* Karteikartentabelle (flexbox) */
@@ -244,7 +242,7 @@ div.karte-bearbeiten-container {
 
     border-radius: 0 10px 10px 0;
 
-    box-shadow: 0px 0px 5px gray;
+    box-shadow: 0px 0px 20px gainsboro;
 }
 
 /* Header für Karteikarte-Bearbeiten */

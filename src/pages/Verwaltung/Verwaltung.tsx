@@ -23,6 +23,7 @@ type Card = {
  */
 type Deck = {
   name: string
+  user: string
   cards: Card[]
 }
 
@@ -54,8 +55,8 @@ function Verwaltung(): JSX.Element {
    * @returns {void}
    */
   function setzeKartenAttribut(attribut: keyof Card, neuerWert: string): void {
-    decks.find((deck: Deck) => deck.name === deckName).cards.map((card: Card, index: number) => {
-      if(index === kartenIndex) {
+    decks.find((deck: Deck) => (deck.name === deckName && deck.user === localStorage.getItem("user"))).cards.map((card: Card, index: number) => {
+      if (index === kartenIndex) {
         card[attribut] = neuerWert
 
         setLocalDecks([...decks])
@@ -74,9 +75,9 @@ function Verwaltung(): JSX.Element {
    * @return {void}
    */
   function deckEntfernen(deckName: string): void {
-    if(window.confirm("Möchtest Du dieses Karteikarten-Deck wirklich löschen?")) {
-      setLocalDecks(decks.filter((deck: Deck) => (deck.name !== deckName)))
-      setDecks(decks.filter((deck: Deck) => (deck.name !== deckName)))
+    if (window.confirm("Möchtest Du dieses Karteikarten-Deck wirklich löschen?")) {
+      setLocalDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user !== localStorage.getItem("user"))))
+      setDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user !== localStorage.getItem("user"))))
     }
   }
 
@@ -89,9 +90,9 @@ function Verwaltung(): JSX.Element {
    * @return {void}
    */
   function karteEntfernen(kartenIndex: number): void {
-    if(window.confirm("Möchtest Du diese Karteikarte wirklich löschen?")) {
+    if (window.confirm("Möchtest Du diese Karteikarte wirklich löschen?")) {
       const updatedDecks = decks.map((deck: Deck) => {
-        if (deck.name === deckName) {
+        if (deck.name === deckName && deck.user === localStorage.getItem("user")) {
           return {
             ...deck,
             cards: deck.cards.filter((card: Card, index: number) => index !== kartenIndex)
@@ -122,12 +123,12 @@ function Verwaltung(): JSX.Element {
    * Funktion, die überprüft, ob jedes, durch ein Leerzeichen getrenntes Wort 
    * der Suchleiste mit dem Inhalt einer Karteikarte übereinstimmt.
    *
-   * @param {Card} card - Die zu überprüfende Karte
+   * @param {Card} karte - Die zu überprüfende Karte
    * @return {boolean} - True, wenn die Karteikarte dem Suchfilter entspricht
    */
-  function entsprichtSuchfilterKarte(card: Card): boolean {
+  function entsprichtSuchfilterKarte(karte: Card): boolean {
     return suchfilterKarten.split(" ").every(suchbegriff => 
-      `${card.ausdruck} ${card.definition}`.toLowerCase().includes(suchbegriff.toLowerCase())
+      `${karte.ausdruck} ${karte.definition}`.toLowerCase().includes(suchbegriff.toLowerCase())
     )
   }
 
@@ -140,8 +141,8 @@ function Verwaltung(): JSX.Element {
    */
   /* Von Mohids Komponente */
   function addCardToDeck(newCard : {ausdruck: string, definition: string}): void {
-    const updatedDeck = decks.map((deck: { name: string; cards: any[]}) => {
-      if (deck.name === deckName){
+    const updatedDeck = decks.map((deck: Deck) => {
+      if (deck.name === deckName && deck.user === localStorage.getItem("user")) {
         return {...deck, cards: [...deck.cards, newCard]}
       }
       return deck;
@@ -176,7 +177,7 @@ function Verwaltung(): JSX.Element {
           </div>
           <div className={styles["decks-liste-flexbox"]} >
             {/* Für alle Kartendecks wird ein Element hinzugefügt */
-              decks.map((deck: Deck, index: number) => (
+              decks.find((deck: Deck) => (deck.user === localStorage.getItem("user")))?.filter((deck: Deck, index: number) => (
                 entsprichtSuchfilterDeck(deck)
                 &&
                 (<div 
@@ -209,7 +210,7 @@ function Verwaltung(): JSX.Element {
         <div className={styles["deck-karten-rahmen-container"]}>
           <div className={styles["deck-karten-liste-container"]}>
             <div className={styles["deck-karten-header"]}>
-              <div>{deckName || "Deck wählen!"}</div>
+              <div>{deckName || ""}</div>
               {/* Karteikarten-Suchleiste */}
               <input 
                 className={styles["karten-suchleiste"]} 
@@ -244,7 +245,7 @@ function Verwaltung(): JSX.Element {
                   {/* Für alle Karteikarten wird eine Zeile hinzugefügt */
                     deckName 
                     && 
-                    decks.find((deck: Deck) => (deck.name === deckName)).cards.map((card: Card, index: number) => (
+                    decks.find((deck: Deck) => (deck.name === deckName && deck.user === localStorage.getItem("user")))?.cards?.filter((card: Card, index: number) => (
                       entsprichtSuchfilterKarte(card) 
                       && (
                         <tr 
