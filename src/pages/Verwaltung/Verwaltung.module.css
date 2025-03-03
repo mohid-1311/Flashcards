@@ -117,6 +117,40 @@ div.decks-liste-flexbox > div:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Erstes Element der Karteikartendeck-Liste (Immer das Hinzufügen-Element) */
+div.decks-liste-flexbox > div:first-of-type {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+
+    background-color: #e2ffcf;
+}
+
+div.decks-liste-flexbox > div:first-of-type:hover {
+    background-color: #bed8ad;
+}
+
+form.deck-hinzufuegen {
+    width: 100%;
+}
+
+input.deck-hinzufuegen {
+    border: 0;
+    border-radius: 5px;
+
+    width: 100%;
+
+    padding: 2px;
+    
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+button.deck-hinzufuegen:hover {
+    cursor: pointer;
+    background-color: green;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 /* Übergeordneter Container für die Karteikarten + Bearbeitungsfeld */
 div.deck-karten-rahmen-container {
     display: flex;

@@ -40,6 +40,7 @@ function Verwaltung(): JSX.Element {
   const [deckName, setDeckName] = useState("")
   const [kartenIndex, setKartenIndex] = useState(-1)
 
+  const [neuesDeckFormular, setNeuesDeckFormular] = useState(false)
   const [neueKarteFormular, setNeueKarteFormular] = useState(false)
 
   const [suchfilterDecks, setSuchfilterDecks] = useState("")
@@ -64,6 +65,20 @@ function Verwaltung(): JSX.Element {
       }
       return card
     })
+  }
+
+  /** 
+   * Funktion, die beim Klicken auf den Hinzufügen-Button der Decks 
+   * aufgerufen wird, um ein neues Deck zur Liste der Decks hinzuzufügen.
+   * Bearbeitetes Decks wird synchronisiert.
+   *
+   * @param {string} deckName - Name des Decks 
+   * @return {void}
+   */
+  function deckHinzufuegen(deckName: string): void {
+    const neueDecks = [...decks, {name: deckName, user: localStorage.getItem("user"), cards: []}]
+    setLocalDecks(neueDecks)
+    setDecks(neueDecks)
   }
 
   /**
@@ -141,14 +156,14 @@ function Verwaltung(): JSX.Element {
    */
   /* Von Mohids Komponente */
   function addCardToDeck(newCard : {ausdruck: string, definition: string}): void {
-    const updatedDeck = decks.map((deck: Deck) => {
+    const neuesDeck = decks.map((deck: Deck) => {
       if (deck.name === deckName && deck.user === localStorage.getItem("user")) {
         return {...deck, cards: [...deck.cards, newCard]}
       }
       return deck;
     });
-    setLocalDecks(updatedDeck)
-    setDecks(updatedDeck)
+    setLocalDecks(neuesDeck)
+    setDecks(neuesDeck)
   }
 
   /**
@@ -176,6 +191,43 @@ function Verwaltung(): JSX.Element {
             />
           </div>
           <div className={styles["decks-liste-flexbox"]} >
+            {/* Element zum Hinzufügen eines Karteikartendecks */
+            <div 
+              onClick={(e) =>{
+                e.stopPropagation()
+                setNeuesDeckFormular(true)
+              }}
+              id="deck-hinzufuegen"
+            >
+              {
+                neuesDeckFormular ? 
+                  <form 
+                    name="neues-deck"
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      deckHinzufuegen(((e.target as HTMLFormElement).elements[0] as HTMLInputElement).value)
+                      setNeuesDeckFormular(false)
+                    }}
+                    className={styles["deck-hinzufuegen"]} 
+                  >
+                    <input 
+                      type="text" 
+                      placeholder="Name eingeben..." 
+                      required
+                      className={styles["deck-hinzufuegen"]}
+                    />
+                    <button
+                      className={styles["deck-hinzufuegen"]} 
+                      type="submit"
+                    >
+                    +
+                    </button>
+                  </form>
+                : 
+                  "+"
+              }
+            </div>
+            }
             {/* Für alle Kartendecks wird ein Element hinzugefügt */
               decks.find((deck: Deck) => (deck.user === localStorage.getItem("user")))?.filter((deck: Deck, index: number) => (
                 entsprichtSuchfilterDeck(deck)
