@@ -12,33 +12,53 @@ interface Deck {
   cards: Card[];
 }
 
-function KlassischerModus() {
-  const [decks, setDecksState] = useState<Deck[]>(getDeck());
+const deckName = "Mathe"; // Variable mit dem Namen des zu verwendenden Decks
 
+
+function KlassischerModus() {
+  const decks: Deck[] = getDeck();
+  const selectedDeck: Deck = decks.find((deck: Deck) => deck.name === deckName) || { name: deckName, cards: [] };
+
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [showDefinition, setShowDefinition] = useState<boolean>(false);
+
+  const handleNextCard = () => {
+    setShowDefinition(false);
+    if (currentIndex < selectedDeck.cards.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      setCurrentIndex(0); // Falls das Ende des Decks erreicht ist, gehe zurück zum Anfang
+    }
+  };
+
+  const handleToggleDefinition = () => {
+    setShowDefinition(!showDefinition);
+  };
 
   return (
     <>
-    <div className={styles.container}>
-      <h2>Klassischer Modus</h2>
-      {decks.map((deck) => (
-        <div key={deck.name} className={styles.deckContainer}>
-          <h3>{deck.name}</h3>
-          <ul>
-            {deck.cards.map((card, index) => (
-              <li key={index}>
-                <strong>{card.ausdruck}:</strong> {card.definition}
-              </li>
-            ))}
-          </ul>
+      <div className={styles.container}>
+        <h2>Klassischer Modus</h2>
+        <div className={styles.deckContainer}>
+          <h3>{selectedDeck.name}</h3>
+          {selectedDeck.cards.length > 0 && (
+            
+                <button onClick={handleToggleDefinition} className={styles.cardButton}>
+                  {showDefinition
+                    ? selectedDeck.cards[currentIndex].definition
+                    : selectedDeck.cards[currentIndex].ausdruck}
+                </button>
+              
+          )}
         </div>
-      ))}
-    
-    <div className={styles['button-container']}>
-    <button className={`${styles.button} ${styles.falsch}`} >Falsch</button>
-    <button className={`${styles.button} ${styles.schwer}`} >Schwer</button>
-    <button className={`${styles.button} ${styles.richtig}`} >Richtig</button>
-    </div>
-    </div>
+        {selectedDeck.cards.length > 0 && (
+          <div className={styles['button-container']}>
+            <button className={`${styles.button} ${styles.falsch}`} onClick={handleNextCard}>Falsch</button>
+            <button className={`${styles.button} ${styles.schwer}`} onClick={handleNextCard}>Schwer</button>
+            <button className={`${styles.button} ${styles.richtig}`} onClick={handleNextCard}>Richtig</button>
+          </div>
+        )}
+      </div>
     </>
   );
 }

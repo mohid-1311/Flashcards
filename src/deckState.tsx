@@ -1,6 +1,18 @@
+
+export interface Card {
+  ausdruck: string;
+  definition: string;
+}
+
+export interface Deck {
+  name: string;
+  cards: Card[];
+}
+
 /*
   Default Decks zu Testzwecken angelegt
 */
+
 
 let decks = [
   { 
