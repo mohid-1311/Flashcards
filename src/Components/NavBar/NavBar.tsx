@@ -1,8 +1,8 @@
 // import React from "react"
 import { Link, useNavigate } from "react-router-dom"
-import styles from "./NavBar.module.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons"
+import styles from "./NavBar.module.css"
 
 function NavBar() {
 
