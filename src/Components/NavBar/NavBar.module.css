@@ -1,6 +1,41 @@
-/* vorläufige Formattierung */
-.navbar-liste {
-    background-color: aliceblue;
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+
+.link-liste {
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.link {
+  flex: 1;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #007bff;
+  
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.2s ease-in-out;
+}
+
+.link:hover {
+  background-color: #006ade;
+  
+  text-decoration: underline;
+  text-decoration-color: white;
+}
+
+.link-text {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  /* font-weight: 100; */
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+  color: white;
+  list-style-type: none;
+  text-align: center;
+  background-color: inherit;
 }
 
 
