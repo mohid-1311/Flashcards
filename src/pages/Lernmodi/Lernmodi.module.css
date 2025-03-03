@@ -2,11 +2,15 @@
   display: flex;
   flex-direction: column; 
   gap: 10px; 
+  align-items: center;
 }
 
-.button-container {
+.buttonContainer {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: left;
+  gap: 10px; 
+  
 }
 
 .button {
@@ -15,6 +19,8 @@
   color: white;
   border: 2px solid black; 
   cursor: pointer;
+  height: 70px;
+  width: 150px;
 }
 
 .button:hover {
