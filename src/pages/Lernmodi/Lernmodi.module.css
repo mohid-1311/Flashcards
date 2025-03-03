@@ -44,8 +44,8 @@
   color: black;
   padding: 5px 10px;
   border-radius: 5px;
-  white-space: nowrap; 
   z-index: 1; 
+  width: 20rem;
 }
 
 .infoIcon:hover .tooltip {
