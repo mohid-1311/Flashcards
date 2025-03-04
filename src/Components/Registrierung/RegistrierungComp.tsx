@@ -28,6 +28,13 @@ function RegistrierungComp({setAnmeldung} : SetAnmeldung){
       return
     }
 
+    if (passwort.length < 3 || passwort.length > 12){
+      alert("Passwort muss zwischen 3 und 12 Zeichen lang sein!")
+      setPasswort("")
+      setPasswortWiederholen("")
+      return
+    }
+
     if (userExists){
       alert("Benutzername bereits vergeben")
       return
