@@ -56,16 +56,16 @@ function Verwaltung(): JSX.Element {
    * @returns {void}
    */
   function setzeKartenAttribut(attribut: keyof Card, neuerWert: string): void {
-    decks.find((deck: Deck) => (deck.name === deckName && deck.user === localStorage.getItem("user"))).cards.map((card: Card, index: number) => {
+    decks.find((deck: Deck) => (deck.name === deckName && deck.user === localStorage.getItem("user")))?.cards.forEach((card: Card, index: number) => {
       if (index === kartenIndex) {
-        card[attribut] = neuerWert
-
-        setLocalDecks([...decks])
-        setDecks([...decks])
+        card[attribut] = neuerWert;
+  
+        setLocalDecks([...decks]);
+        setDecks([...decks]);
       }
-      return card
-    })
+    });
   }
+  
 
   /** 
    * Funktion, die beim Klicken auf den Hinzufügen-Button der Decks 
