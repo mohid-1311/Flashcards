@@ -1,10 +1,9 @@
 import { useState } from "react";
 import styles from "./ImportDateifeld.module.css"
 import { setDecks } from "../../deckState"
+import { Card, Deck } from "../../types"
 
 function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: any }) {
-
-  type Deck = { name: string, cards: { ausdruck: string, definition: string }[] }
 
   function istDeck(o: Deck) {
     if (typeof o.name !== "string") return false;
@@ -42,9 +41,12 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
     event.preventDefault();
   }
 
-  const submitFiles = async function () {
-    // Die Decks werden in ein Array gepackt, um sie nach der Loop auf einmal in der globalen Variable zu speichern
-    let newDecks: Deck[] = []
+  /**
+   * Funktion die von "Importieren"-Button aufgerufen wird
+   * 
+   */
+  async function submitFiles() {
+    let tempDecks: Deck[] = decks
     for (let file of files) {
       // in ein Objekt parsen
       let newDeck: Deck
@@ -61,10 +63,26 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
         continue
       }
       // Objekt zu Decks Hinzufügen
-      newDecks.push(newDeck)
+      newDeck["user"] = localStorage.getItem("user")?.toLowerCase() || "default"
+
+      let deckToUpdate = tempDecks.find((deck: Deck) => deck.name === newDeck.name)
+
+      // falls noch kein Deck mit dem Namen existiert, wird ein neues erstellt
+      if(!deckToUpdate) {
+        tempDecks.push(newDeck)
+        continue
+      }
+
+      // falls ein Deck mit dem Namen bereits 
+      newDeck.cards.forEach((newCard: Card) => {
+        if (deckToUpdate.cards.every((card: Card) => card.ausdruck !== newCard.ausdruck)) {
+          deckToUpdate.cards.push(newCard)
+        }
+      })
+      
     }
-    setLocalDecks([...decks, ...newDecks])
-    setDecks([...decks, ...newDecks])
+    setLocalDecks(tempDecks)
+    setDecks(tempDecks)
 
     deleteFiles()
   }
