@@ -6,6 +6,7 @@ export interface Card {
 
 export interface Deck {
   name: string;
+  user: string;
   cards: Card[];
 }
 

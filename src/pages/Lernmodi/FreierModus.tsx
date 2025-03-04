@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getDeck } from '../../deckState';
+import { getDecks } from '../../deckState';
 import styles from './KlassischerModus.module.css';
 
 interface Card {
@@ -17,7 +17,7 @@ const deckName = "Mathe"; //Deck muss übergeben werden!
 
 
 function FreierModus() {
-  const decks: Deck[] = getDeck();
+  const decks: Deck[] = getDecks();
   const selectedDeck: Deck = decks.find((deck: Deck) => deck.name === deckName) || { name: deckName, cards: [] };
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
