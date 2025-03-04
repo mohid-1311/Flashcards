@@ -12,6 +12,7 @@ function RegistrierungComp({setAnmeldung} : SetAnmeldung){
 
   const [username, setUsername] = useState("")
   const [passwort, setPasswort] = useState("")
+  const [passwortWiederholen, setPasswortWiederholen] = useState("")
 
   function login(e : React.FormEvent<HTMLFormElement>){
     e.preventDefault();
@@ -19,6 +20,14 @@ function RegistrierungComp({setAnmeldung} : SetAnmeldung){
     const userArray: User[] = JSON.parse(localStorage.getItem("loginData") || "[]");
 
     const userExists = userArray.some((user: User) => user.uName.toLowerCase() === username.toLowerCase())
+
+    if (passwort !== passwortWiederholen){
+      alert("Passwort stimmen nicht überein!")
+      setPasswort("")
+      setPasswortWiederholen("")
+      return
+    }
+
     if (userExists){
       alert("Benutzername bereits vergeben")
       return
@@ -44,7 +53,11 @@ function RegistrierungComp({setAnmeldung} : SetAnmeldung){
           </div>
           <div className={styles["registrierung-passwort"]}>
             <label htmlFor="passwort">Passwort</label>
-            <input type="text" name="passwort" className={styles["passwort-input"]}required onChange={(e) => setPasswort(e.target.value)}/>
+            <input type="password" name="passwort" value={passwort} className={styles["passwort-input"]}required onChange={(e) => setPasswort(e.target.value)}/>
+          </div>
+          <div className={styles["registrierung-passwort"]}>
+            <label htmlFor="passwort-wiederholen">Passwort wiederholen</label>
+            <input type="password" name="passwort" value={passwortWiederholen} className={styles["passwort-input"]}required onChange={(e) => setPasswortWiederholen(e.target.value)}/>
           </div>
           <button type="submit" className={styles["button-submit"]}>Registrieren</button>
         </div>
