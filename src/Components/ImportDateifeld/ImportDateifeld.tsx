@@ -1,11 +1,15 @@
 import { useState } from "react";
 import styles from "./ImportDateifeld.module.css"
 import { setDecks } from "../../deckState"
+import { Deck } from "../../types"
 
 function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: any }) {
 
-  type Deck = { name: string, cards: { ausdruck: string, definition: string }[] }
-
+  /**
+   * Überprüft ein Objekt auf die Member, die ein Deck besitzen muss (außer den besitzer)
+   * @param {Deck} o Das Objekt das überprüft werden soll
+   * @returns {boolean} wahr, falls das Objekt alle Member eines Decks enthält
+   */
   function istDeck(o: Deck) {
     if (typeof o.name !== "string") return false;
     if (typeof o.cards !== "object") return false;
@@ -18,6 +22,11 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
 
   const [files, setFiles] = useState<File[]>([])
 
+  /**
+   * Funktion die ausgeführt wird wenn etwas über dem Importdateifeld gedroppt wird.
+   * fügt alle .json-Dateien an den Array files-useState hinzu.
+   * @param {React.DragEvent<HTMLDivElement>} ev 
+   */
   const dropHandler = async function (ev: React.DragEvent<HTMLDivElement>) {
     ev.preventDefault();
 
@@ -38,11 +47,19 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
     }
   }
 
-  const dragoverHandler = function (event: React.DragEvent<HTMLDivElement>) {
-    event.preventDefault();
+  /**
+   * Funktion, die das Standardverhalten beim dragover verhindert
+   * @param {React.DragEvent<HTMLDivElement>} ev 
+   */
+  const dragoverHandler = function (ev: React.DragEvent<HTMLDivElement>) {
+    ev.preventDefault();
   }
 
-  const submitFiles = async function () {
+  /**
+   * Funktion die von "Importieren"-Button aufgerufen wird
+   * 
+   */
+  async function submitFiles() {
     // Die Decks werden in ein Array gepackt, um sie nach der Loop auf einmal in der globalen Variable zu speichern
     let newDecks: Deck[] = []
     for (let file of files) {
@@ -50,17 +67,15 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
       let newDeck: Deck
       try {
         newDeck = JSON.parse(await file.text())
-        console.log("JSON Object:", newDeck)
       } catch (e) {
-        console.error("invalid file", e)
         continue
       }
       // das Objekt muss eine valide Deck-Struktur haben
       if (!istDeck(newDeck)) {
-        console.log("ist kein deck")
         continue
       }
       // Objekt zu Decks Hinzufügen
+      newDeck["user"] = localStorage.getItem("user")?.toLowerCase() || "default"
       newDecks.push(newDeck)
     }
     setLocalDecks([...decks, ...newDecks])
@@ -69,7 +84,11 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
     deleteFiles()
   }
 
-  const deleteFiles = function () {
+  /**
+   * Funktion, die vom "Leeren"-Button aufgerufen wird
+   * setzt das files-Array auf ein leeres Array, löscht also so die File-Objekte im Zwischenspeicher
+   */
+  function deleteFiles() {
     setFiles([])
   }
 
