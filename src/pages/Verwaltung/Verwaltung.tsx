@@ -1,6 +1,6 @@
 import { JSX, useState } from "react"
 import styles from "./Verwaltung.module.css"
-import { getDeck, setDecks } from "../../deckState"
+import { getDecks, setDecks } from "../../deckState"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
 
 /**
@@ -23,6 +23,7 @@ type Card = {
  */
 type Deck = {
   name: string
+  user: string
   cards: Card[]
 }
 
@@ -34,11 +35,12 @@ type Deck = {
  * @return {JSX.Element}
  */
 function Verwaltung(): JSX.Element {
-  const [decks, setLocalDecks] = useState(getDeck())
-
+  const [decks, setLocalDecks] = useState(getDecks())
+  
   const [deckName, setDeckName] = useState("")
   const [kartenIndex, setKartenIndex] = useState(-1)
 
+  const [neuesDeckFormular, setNeuesDeckFormular] = useState(false)
   const [neueKarteFormular, setNeueKarteFormular] = useState(false)
 
   const [suchfilterDecks, setSuchfilterDecks] = useState("")
@@ -54,8 +56,8 @@ function Verwaltung(): JSX.Element {
    * @returns {void}
    */
   function setzeKartenAttribut(attribut: keyof Card, neuerWert: string): void {
-    decks.find((deck: Deck) => deck.name === deckName).cards.map((card: Card, index: number) => {
-      if(index === kartenIndex) {
+    decks.find((deck: Deck) => (deck.name === deckName && deck.user === localStorage.getItem("user"))).cards.map((card: Card, index: number) => {
+      if (index === kartenIndex) {
         card[attribut] = neuerWert
 
         setLocalDecks([...decks])
@@ -63,6 +65,21 @@ function Verwaltung(): JSX.Element {
       }
       return card
     })
+  }
+
+  /** 
+   * Funktion, die beim Klicken auf den Hinzufügen-Button der Decks 
+   * aufgerufen wird, um ein neues Deck zur Liste der Decks hinzuzufügen.
+   * Bearbeitetes Decks wird synchronisiert.
+   *
+   * @param {string} deckName - Name des Decks 
+   * @return {void}
+   */
+  function deckHinzufuegen(deckName: string): void {
+    const neueDecks = [...decks, {name: deckName, user: localStorage.getItem("user"), cards: []}]
+    
+    setLocalDecks(neueDecks)
+    setDecks(neueDecks)
   }
 
   /**
@@ -74,9 +91,9 @@ function Verwaltung(): JSX.Element {
    * @return {void}
    */
   function deckEntfernen(deckName: string): void {
-    if(window.confirm("Möchtest Du dieses Karteikarten-Deck wirklich löschen?")) {
-      setLocalDecks(decks.filter((deck: Deck) => (deck.name !== deckName)))
-      setDecks(decks.filter((deck: Deck) => (deck.name !== deckName)))
+    if (window.confirm("Möchtest Du dieses Karteikarten-Deck wirklich löschen?")) {
+      setLocalDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user !== localStorage.getItem("user"))))
+      setDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user !== localStorage.getItem("user"))))
     }
   }
 
@@ -89,9 +106,9 @@ function Verwaltung(): JSX.Element {
    * @return {void}
    */
   function karteEntfernen(kartenIndex: number): void {
-    if(window.confirm("Möchtest Du diese Karteikarte wirklich löschen?")) {
+    if (window.confirm("Möchtest Du diese Karteikarte wirklich löschen?")) {
       const updatedDecks = decks.map((deck: Deck) => {
-        if (deck.name === deckName) {
+        if (deck.name === deckName && deck.user === localStorage.getItem("user")) {
           return {
             ...deck,
             cards: deck.cards.filter((card: Card, index: number) => index !== kartenIndex)
@@ -122,12 +139,12 @@ function Verwaltung(): JSX.Element {
    * Funktion, die überprüft, ob jedes, durch ein Leerzeichen getrenntes Wort 
    * der Suchleiste mit dem Inhalt einer Karteikarte übereinstimmt.
    *
-   * @param {Card} card - Die zu überprüfende Karte
+   * @param {Card} karte - Die zu überprüfende Karte
    * @return {boolean} - True, wenn die Karteikarte dem Suchfilter entspricht
    */
-  function entsprichtSuchfilterKarte(card: Card): boolean {
+  function entsprichtSuchfilterKarte(karte: Card): boolean {
     return suchfilterKarten.split(" ").every(suchbegriff => 
-      `${card.ausdruck} ${card.definition}`.toLowerCase().includes(suchbegriff.toLowerCase())
+      `${karte.ausdruck} ${karte.definition}`.toLowerCase().includes(suchbegriff.toLowerCase())
     )
   }
 
@@ -140,14 +157,14 @@ function Verwaltung(): JSX.Element {
    */
   /* Von Mohids Komponente */
   function addCardToDeck(newCard : {ausdruck: string, definition: string}): void {
-    const updatedDeck = decks.map((deck: { name: string; cards: any[]}) => {
-      if (deck.name === deckName){
+    const neuesDeck = decks.map((deck: Deck) => {
+      if (deck.name === deckName && deck.user === localStorage.getItem("user")) {
         return {...deck, cards: [...deck.cards, newCard]}
       }
       return deck;
     });
-    setLocalDecks(updatedDeck)
-    setDecks(updatedDeck)
+    setLocalDecks(neuesDeck)
+    setDecks(neuesDeck)
   }
 
   /**
@@ -175,41 +192,90 @@ function Verwaltung(): JSX.Element {
             />
           </div>
           <div className={styles["decks-liste-flexbox"]} >
-            {/* Für alle Kartendecks wird ein Element hinzugefügt */
-              decks.map((deck: Deck, index: number) => (
-                entsprichtSuchfilterDeck(deck)
-                &&
-                (<div 
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setDeckName(deck.name)
-                    setKartenIndex(-1)
-                    setNeueKarteFormular(false)
-                  }} 
-                  key={index} 
-                  className={deck.name === deckName ? styles["aktuelles-deck"] : undefined}
-                >
-                  {sliceHeader(deck.name)}
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setDeckName("")
-                      setKartenIndex(-1)
-                      deckEntfernen(deck.name)
+            {/* Element zum Hinzufügen eines Karteikartendecks */
+            <div 
+              onClick={(e) =>{
+                e.stopPropagation()
+                setNeuesDeckFormular(true)
+              }}
+              id="deck-hinzufuegen"
+            >
+              {
+                neuesDeckFormular ? 
+                  <form 
+                    name="neues-deck"
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      
+                      deckHinzufuegen(((e.target as HTMLFormElement).elements[0] as HTMLInputElement).value)
+                      setNeuesDeckFormular(false)
                     }}
-                    className={styles["deck-entfernen"]}
+                    className={styles["deck-hinzufuegen"]} 
                   >
-                    X
-                  </button>
-                </div>)
-              ))
+                    <input 
+                      type="text" 
+                      placeholder="Name eingeben..." 
+                      required
+                      className={styles["deck-hinzufuegen"]}
+                      onChange={(e) => {
+                        const buttonElement = (((e.target as HTMLInputElement).parentElement as HTMLFormElement).elements[1] as HTMLButtonElement)
+                        
+                        if (decks.some((deck: Deck) => deck.name.toLowerCase() === e.target.value.toLowerCase())) {
+                          buttonElement.disabled = true
+                        } else {
+                          buttonElement.disabled = false
+                        }
+                      }}
+                    />
+                    <button
+                      className={styles["deck-hinzufuegen"]} 
+                      type="submit"
+                    >
+                    +
+                    </button>
+                  </form>
+                : 
+                  "+"
+              }
+            </div>
+            }
+            {/* Für alle Karteikartendecks wird ein Element hinzugefügt */
+              decks.filter((deck: Deck, index: number) => (deck.user === localStorage.getItem("user"))).map((deck: Deck, index: number) => {
+                if (entsprichtSuchfilterDeck(deck)) {
+                  return (
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setDeckName(deck.name)
+                        setKartenIndex(-1)
+                        setNeueKarteFormular(false)
+                      }} 
+                      key={index} 
+                      className={(deck.name === deckName) ? styles["aktuelles-deck"] : undefined}
+                    >
+                      {sliceHeader(deck.name)}
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setDeckName("")
+                          setKartenIndex(-1)
+                          deckEntfernen(deck.name)
+                        }}
+                        className={styles["deck-entfernen"]}
+                      >
+                        X
+                      </button>
+                    </div>
+                  )
+                }
+              })
             }
           </div>
         </div>
         <div className={styles["deck-karten-rahmen-container"]}>
           <div className={styles["deck-karten-liste-container"]}>
             <div className={styles["deck-karten-header"]}>
-              <div>{deckName || "Deck wählen!"}</div>
+              <div>{deckName || ""}</div>
               {/* Karteikarten-Suchleiste */}
               <input 
                 className={styles["karten-suchleiste"]} 
@@ -244,7 +310,7 @@ function Verwaltung(): JSX.Element {
                   {/* Für alle Karteikarten wird eine Zeile hinzugefügt */
                     deckName 
                     && 
-                    decks.find((deck: Deck) => (deck.name === deckName)).cards.map((card: Card, index: number) => (
+                    decks.find((deck: Deck) => (deck.name === deckName && deck.user === localStorage.getItem("user")))?.cards?.map((card: Card, index: number) => (
                       entsprichtSuchfilterKarte(card) 
                       && (
                         <tr 

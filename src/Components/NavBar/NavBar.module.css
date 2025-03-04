@@ -6,7 +6,7 @@
   align-items: stretch;
 }
 
-.link {
+.link, .logout-link {
   flex: 1;
   display: block;
   justify-content: center;
@@ -19,14 +19,20 @@
   transition: text-decoration-color 0.2s ease-in-out;
 }
 
-.link:hover {
+.logout-link {
+  justify-self: flex-end;
+  flex: 0;
+  padding: 10px;
+}
+
+.link:hover, .logout-link:hover {
   background-color: #006ade;
   
   text-decoration: underline;
   text-decoration-color: white;
 }
 
-.link-text {
+.link-text, .logout-link-text {
   font-family: "Roboto", sans-serif;
   font-optical-sizing: auto;
   /* font-weight: 100; */
@@ -35,5 +41,23 @@
   color: white;
   list-style-type: none;
   text-align: center;
+  background-color: inherit;
+}
+
+.logout-button {
+  padding: 0.25rem;
+  margin: 0;
+  border: none;
+  background: inherit;
+  border-radius: 3px;
+}
+
+.logout-button:hover {
+  cursor: pointer
+}
+  
+.logout-icon {
+  font-size: xx-large;
+  color: white;
   background-color: inherit;
 }

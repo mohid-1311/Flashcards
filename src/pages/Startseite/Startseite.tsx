@@ -3,11 +3,11 @@ import JetztLernen from "./JetztLernen/JetztLernen"
 import Hinzufuegen from "./Hinzufuegen/Hinzufuegen"
 import ImportDateifeld from "../../Components/ImportDateifeld/ImportDateifeld"
 import { useState } from "react"
-import {getDeck} from "../../deckState"
+import {getDecks} from "../../deckState"
 
 function Startseite(){
 
-  const [decks, setLocalDecks] = useState(getDeck())
+  const [decks, setLocalDecks] = useState(getDecks())
 
   return(
     <div className={`${styles["flex-row"]}`}>

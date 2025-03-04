@@ -1,11 +1,11 @@
 import ImportDateifeld from "../../Components/ImportDateifeld/ImportDateifeld";
 import styles from "./Importieren.module.css"
-import { getDeck } from "../../deckState"
+import { getDecks } from "../../deckState"
 import { useState } from "react";
 
 function Importieren(){
 
-  const [decks, setLocalDecks] = useState(getDeck())
+  const [decks, setLocalDecks] = useState(getDecks())
 
   return(
     <div className={styles.root}>

@@ -1,27 +1,27 @@
 import { useState } from "react";
 import styles from "./ImportDateifeld.module.css"
-import {setDecks} from "../../deckState"
+import { setDecks } from "../../deckState"
 
-function ImportDateifeld({decks, setLocalDecks}: {decks: any, setLocalDecks: any}) {
-  
-  type Deck = {name: string, cards: {ausdruck: string, definition: string}[]}
+function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: any }) {
+
+  type Deck = { name: string, cards: { ausdruck: string, definition: string }[] }
 
   function istDeck(o: Deck) {
     if (typeof o.name !== "string") return false;
     if (typeof o.cards !== "object") return false;
     for (let card of o.cards) {
-      if(typeof card.ausdruck !== "string") return false
-      if(typeof card.definition !== "string") return false
+      if (typeof card.ausdruck !== "string") return false
+      if (typeof card.definition !== "string") return false
     }
     return true;
   }
 
   const [files, setFiles] = useState<File[]>([])
 
-  const dropHandler = async function(ev: React.DragEvent<HTMLDivElement>) {
+  const dropHandler = async function (ev: React.DragEvent<HTMLDivElement>) {
     ev.preventDefault();
 
-    if(ev.dataTransfer.items) {
+    if (ev.dataTransfer.items) {
       // Die Files werden im Array gespeichert, um sie nach der Loop zum useState hinzuzufügen
       let newFiles: File[] = []
       for (const item of ev.dataTransfer.items) {
@@ -38,11 +38,11 @@ function ImportDateifeld({decks, setLocalDecks}: {decks: any, setLocalDecks: any
     }
   }
 
-  const dragoverHandler = function(event: React.DragEvent<HTMLDivElement>) {
+  const dragoverHandler = function (event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault();
   }
 
-  const submitFiles = async function() {
+  const submitFiles = async function () {
     // Die Decks werden in ein Array gepackt, um sie nach der Loop auf einmal in der globalen Variable zu speichern
     let newDecks: Deck[] = []
     for (let file of files) {
@@ -51,12 +51,12 @@ function ImportDateifeld({decks, setLocalDecks}: {decks: any, setLocalDecks: any
       try {
         newDeck = JSON.parse(await file.text())
         console.log("JSON Object:", newDeck)
-      } catch(e) {
+      } catch (e) {
         console.error("invalid file", e)
         continue
       }
       // das Objekt muss eine valide Deck-Struktur haben
-      if(!istDeck(newDeck)) {
+      if (!istDeck(newDeck)) {
         console.log("ist kein deck")
         continue
       }
@@ -69,7 +69,7 @@ function ImportDateifeld({decks, setLocalDecks}: {decks: any, setLocalDecks: any
     deleteFiles()
   }
 
-  const deleteFiles = function() {
+  const deleteFiles = function () {
     setFiles([])
   }
 
@@ -78,10 +78,9 @@ function ImportDateifeld({decks, setLocalDecks}: {decks: any, setLocalDecks: any
       <div
         className={styles.dropzone}
         onDrop={dropHandler}
-        onDragOver={dragoverHandler}
-      >
-        {(files.length < 1) ? 
-          <p>drag json files here</p> :
+        onDragOver={dragoverHandler}>
+        {(files.length < 1) ?
+          "drag json files here" :
           files.map((file: File) => {
             return (
               <div>{file.name}</div>
@@ -90,10 +89,10 @@ function ImportDateifeld({decks, setLocalDecks}: {decks: any, setLocalDecks: any
         }
       </div>
       <div className={styles.buttonContainer}>
-        <button onClick={submitFiles}>
+        <button onClick={submitFiles} className={styles.importButton}>
           Importieren
         </button>
-        <button onClick={deleteFiles}>
+        <button onClick={deleteFiles} className={styles.importButton}>
           Leeren
         </button>
       </div>

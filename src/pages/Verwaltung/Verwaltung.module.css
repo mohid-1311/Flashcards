@@ -36,7 +36,7 @@ div.deck-karten-header {
 }
 
 div.decks-liste-header {
-    padding: 5px;
+    padding: 20px;
 
     border-radius: 8px 8px 0 0;
 
@@ -47,7 +47,6 @@ div.decks-liste-header {
 input.decks-suchleiste {
     width: 100%;
 
-    margin-block: 5px;
     padding: 0.3em;
 
     border: 0;
@@ -72,10 +71,9 @@ div.decks-liste-container {
 
     width: 15%;
 
-    /*border: 2px solid gainsboro;*/
     border-radius: 10px;
 
-    box-shadow: 0px 0px 5px gray;
+    box-shadow: 0px 0px 20px gainsboro;
 }
 
 /* Karteikartendecks-Liste (flexbox) */
@@ -119,6 +117,40 @@ div.decks-liste-flexbox > div:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Erstes Element der Karteikartendeck-Liste (Immer das Hinzufügen-Element) */
+div.decks-liste-flexbox > div:first-of-type {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+
+    background-color: #e2ffcf;
+}
+
+div.decks-liste-flexbox > div:first-of-type:hover {
+    background-color: #bed8ad;
+}
+
+form.deck-hinzufuegen {
+    width: 100%;
+}
+
+input.deck-hinzufuegen {
+    border: 0;
+    border-radius: 5px;
+
+    width: 90%;
+
+    padding: 2px;
+    
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+button.deck-hinzufuegen:enabled:hover {
+    cursor: pointer;
+    background-color: green;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 /* Übergeordneter Container für die Karteikarten + Bearbeitungsfeld */
 div.deck-karten-rahmen-container {
     display: flex;
@@ -139,7 +171,7 @@ div.deck-karten-liste-container {
     width: 70%;
 
     border-radius: 10px 10px 0 10px;
-    box-shadow: 0px 0px 5px gray;
+    box-shadow: 0px 0px 20px gainsboro;
 }
 
 /* Karteikartentabelle (flexbox) */
@@ -208,12 +240,12 @@ div.deck-karten-tabelle > table > tbody > tr > td {
     overflow-wrap: anywhere;
 }
 
-/* Buttons fürs Entfernen eines Decks/einer Karte */
+/* Buttons fürs Entfernen/Hinzufügen eines Decks/einer Karte */
 button.deck-entfernen {
     margin-left: 5px;
 }
 
-button.deck-entfernen, button.karte-entfernen {
+button.deck-hinzufuegen, button.deck-entfernen, button.karte-entfernen {
     aspect-ratio: 1 / 1;
 
     height: 22px;
@@ -244,7 +276,7 @@ div.karte-bearbeiten-container {
 
     border-radius: 0 10px 10px 0;
 
-    box-shadow: 0px 0px 5px gray;
+    box-shadow: 0px 0px 20px gainsboro;
 }
 
 /* Header für Karteikarte-Bearbeiten */

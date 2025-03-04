@@ -1,34 +1,19 @@
 import { useState } from "react";
+import { setDecks } from "../../deckState"
+import { DeckModalProps } from "../../types";
 import styles from "./DeckModal.module.css"
-import { setDecks} from "../../deckState"
-
-type Card = {
-  ausdruck: string;
-  definition: string;
-};
-
-type Deck = {
-  name: string;
-  cards: Card[];
-};
-
-type DeckModalProps = {
-  setLocalDecks: React.Dispatch<React.SetStateAction<Deck[]>>;
-  decks: Deck[];
-  setDeckIndex: React.Dispatch<React.SetStateAction<number>>; 
-  closeModal: () => void;
-};
 
 function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModalProps){
 
+  const currentUser = localStorage.getItem("user")?.toLowerCase() || ""
   const [searchValue, setSearchValue] = useState("")
 
   function addNewDeck(){
     if(decks.some(deck => deck.name.toLowerCase() === searchValue.toLowerCase())){
-      alert("Deck already exists")
+      alert("Deck existiert bereits")
       return
     }
-    const newDeck = {name: searchValue, cards: []}
+    const newDeck = {name: searchValue, user: currentUser, cards: []}
 
     setLocalDecks((prevDecks) => {
       const updatedDecks = [...prevDecks, newDeck]
@@ -41,18 +26,20 @@ function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModa
   return(
     <div className={styles["modal-container"]}>
 
-      <button 
-        onClick={() => closeModal()}
-        className={styles["close-modal"]}
-      >
-        &times; {/* "X" */}
-      </button>
-
       <div className={styles["modal-content"]}>
+        
+        <button 
+          onClick={() => closeModal()}
+          className={styles["close-modal"]}
+        >
+          &times; {/* "X" */}
+        </button>
+
         <h2 className={styles["modal-header"]}>Wähle ein Deck</h2>
         <label htmlFor="search">Suche ein Deck</label>
         <input
           value={searchValue}
+          autoComplete="off"
           type="text"
           placeholder="Suche ein Deck..."
           name="search"
@@ -82,7 +69,7 @@ function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModa
               ))}
           </ul>
 
-          {searchValue && <button onClick={() => {addNewDeck(); closeModal()}}>Add new {searchValue} deck</button>}
+          {searchValue && <button className={styles["add-deck"]} onClick={() => {addNewDeck(); closeModal()}}>Add new {searchValue} deck</button>}
       </div>
     </div>
   );

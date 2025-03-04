@@ -1,22 +1,7 @@
 import { useState } from "react";
+import { AddCardFormProps } from "../../types";
 import styles from "./AddCardForm.module.css"
-
-type Card = {
-  ausdruck: string;
-  definition: string;
-};
-
-type Deck = {
-  name: string;
-  cards: Card[];
-};
-
-interface AddCardFormProps {
-  onAddCard: (card: { ausdruck: string; definition: string }, deckIndex: number) => void;
-  deckIndex: number;
-  decks: Deck[]
-  deckName?: string
-}
+import DisplayCard from "../DisplayCard/DisplayCard";
 
 /*
   Wenn der Text vom Deckname zu lang ist, sollen nur die ersten 12 Zeichen angezeigt werden
@@ -61,43 +46,47 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks, deckName = ""}: AddCardF
   }
   
   return(
-    <form onSubmit={submitCard} className={styles["form-container"]}>
-      <h1>
-        {sliceHeader(deckName || decks[deckIndex].name)} - Deck
-      </h1>
-      <div className={styles["form-group"]}>
-        {/*Ausdruck Eingabe*/}
-        <label htmlFor="ausdruck" className={styles["form-label"]}>Ausdruck</label>
-        <input 
-          type="text" 
-          name="ausdruck" 
-          value={ausdruck} 
-          required
-          onChange={e => setAusdruck(e.target.value)}
-          className={styles["form-input"]}
-        />
-      </div>
-      <div className={styles["form-group"]}>
-        {/*Definition Eingabe*/}
-        <label htmlFor="definition" className={styles["form-label"]}>Definition</label>
-        <textarea 
-          name="definition" 
-          value={definition}
-          required
-          onChange={(e) => setDefinition(e.target.value)}
-          className={styles["form-textarea"]}
-        ></textarea>
-      </div>
-      <div className={styles["form-group"]}>
-        {/*Formular abschicken*/}
-        <button 
-          type="submit" 
-          className={styles["form-button"]}
-          >
-            Karteikarte erstellen
-        </button>
-      </div>
-    </form>
+    <>
+      <form onSubmit={submitCard} className={styles["form-container"]}>
+        <h1>
+          {sliceHeader(deckName || decks[deckIndex].name)} - Deck
+        </h1>
+        <div className={styles["form-group"]}>
+          {/*Ausdruck Eingabe*/}
+          <label htmlFor="ausdruck" className={styles["form-label"]}>Ausdruck</label>
+          <input 
+            type="text" 
+            name="ausdruck" 
+            value={ausdruck} 
+            required
+            onChange={e => setAusdruck(e.target.value)}
+            className={styles["form-input"]}
+          />
+        </div>
+        <div className={styles["form-group"]}>
+          {/*Definition Eingabe*/}
+          <label htmlFor="definition" className={styles["form-label"]}>Definition</label>
+          <textarea 
+            name="definition" 
+            value={definition}
+            required
+            onChange={(e) => setDefinition(e.target.value)}
+            className={styles["form-textarea"]}
+          ></textarea>
+        </div>
+        <div className={styles["form-group"]}>
+          {/*Formular abschicken*/}
+          <button 
+            type="submit" 
+            className={styles["form-button"]}
+            >
+              Karteikarte erstellen
+          </button>
+        </div>
+      </form>
+      {/*<DisplayCard ausdruck ={ausdruck} definition ={definition}></DisplayCard>*/}
+    </>
+
   );
 }
 export default AddCardForm
