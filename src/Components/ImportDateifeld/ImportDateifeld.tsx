@@ -75,8 +75,8 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
 
       // falls ein Deck mit dem Namen bereits 
       newDeck.cards.forEach((newCard: Card) => {
-        if (deckToUpdate.cards.every((card: Card) => card.ausdruck !== newCard.ausdruck)) {
-          deckToUpdate.cards.push(newCard)
+        if (deckToUpdate?.cards.every((card: Card) => card.ausdruck !== newCard.ausdruck)) {
+          deckToUpdate?.cards.push(newCard)
         }
       })
       

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { AddCardFormProps } from "../../types";
 import styles from "./AddCardForm.module.css"
-import DisplayCard from "../DisplayCard/DisplayCard";
 
 /*
   Wenn der Text vom Deckname zu lang ist, sollen nur die ersten 12 Zeichen angezeigt werden
