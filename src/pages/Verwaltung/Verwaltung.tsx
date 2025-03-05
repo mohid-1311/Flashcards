@@ -2,6 +2,8 @@ import { JSX, useState } from "react"
 import styles from "./Verwaltung.module.css"
 import { getDecks, setDecks } from "../../deckState"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faXmark, faPlus } from "@fortawesome/free-solid-svg-icons"
 
 /**
  * Karteikarten-Typ mit Definition.
@@ -231,11 +233,11 @@ function Verwaltung(): JSX.Element {
                       className={styles["deck-hinzufuegen"]} 
                       type="submit"
                     >
-                    +
+                      <FontAwesomeIcon icon={faPlus} />
                     </button>
                   </form>
                 : 
-                  "+"
+                <FontAwesomeIcon icon={faPlus} />
               }
             </div>
             }
@@ -263,10 +265,12 @@ function Verwaltung(): JSX.Element {
                         }}
                         className={styles["deck-entfernen"]}
                       >
-                        X
+                        <FontAwesomeIcon icon={faXmark} />
                       </button>
                     </div>
                   )
+                } else {
+                  return (<></>)
                 }
               })
             }
@@ -284,7 +288,7 @@ function Verwaltung(): JSX.Element {
                 onChange={(e) => setSuchfilterKarten(e.target.value)}
               />
             </div>
-            <div className={styles["deck-karten-tabelle"]}>
+            <div className={styles["deck-karten-flexbox"]}>
               <table>
                 <tbody>
                   {/* Zeile zum Hinzufügen einer Karte */ 
@@ -302,7 +306,7 @@ function Verwaltung(): JSX.Element {
                         {neueKarteFormular ? 
                           <AddCardForm onAddCard={addCardToDeck} deckIndex={-1} decks={decks} deckName={deckName} />
                           :
-                          "+"
+                          <FontAwesomeIcon icon={faPlus} />
                         }
                       </td>
                     </tr>)
@@ -333,7 +337,7 @@ function Verwaltung(): JSX.Element {
                               }}
                               className={styles["karte-entfernen"]}
                             >
-                              X
+                              <FontAwesomeIcon icon={faXmark} />
                             </button>
                           </td>
                         </tr>
