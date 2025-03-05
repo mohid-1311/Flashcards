@@ -11,7 +11,7 @@ type AnmeldungProps = {
 
 function Anmeldung({setShowNav, setIsAuthentificated}: AnmeldungProps){
   
-  const [anmeldung, setAnmeldung] = useState(false)
+  const [anmeldung, setAnmeldung] = useState(true)
   return(
     <>
       {!anmeldung && <RegistrierungComp setAnmeldung={setAnmeldung}/>}
