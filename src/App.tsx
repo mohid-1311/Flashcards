@@ -6,10 +6,6 @@ import Hinzufuegen from "./pages/Hinzufuegen/Hinzufuegen"
 import Verwaltung from "./pages/Verwaltung/Verwaltung"
 import Fortschritt from "./pages/Fortschritt/Fortschritt"
 import Importieren from "./pages/Importieren/Importieren"
-import Lernmodi from "./pages/Lernmodi/Lernmodi"
-import FreierModus from "./pages/Lernmodi/FreierModus"
-import KlassischerModus from "./pages/Lernmodi/KlassischerModus"
-import SchreibModus from "./pages/Lernmodi/SchreibModus"
 import Anmeldung from "./pages/Anmeldung/Anmeldung"
 import { ProtectedRoute } from "./Authentifiziert"
 
@@ -35,15 +31,12 @@ function App() {
       <div>
         {!showNav && (<NavBar/>)}
         <Routes>
-          <Route path="/Startseite" element={<Startseite/>}></Route>
-          <Route path="/Hinzufuegen" element={<Hinzufuegen/>}></Route>
-          <Route path="/Verwaltung" element={<Verwaltung/>}></Route>
-          <Route path="/Fortschritt" element={<Fortschritt/>}></Route>
-          <Route path="/Importieren" element={<Importieren/>}></Route>
-          <Route path="/Lernmodi" element={<Lernmodi/>}></Route>
-          <Route path="/freier-modus" element={<FreierModus/>} />
-          <Route path="/klassischer-modus" element={<KlassischerModus/>} />
-          <Route path="/schreib-modus" element={<SchreibModus/>} />
+          <Route path="/Anmeldung" element={<Anmeldung setShowNav={setShowNav} setIsAuthentificated={setIsAuthenticated}/>} />
+          <Route path="/Startseite" element={ProtectedRoute(<Startseite/>)}></Route>
+          <Route path="/Hinzufuegen" element={ProtectedRoute(<Hinzufuegen/>)}></Route>
+          <Route path="/Verwaltung" element={ProtectedRoute(<Verwaltung/>)}></Route>
+          <Route path="/Fortschritt" element={ProtectedRoute(<Fortschritt/>)}></Route>
+          <Route path="/Importieren" element={ProtectedRoute(<Importieren/>)}></Route>
         </Routes>
       </div>
    </>
