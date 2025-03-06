@@ -17,7 +17,7 @@ function Lernmodi() {
             <h2>Spielmodus auswählen</h2>
             <div className={styles.buttonContainer}>
                 <div>
-                    <button className={styles.button} onClick={() => handleNavigation('/freier-modus')}>Freier Lernmodus</button>
+                    <button className={styles.button} onClick={() => handleNavigation('/FreierModus')}>Freier Lernmodus</button>
                     <span className={styles.infoIcon}>&#9432;
                         <span className={styles.tooltip}>Freier Lernmodus: <br></br>
                         Blättere einfach durch dein Deck und lerne die Karten in deinem eigenen Tempo, ohne festgelegte Abfrage oder Zeitvorgaben.
@@ -25,14 +25,14 @@ function Lernmodi() {
                     </span>
                 </div>
                 <div>
-                    <button className={styles.button} onClick={() => handleNavigation('/klassischer-modus')}>Klassischer Modus</button>
+                    <button className={styles.button} onClick={() => handleNavigation('/KlassischerModus')}>Klassischer Modus</button>
                     <span className={styles.infoIcon}>&#9432;
                         <span className={styles.tooltip}>Klassischer Lernmodus: <br></br>Lass dich abfragen, ganz klassisch.
                         </span>
                     </span>
                 </div>
                 <div>
-                    <button className={styles.button} onClick={() => handleNavigation('/schreib-modus')}>Schreib Modus</button>
+                    <button className={styles.button} onClick={() => handleNavigation('/SchreibModus')}>Schreib Modus</button>
                     <span className={styles.infoIcon}>&#9432;
                         <span className={styles.tooltip}>Schreib Lernmodus: <br></br>Teste deine Rechtschreibung.
                         </span>
