@@ -62,13 +62,13 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
         console.log("ist kein deck")
         continue
       }
-      // Objekt zu Decks Hinzufügen
-      newDeck["user"] = localStorage.getItem("user")?.toLowerCase() || "default"
-
+      
+      // nach Deck mit gleichem Namen suchen
       let deckToUpdate = tempDecks.find((deck: Deck) => deck.name === newDeck.name)
-
+      
       // falls noch kein Deck mit dem Namen existiert, wird ein neues erstellt
       if(!deckToUpdate) {
+        newDeck["user"] = localStorage.getItem("user")?.toLowerCase() || "default"
         tempDecks.push(newDeck)
         continue
       }
@@ -81,7 +81,8 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
       })
       
     }
-    setLocalDecks(tempDecks)
+    console.log(tempDecks)
+    setLocalDecks([...tempDecks])
     setDecks(tempDecks)
 
     deleteFiles()
