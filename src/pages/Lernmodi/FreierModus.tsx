@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { getDecks } from '../../deckState';
 import styles from './KlassischerModus.module.css';
+import {useLocation} from 'react-router'
 
 interface Card {
   ausdruck: string;
@@ -14,10 +15,10 @@ interface Deck {
 }
 
 
-
-const deckName = "Mathe"; // Deck muss übergeben werden!
-
 function FreierModus() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const deckName = queryParams.get('deckName');
   const username = localStorage.getItem("user");
   const selectedDeck: Deck = getDecks().filter((deck:Deck) => deck.user === username).find((deck: Deck) => deck.name === deckName);
   
