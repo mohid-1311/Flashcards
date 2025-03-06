@@ -155,17 +155,16 @@ input.deck-hinzufuegen {
 
     min-width: 40px;
 
-    padding: 2px;
-    
-    background-color: rgba(0, 0, 0, 0.05);
-    flex-grow: 1;
     margin-right: 5px;
+    padding: 5px;
+    
+    flex-grow: 1;
+    
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
-button.deck-hinzufuegen:enabled:hover {
-    cursor: pointer;
-    background-color: green;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+input.deck-hinzufuegen:focus-visible {
+    border: 0;
 }
 
 /* Übergeordneter Container für die Karteikarten + Bearbeitungsfeld */
@@ -207,7 +206,7 @@ div.deck-karten-flexbox {
 
 /* Zeile in der Karteikartentabelle */ 
 tr.aktuelle-karte {
-    background-color: #e2472c !important;
+    background-color: #0049c1 !important;
 }
 
 div.deck-karten-flexbox > table > tbody > tr {
@@ -216,7 +215,8 @@ div.deck-karten-flexbox > table > tbody > tr {
     margin-block: 2px;
     padding: 5px;
 
-    background-color: #ff6347;
+    color: white;
+    background-color: #007bff;
 
     border: 0;
     border-radius: 10px;
@@ -225,7 +225,7 @@ div.deck-karten-flexbox > table > tbody > tr {
 div.deck-karten-flexbox > table > tbody > tr:hover {
     cursor: pointer;
     
-    background-color: #e2472c;
+    background-color: #0049c1;
 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -236,6 +236,7 @@ div.deck-karten-flexbox > table > tbody > tr:first-of-type {
     flex-wrap: nowrap;
     justify-content: center;
 
+    color: black;
     background-color: #e2ffcf;
 }
 
@@ -262,7 +263,7 @@ button.deck-entfernen {
     margin-left: 5px;
 }
 
-button.deck-hinzufuegen, button.deck-entfernen, button.karte-entfernen {
+button.deck-hinzufuegen, button.deck-entfernen, button.karte-entfernen, button.karte-hinzufuegen-form-schliessen {
     aspect-ratio: 1 / 1;
 
     height: 22px;
@@ -270,12 +271,25 @@ button.deck-hinzufuegen, button.deck-entfernen, button.karte-entfernen {
 
     border: 0;
     border-radius: 2px;
+
+    color: white;
+    background-color: #007bff;
 }
 
-button.deck-entfernen:hover, button.karte-entfernen:hover {
+button.deck-entfernen:hover, button.karte-entfernen:hover, button.karte-hinzufuegen-form-schliessen:hover {
     cursor: pointer;
     background-color: red;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button.deck-hinzufuegen:enabled:hover {
+    cursor: pointer;
+    background-color: green;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button.deck-hinzufuegen:disabled {
+    background-color: gainsboro;
 }
 
 /* Übergeordneter Container fürs Bearbeitungsfeld einer Karteikarte */

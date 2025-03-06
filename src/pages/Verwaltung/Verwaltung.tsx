@@ -3,7 +3,7 @@ import styles from "./Verwaltung.module.css"
 import { getDecks, setDecks } from "../../deckState"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faXmark, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { faXmark, faPlus, faSquareCaretLeft as fasFaSquareCaretLeft } from "@fortawesome/free-solid-svg-icons"
 
 /**
  * Karteikarten-Typ mit Definition.
@@ -67,7 +67,6 @@ function Verwaltung(): JSX.Element {
       }
     });
   }
-  
 
   /** 
    * Funktion, die beim Klicken auf den Hinzufügen-Button der Decks 
@@ -190,7 +189,11 @@ function Verwaltung(): JSX.Element {
               className={styles["decks-suchleiste"]} 
               type="text" 
               placeholder="Decks durchsuchen..." 
-              onChange={(e) => setSuchfilterDecks(e.target.value)}
+              onChange={(e) => {
+                setDeckName("")
+                setKartenIndex(-1)
+                setSuchfilterDecks(e.target.value)
+              }}
             />
           </div>
           <div className={styles["decks-liste-flexbox"]} >
@@ -217,6 +220,9 @@ function Verwaltung(): JSX.Element {
                     <input 
                       type="text" 
                       placeholder="Name eingeben..." 
+                      defaultValue={
+                        decks.some((deck: Deck) => deck.name.toLowerCase() === suchfilterDecks.toLowerCase()) ? "" : suchfilterDecks
+                      }
                       required
                       className={styles["deck-hinzufuegen"]}
                       onChange={(e) => {
@@ -230,14 +236,14 @@ function Verwaltung(): JSX.Element {
                       }}
                     />
                     <button
-                      className={styles["deck-hinzufuegen"]} 
                       type="submit"
+                      className={styles["deck-hinzufuegen"]} 
                     >
                       <FontAwesomeIcon icon={faPlus} />
                     </button>
                   </form>
                 : 
-                <FontAwesomeIcon icon={faPlus} />
+                  <FontAwesomeIcon icon={faPlus} />
               }
             </div>
             }
@@ -279,13 +285,16 @@ function Verwaltung(): JSX.Element {
         <div className={styles["deck-karten-rahmen-container"]}>
           <div className={styles["deck-karten-liste-container"]}>
             <div className={styles["deck-karten-header"]}>
-              <div>{deckName || ""}</div>
+              <div>{deckName || <><FontAwesomeIcon icon={fasFaSquareCaretLeft} /> Deck wählen</>}</div>
               {/* Karteikarten-Suchleiste */}
               <input 
                 className={styles["karten-suchleiste"]} 
                 type="text" 
                 placeholder="Karteikarten durchsuchen..." 
-                onChange={(e) => setSuchfilterKarten(e.target.value)}
+                onChange={(e) => {
+                  setKartenIndex(-1)
+                  setSuchfilterKarten(e.target.value)
+                }}
               />
             </div>
             <div className={styles["deck-karten-flexbox"]}>
@@ -303,12 +312,27 @@ function Verwaltung(): JSX.Element {
                       id="karte-hinzufuegen"
                     >
                       <td>
-                        {neueKarteFormular ? 
-                          <AddCardForm onAddCard={addCardToDeck} deckIndex={-1} decks={decks} deckName={deckName} />
+                        {
+                          neueKarteFormular ? 
+                            <AddCardForm onAddCard={addCardToDeck} deckIndex={-1} decks={decks} deckName={deckName} />
                           :
-                          <FontAwesomeIcon icon={faPlus} />
+                            <FontAwesomeIcon icon={faPlus} />
                         }
                       </td>
+                      {
+                        neueKarteFormular ? 
+                          <button
+                            className={styles["karte-hinzufuegen-form-schliessen"]}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setNeueKarteFormular(false)
+                            }}
+                          >
+                            <FontAwesomeIcon icon={faXmark} />
+                          </button>
+                        :
+                          undefined
+                      }
                     </tr>)
                   }
                   {/* Für alle Karteikarten wird eine Zeile hinzugefügt */
