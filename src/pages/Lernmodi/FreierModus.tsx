@@ -14,12 +14,13 @@ interface Deck {
 }
 
 
-const username = "Florian"; // Benutzername muss übergeben werden!
+
 const deckName = "Mathe"; // Deck muss übergeben werden!
 
 function FreierModus() {
-  const decks: Deck[] = getDecks().filter((deck:Deck) => deck.user === username);
-  const selectedDeck: Deck = decks.find((deck: Deck) => deck.name === deckName) || { name: deckName, user: username, cards: [] };
+  const username = localStorage.getItem("user");
+  const selectedDeck: Deck = getDecks().filter((deck:Deck) => deck.user === username).find((deck: Deck) => deck.name === deckName);
+  
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [showDefinition, setShowDefinition] = useState<boolean>(false);
