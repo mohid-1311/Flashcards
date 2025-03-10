@@ -254,6 +254,9 @@ div.deck-karten-flexbox > table > tbody > tr > td {
 
 /* Buttons fürs Entfernen/Hinzufügen eines Decks/einer Karte */
 button.deck-entfernen {
+    position: sticky;
+    right: 15px;
+    
     margin-left: 5px;
 }
 

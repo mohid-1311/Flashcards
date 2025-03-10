@@ -3,7 +3,7 @@ import styles from "./Verwaltung.module.css"
 import { getDecks, setDecks } from "../../deckState"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faXmark, faPlus, faSquareCaretLeft as fasFaSquareCaretLeft } from "@fortawesome/free-solid-svg-icons"
+import { faXmark, faPlus, faSquareCaretLeft as fasFaSquareCaretLeft, faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 
 /**
  * Karteikarten-Typ mit Definition.
@@ -174,8 +174,9 @@ function Verwaltung(): JSX.Element {
    * @param {string} text - Der zu kürzende Text
    * @return {string} - Der gekürzte Text
    */
-  function sliceHeader(text: string): string {
-    return text.length <= 20 ? text : (text.slice(0, 17) + "...")
+  function sliceHeader(text: string, length: number, parentWidth: number): string {
+    const maxLength = Math.floor(parentWidth / 8); // Assuming average character width of 8px
+    return text.length <= maxLength ? text : (text.slice(0, maxLength - 3) + "...");
   }
 
   /* Eigentliches JSX-Element mit dem Inhalt der Seite */
@@ -261,7 +262,7 @@ function Verwaltung(): JSX.Element {
                       key={index} 
                       className={(deck.name === deckName) ? styles["aktuelles-deck"] : undefined}
                     >
-                      {sliceHeader(deck.name)}
+                      {sliceHeader(deck.name, 18, 125)}
                       <button 
                         onClick={(e) => {
                           e.stopPropagation()
@@ -285,7 +286,7 @@ function Verwaltung(): JSX.Element {
         <div className={styles["deck-karten-rahmen-container"]}>
           <div className={styles["deck-karten-liste-container"]}>
             <div className={styles["deck-karten-header"]}>
-              <div>{deckName || <><FontAwesomeIcon icon={fasFaSquareCaretLeft} /> Deck wählen</>}</div>
+              <div>{deckName ? <>{sliceHeader(deckName, 50, 400)} <FontAwesomeIcon icon={faPenToSquare}/></> : <><FontAwesomeIcon icon={fasFaSquareCaretLeft} /> Deck wählen</>}</div>
               {/* Karteikarten-Suchleiste */}
               <input 
                 className={styles["karten-suchleiste"]} 
