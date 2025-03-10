@@ -7,14 +7,16 @@
 
 .decks-liste-flexbox::-webkit-scrollbar-thumb, .deck-karten-flexbox::-webkit-scrollbar-thumb, .karte-bearbeiten-eingabe::-webkit-scrollbar-thumb
 {
-    background: gray;
     border-radius: 5px;
+    
+    background: #808080;
 }
 
-.decks-liste-flexbox::-webkit-scrollbar:hover, .deck-karten-flexbox::-webkit-scrollbar:hover, .karte-bearbeiten-eingabe::-webkit-scrollbar:hover, 
 .decks-liste-flexbox::-webkit-scrollbar-thumb:hover, .deck-karten-flexbox::-webkit-scrollbar-thumb:hover, .karte-bearbeiten-eingabe::-webkit-scrollbar-thumb:hover
 {
     cursor: pointer;
+
+    background: #5f5f5f;
 }
 
 div.verwaltung-container {
