@@ -1,7 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-
 .flex-column, .flex-row {
   background-color: #f8f8f8;
   display: flex;

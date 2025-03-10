@@ -1,11 +1,3 @@
-/*
-007bff
-0061e0
-0049c1
-0049c1
-0032a4
-001f87
-*/
 /* Scrollbar */
 .decks-liste-flexbox::-webkit-scrollbar, .deck-karten-flexbox::-webkit-scrollbar, .karte-bearbeiten-eingabe::-webkit-scrollbar, 
 .decks-liste-flexbox::-webkit-scrollbar-corner, .deck-karten-flexbox::-webkit-scrollbar-corner, .karte-bearbeiten-eingabe::-webkit-scrollbar-corner
@@ -33,8 +25,6 @@ div.verwaltung-container {
     height: 90vh;
 
     padding: 25px;
-
-    font-family: Arial, sans-serif;
 }
 
 /* Header für Deck-&Karteikartenliste */
