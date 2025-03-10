@@ -1,15 +1,10 @@
 import { useState } from "react";
 import styles from "./ImportDateifeld.module.css"
 import { setDecks } from "../../deckState"
-import { Deck } from "../../types"
+import { Card, Deck } from "../../types"
 
 function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: any }) {
 
-  /**
-   * Überprüft ein Objekt auf die Member, die ein Deck besitzen muss (außer den besitzer)
-   * @param {Deck} o Das Objekt das überprüft werden soll
-   * @returns {boolean} wahr, falls das Objekt alle Member eines Decks enthält
-   */
   function istDeck(o: Deck) {
     if (typeof o.name !== "string") return false;
     if (typeof o.cards !== "object") return false;
@@ -60,8 +55,7 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
    * 
    */
   async function submitFiles() {
-    // Die Decks werden in ein Array gepackt, um sie nach der Loop auf einmal in der globalen Variable zu speichern
-    let newDecks: Deck[] = []
+    let tempDecks: Deck[] = decks
     for (let file of files) {
       // in ein Objekt parsen
       let newDeck: Deck
@@ -74,12 +68,28 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
       if (!istDeck(newDeck)) {
         continue
       }
-      // Objekt zu Decks Hinzufügen
-      newDeck["user"] = localStorage.getItem("user")?.toLowerCase() || "default"
-      newDecks.push(newDeck)
+      
+      // nach Deck mit gleichem Namen suchen
+      let deckToUpdate = tempDecks.find((deck: Deck) => deck.name === newDeck.name)
+      
+      // falls noch kein Deck mit dem Namen existiert, wird ein neues erstellt
+      if(!deckToUpdate) {
+        newDeck["user"] = localStorage.getItem("user")?.toLowerCase() || "default"
+        tempDecks.push(newDeck)
+        continue
+      }
+
+      // falls ein Deck mit dem Namen bereits 
+      newDeck.cards.forEach((newCard: Card) => {
+        if (deckToUpdate?.cards.every((card: Card) => card.ausdruck !== newCard.ausdruck)) {
+          deckToUpdate?.cards.push(newCard)
+        }
+      })
+      
     }
-    setLocalDecks([...decks, ...newDecks])
-    setDecks([...decks, ...newDecks])
+    console.log(tempDecks)
+    setLocalDecks([...tempDecks])
+    setDecks(tempDecks)
 
     deleteFiles()
   }
