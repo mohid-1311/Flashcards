@@ -14,6 +14,7 @@ import SchreibModus from "./pages/Lernmodi/SchreibModus"
 
 
 import { ProtectedRoute } from "./Authentifiziert"
+import "./General.module.css"
 
 function App() {
 
