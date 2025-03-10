@@ -3,7 +3,7 @@ import styles from "./Verwaltung.module.css"
 import { getDecks, setDecks } from "../../deckState"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faXmark, faPlus, faSquareCaretLeft as fasFaSquareCaretLeft, faPenToSquare } from "@fortawesome/free-solid-svg-icons"
+import { faXmark, faPlus, faSquareCaretLeft as fasFaSquareCaretLeft, faPenToSquare, faPen } from "@fortawesome/free-solid-svg-icons"
 
 /**
  * Karteikarten-Typ mit Definition.
@@ -44,6 +44,7 @@ function Verwaltung(): JSX.Element {
 
   const [neuesDeckFormular, setNeuesDeckFormular] = useState(false)
   const [neueKarteFormular, setNeueKarteFormular] = useState(false)
+  const [deckUmbenennenFormular, setDeckUmbenennenFormular] = useState(false)
 
   const [suchfilterDecks, setSuchfilterDecks] = useState("")
   const [suchfilterKarten, setSuchfilterKarten] = useState("")
@@ -60,12 +61,12 @@ function Verwaltung(): JSX.Element {
   function setzeKartenAttribut(attribut: keyof Card, neuerWert: string): void {
     decks.find((deck: Deck) => (deck.name === deckName && deck.user === localStorage.getItem("user")))?.cards.forEach((card: Card, index: number) => {
       if (index === kartenIndex) {
-        card[attribut] = neuerWert;
+        card[attribut] = neuerWert
   
-        setLocalDecks([...decks]);
-        setDecks([...decks]);
+        setLocalDecks([...decks])
+        setDecks([...decks])
       }
-    });
+    })
   }
 
   /** 
@@ -98,6 +99,23 @@ function Verwaltung(): JSX.Element {
     }
   }
 
+  function deckUmbenennen(neuerWert: string): void {
+    const updatedDecks = decks.map((deck: Deck) => {
+      if (deck.name === deckName && deck.user === localStorage.getItem("user")) {
+        return {
+          ...deck,
+          name: neuerWert
+        }
+      }
+      return deck
+    })
+
+    setLocalDecks(updatedDecks)
+    setDecks(updatedDecks)
+
+    setDeckName(neuerWert)
+  }
+
   /**
    * Funktion, die beim Klicken auf den Entfernen-Button der Karteikarten 
    * aufgerufen wird, um diese nach einem Dialogfenster zu löschen.
@@ -113,9 +131,9 @@ function Verwaltung(): JSX.Element {
           return {
             ...deck,
             cards: deck.cards.filter((card: Card, index: number) => index !== kartenIndex)
-          };
+          }
         }
-        return deck;
+        return deck
       })
 
       setLocalDecks(updatedDecks)
@@ -162,8 +180,8 @@ function Verwaltung(): JSX.Element {
       if (deck.name === deckName && deck.user === localStorage.getItem("user")) {
         return {...deck, cards: [...deck.cards, newCard]}
       }
-      return deck;
-    });
+      return deck
+    })
     setLocalDecks(neuesDeck)
     setDecks(neuesDeck)
   }
@@ -172,11 +190,12 @@ function Verwaltung(): JSX.Element {
    * Funktion, die den Text auf eine bestimmte Länge kürzt.
    *
    * @param {string} text - Der zu kürzende Text
+   * @param {number} length - Breite des Elternelements
    * @return {string} - Der gekürzte Text
    */
   function sliceHeader(text: string, length: number, parentWidth: number): string {
-    const maxLength = Math.floor(parentWidth / 8); // Assuming average character width of 8px
-    return text.length <= maxLength ? text : (text.slice(0, maxLength - 3) + "...");
+    const maxLength = Math.floor(parentWidth / 8) 
+    return text.length <= maxLength ? text : (text.slice(0, maxLength - 3) + "...")
   }
 
   /* Eigentliches JSX-Element mit dem Inhalt der Seite */
@@ -192,6 +211,7 @@ function Verwaltung(): JSX.Element {
               placeholder="Decks durchsuchen..." 
               onChange={(e) => {
                 setDeckName("")
+                setDeckUmbenennenFormular(false)
                 setKartenIndex(-1)
                 setSuchfilterDecks(e.target.value)
               }}
@@ -256,6 +276,7 @@ function Verwaltung(): JSX.Element {
                       onClick={(e) => {
                         e.stopPropagation()
                         setDeckName(deck.name)
+                        setDeckUmbenennenFormular(false)
                         setKartenIndex(-1)
                         setNeueKarteFormular(false)
                       }} 
@@ -267,6 +288,7 @@ function Verwaltung(): JSX.Element {
                         onClick={(e) => {
                           e.stopPropagation()
                           setDeckName("")
+                          setDeckUmbenennenFormular(false)
                           setKartenIndex(-1)
                           deckEntfernen(deck.name)
                         }}
@@ -286,13 +308,71 @@ function Verwaltung(): JSX.Element {
         <div className={styles["deck-karten-rahmen-container"]}>
           <div className={styles["deck-karten-liste-container"]}>
             <div className={styles["deck-karten-header"]}>
-              <div>{deckName ? <>{sliceHeader(deckName, 50, 400)} <FontAwesomeIcon icon={faPenToSquare}/></> : <><FontAwesomeIcon icon={fasFaSquareCaretLeft} /> Deck wählen</>}</div>
+              <div className={styles["deck-umbenennen"]}>
+                {
+                  deckName ? 
+                    (
+                      deckUmbenennenFormular ?
+                        <>
+                          <form
+                            onSubmit={(e) => {
+                              e.preventDefault()
+
+                              deckUmbenennen(((e.target as HTMLFormElement).elements[0] as HTMLInputElement).value)
+                              setDeckUmbenennenFormular(false)
+                            }}
+                            className={styles["deck-umbenennen"]}
+                          >
+                            <input
+                              type="text" 
+                              placeholder="Name eingeben..." 
+                              defaultValue={
+                                deckName
+                              }
+                              required
+                              className={styles["deck-umbenennen"]}
+                              onChange={(e) => {
+                                const buttonElement = (((e.target as HTMLInputElement).parentElement as HTMLFormElement).elements[1] as HTMLButtonElement)
+                                
+                                if (decks.some((deck: Deck) => deck.name.toLowerCase() === e.target.value.toLowerCase()) && deckName.toLowerCase() !== e.target.value.toLowerCase()) {
+                                  buttonElement.disabled = true
+                                } else {
+                                  buttonElement.disabled = false
+                                }
+                              }}
+                            >
+                            </input>
+                            <button className={styles["deck-umbenennen"]}>
+                              <FontAwesomeIcon icon={faPen} />
+                            </button>
+                          </form>
+                        </>
+                      :
+                        <>
+                          {sliceHeader(deckName, 50, 400) + ` `} 
+                          <FontAwesomeIcon 
+                            onClick={(e) => {
+                              setDeckUmbenennenFormular(true)
+                            }}
+                            icon={faPenToSquare}
+                            className={styles["deck-umbenennen"]} 
+                          />
+                        </>
+                    )
+                  : 
+                    <>
+                      <FontAwesomeIcon icon={fasFaSquareCaretLeft} /> 
+                      {` Deck wählen`}
+                    </>
+                }
+              </div>
               {/* Karteikarten-Suchleiste */}
               <input 
                 className={styles["karten-suchleiste"]} 
                 type="text" 
                 placeholder="Karteikarten durchsuchen..." 
                 onChange={(e) => {
+                  setDeckUmbenennenFormular(false)
                   setKartenIndex(-1)
                   setSuchfilterKarten(e.target.value)
                 }}
@@ -307,6 +387,7 @@ function Verwaltung(): JSX.Element {
                     (<tr 
                       onClick={(e) => {
                         e.stopPropagation()
+                        setDeckUmbenennenFormular(false)
                         setKartenIndex(-1)
                         setNeueKarteFormular(true)
                       }}
@@ -326,7 +407,6 @@ function Verwaltung(): JSX.Element {
                             className={styles["karte-hinzufuegen-form-schliessen"]}
                             onClick={(e) => {
                               e.stopPropagation()
-                              setNeueKarteFormular(false)
                             }}
                           >
                             <FontAwesomeIcon icon={faXmark} />
