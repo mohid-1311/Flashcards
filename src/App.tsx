@@ -7,6 +7,12 @@ import Verwaltung from "./pages/Verwaltung/Verwaltung"
 import Fortschritt from "./pages/Fortschritt/Fortschritt"
 import Importieren from "./pages/Importieren/Importieren"
 import Anmeldung from "./pages/Anmeldung/Anmeldung"
+import Lernmodi from "./pages/Lernmodi/Lernmodi"
+import FreierModus from "./pages/Lernmodi/FreierModus"
+import KlassischerModus from "./pages/Lernmodi/KlassischerModus"
+import SchreibModus from "./pages/Lernmodi/SchreibModus"
+
+
 import { ProtectedRoute } from "./Authentifiziert"
 import "./General.module.css"
 
@@ -38,6 +44,10 @@ function App() {
           <Route path="/Verwaltung" element={ProtectedRoute(<Verwaltung/>)}></Route>
           <Route path="/Fortschritt" element={ProtectedRoute(<Fortschritt/>)}></Route>
           <Route path="/Importieren" element={ProtectedRoute(<Importieren/>)}></Route>
+          <Route path="/Lernmodi" element={ProtectedRoute(<Lernmodi/>)}></Route>
+          <Route path="/FreierModus" element={ProtectedRoute(<FreierModus/>)}></Route>
+          <Route path="/KlassischerModus" element={ProtectedRoute(<KlassischerModus/>)}></Route>
+          <Route path="/SchreibModus" element={ProtectedRoute(<SchreibModus/>)}></Route>
         </Routes>
       </div>
    </>

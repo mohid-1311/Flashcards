@@ -1,8 +1,20 @@
-import { Deck } from "./types";
+
+export interface Card {
+  ausdruck: string;
+  definition: string;
+}
+
+export interface Deck {
+  name: string;
+  user: string;
+  cards: Card[];
+}
 
 /*
   Default Decks zu Testzwecken angelegt
 */
+
+
 let decks = [
   { 
     name: "Mathe", 
@@ -71,3 +83,4 @@ export function setDecks(newDecks : typeof decks){
   decks = [...oldDecks, ...newDecks]
   localStorage.setItem("decks", JSON.stringify(decks)); 
 }
+

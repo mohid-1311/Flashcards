@@ -9,7 +9,7 @@ function JetztLernen({decks}: {decks: any}) {
       <ul className={styles["deck-liste"]}>
         {decks.map((deck: {name:string}, index: number)=> {
           return (
-            <Link to={`/Lernen/${deck.name}`}>
+            <Link to={`/Lernmodi?deckName=${deck.name}`}>
               <li className={styles["deck-liste-element"]}>
                 {deck.name}
               </li>
