@@ -44,7 +44,8 @@ function FreierModus() {
       <div className={styles.container}>
         <h1>{deckName}</h1>
         <h2>Freier Lernmodus</h2>
-        
+        <div className={styles.buttonContainer}>
+          <h3>{currentIndex+1}/{selectedDeck.cards.length}</h3>
           {selectedDeck.cards.length > 0 && (
             <button onClick={handleToggleDefinition} className={styles.card}>
               {showDefinition
@@ -52,7 +53,7 @@ function FreierModus() {
                 : selectedDeck.cards[currentIndex].ausdruck}
             </button>
           )}
-        
+        </div>
         {selectedDeck.cards.length > 0 && (
             <button className={styles.button} onClick={handleNextCard}>Nächste</button>
         )}
