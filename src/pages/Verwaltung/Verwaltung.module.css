@@ -48,7 +48,7 @@ div.deck-karten-header {
     border-radius: 8px 8px 0 0;
 
     color: white;
-    background-color: #0032a4;
+    background-color: #3d8d36;
 }
 
 div.decks-liste-header {
@@ -56,7 +56,7 @@ div.decks-liste-header {
 
     border-radius: 8px 8px 0 0;
 
-    background-color: #0032a4;
+    background-color: #3d8d36;
 }
 
 /* Suchleisten */
@@ -319,7 +319,7 @@ div.karte-bearbeiten-header {
     border-radius: 0 8px 0 0;
 
     color: white;
-    background-color: #0032a4;
+    background-color: #3d8d36;
 }
 
 /* Karteikartenattribute-Liste (flexbox) */
