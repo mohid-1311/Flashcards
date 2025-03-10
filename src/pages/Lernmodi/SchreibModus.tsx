@@ -23,7 +23,7 @@ function SchreibModus() {
     const [showDefinition, setShowDefinition] = useState<boolean>(false);
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [text, setText] = useState<string>('');
-    const [submittedText, setSubmittedText] = useState<string>('');
+    //const [submittedText, setSubmittedText] = useState<string>('');
 
     const handleNextCard = () => {
         setShowDefinition(false);
@@ -34,18 +34,18 @@ function SchreibModus() {
             setCurrentIndex(0); // Loop zum Anfang zurück
         }
     };
-
+    /*
     const handleToggleDefinition = () => {
         setShowDefinition(!showDefinition);
     };
-
+    */
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setText(event.target.value);
     };
 
     const handleSubmit = () => {
         setSubmitted(true);
-        setSubmittedText(text);
+        //setSubmittedText(text);
     };
 
     return (
