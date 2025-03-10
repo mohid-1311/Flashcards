@@ -6,8 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 
-//Fehlt
-//Deck muss angenommen und an Lernmodus übergeben werden!
 
 function Lernmodi() {
     const navigate = useNavigate();

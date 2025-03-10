@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { getDecks } from '../../deckState';
-import styles from './KlassischerModus.module.css';
+import styles from './FreierModus.module.css';
 import { useLocation } from 'react-router';
 
 
@@ -42,8 +42,9 @@ function FreierModus() {
   return (
     <>
       <div className={styles.container}>
-        <h2>Freier Modus - {selectedDeck.name}</h2>
-        <div className={styles.deckContainer}>
+        <h1>{deckName}</h1>
+        <h2>Freier Lernmodus</h2>
+        
           {selectedDeck.cards.length > 0 && (
             <button onClick={handleToggleDefinition} className={styles.card}>
               {showDefinition
@@ -51,11 +52,9 @@ function FreierModus() {
                 : selectedDeck.cards[currentIndex].ausdruck}
             </button>
           )}
-        </div>
+        
         {selectedDeck.cards.length > 0 && (
-          <div className={styles.buttonContainer}>
             <button className={styles.button} onClick={handleNextCard}>Nächste</button>
-          </div>
         )}
       </div>
     </>

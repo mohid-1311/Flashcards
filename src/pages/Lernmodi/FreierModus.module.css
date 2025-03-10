@@ -1,0 +1,39 @@
+.container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    margin: 5%;
+    font-family: sans-serif;
+}
+
+.button {
+    padding: 10px 20px;
+    background-color: #3d8d36;
+    color: black;
+    font-size: 125%;
+    border: 2px solid black; 
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.button:hover {
+    background-color: lightgreen;
+}
+
+.card {
+    background-color: lightgrey;
+    padding: 10px 20px 10px 20px;
+    width: 30vw;
+    height: 20vw;
+    color: black;
+    font-size: 125%;
+    border: 2px solid black; 
+    cursor: pointer;
+    border-radius: 10px;
+    margin: 2%;
+    word-wrap: break-word;
+}
+
+.card:hover {
+    background-color: grey;
+}
