@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { getDecks } from '../../deckState';
 import styles from './KlassischerModus.module.css';
-import {useLocation} from 'react-router'
+import { useLocation } from 'react-router';
+
 
 interface Card {
   ausdruck: string;
@@ -13,7 +14,6 @@ interface Deck {
   user: string;
   cards: Card[];
 }
-
 
 function FreierModus() {
   const location = useLocation();

@@ -1,53 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+
 .container {
   display: flex;
   flex-direction: column; 
-  gap: 10px; 
   align-items: center;
+  margin: 5%;
+  font-family: "Roboto", sans-serif;
 }
 
 .buttonContainer {
   display: flex;
   flex-direction: column;
-  align-items: left;
-  gap: 10px; 
-  
+  margin: 2%;
+  gap: 1rem;
 }
 
 .button {
-  padding: 10px 20px;
-  background-color: darkblue;
+  background-color: #3d8d36;
   color: white;
   border: 2px solid black; 
   cursor: pointer;
-  height: 70px;
-  width: 150px;
+  height: 15vh;
+  width: 20vw;
+  border-radius: 10px;
+  font-size: 125%;
 }
 
 .button:hover {
-  background-color: blue;
+  background-color: lightgreen;
 }
 
 .infoIcon {
-  margin-left: 20px; 
+  margin-left: 2rem; 
   font-size: 18px;
-  color: darkblue;
+  color: black;
   position: relative;
+}
+
+.infoIcon:hover {
+  color: black;
 }
 
 .tooltip {
   display: none; 
   position: absolute;
-  left: 110%; 
+  left: 150%; 
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-100%);
   background-color: lightgrey;
   color: black;
-  padding: 5px 10px;
-  border-radius: 5px;
-  z-index: 1; 
-  width: 20rem;
+  padding: 1rem 1rem;
+  border-radius: 10px;
+  width: 30vw;
+  border: 2px solid black;
 }
 
 .infoIcon:hover .tooltip {
   display: block; 
+  text-align: left;
+  color: black;
 }

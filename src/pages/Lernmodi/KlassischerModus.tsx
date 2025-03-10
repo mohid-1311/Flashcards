@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { getDecks } from '../../deckState'; 
 import styles from './KlassischerModus.module.css';
+import {useLocation} from 'react-router'
+
 
 interface Card {
   ausdruck: string;
@@ -9,17 +11,20 @@ interface Card {
 
 interface Deck {
   name: string;
+  user:string;
   cards: Card[];
 }
 
 //
-const deckName = "Mathe"; //Deck muss übergeben werden!
+//const deckName = "Mathe"; //Deck muss übergeben werden!
 
 
 function KlassischerModus() {
-  const decks: Deck[] = getDecks();
-  const selectedDeck: Deck = decks.find((deck: Deck) => deck.name === deckName) || { name: deckName, cards: [] };
-
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const deckName = queryParams.get('deckName');
+  const username = localStorage.getItem("user");
+  const selectedDeck: Deck = getDecks().filter((deck:Deck) => deck.user === username).find((deck: Deck) => deck.name === deckName);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [showDefinition, setShowDefinition] = useState<boolean>(false);
 
