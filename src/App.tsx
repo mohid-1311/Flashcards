@@ -8,6 +8,7 @@ import Fortschritt from "./pages/Fortschritt/Fortschritt"
 import Importieren from "./pages/Importieren/Importieren"
 import Anmeldung from "./pages/Anmeldung/Anmeldung"
 import { ProtectedRoute } from "./Authentifiziert"
+import "./General.module.css"
 
 function App() {
 

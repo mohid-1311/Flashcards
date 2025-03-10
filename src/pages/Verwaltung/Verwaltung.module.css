@@ -1,11 +1,3 @@
-/*
-007bff
-0061e0
-0049c1
-0049c1
-0032a4
-001f87
-*/
 /* Scrollbar */
 .decks-liste-flexbox::-webkit-scrollbar, .deck-karten-flexbox::-webkit-scrollbar, .karte-bearbeiten-eingabe::-webkit-scrollbar, 
 .decks-liste-flexbox::-webkit-scrollbar-corner, .deck-karten-flexbox::-webkit-scrollbar-corner, .karte-bearbeiten-eingabe::-webkit-scrollbar-corner
@@ -15,14 +7,16 @@
 
 .decks-liste-flexbox::-webkit-scrollbar-thumb, .deck-karten-flexbox::-webkit-scrollbar-thumb, .karte-bearbeiten-eingabe::-webkit-scrollbar-thumb
 {
-    background: gray;
     border-radius: 5px;
+    
+    background: #808080;
 }
 
-.decks-liste-flexbox::-webkit-scrollbar:hover, .deck-karten-flexbox::-webkit-scrollbar:hover, .karte-bearbeiten-eingabe::-webkit-scrollbar:hover, 
 .decks-liste-flexbox::-webkit-scrollbar-thumb:hover, .deck-karten-flexbox::-webkit-scrollbar-thumb:hover, .karte-bearbeiten-eingabe::-webkit-scrollbar-thumb:hover
 {
     cursor: pointer;
+
+    background: #5f5f5f;
 }
 
 div.verwaltung-container {
@@ -33,8 +27,6 @@ div.verwaltung-container {
     height: 90vh;
 
     padding: 25px;
-
-    font-family: Arial, sans-serif;
 }
 
 /* Header für Deck-&Karteikartenliste */
