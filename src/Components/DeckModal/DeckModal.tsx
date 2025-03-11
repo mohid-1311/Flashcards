@@ -6,25 +6,6 @@ import { DeckModalProps } from "../../types";
 import { sliceHeader } from "../AddCardForm/AddCardForm";
 >>>>>>> Stashed changes
 import styles from "./DeckModal.module.css"
-import { getDeck, setDecks} from "../../deckState"
-
-type Card = {
-  ausdruck: string;
-  definition: string;
-};
-
-type Deck = {
-  name: string;
-  user: string;
-  cards: Card[];
-};
-
-type DeckModalProps = {
-  setLocalDecks: React.Dispatch<React.SetStateAction<Deck[]>>;
-  decks: Deck[];
-  setDeckIndex: React.Dispatch<React.SetStateAction<number>>; 
-  closeModal: () => void;
-};
 
 function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModalProps){
 
@@ -33,7 +14,7 @@ function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModa
 
   function addNewDeck(){
     if(decks.some(deck => deck.name.toLowerCase() === searchValue.toLowerCase())){
-      alert("Deck already exists")
+      alert("Deck existiert bereits")
       return
     }
     const newDeck = {name: searchValue, user: currentUser, cards: []}
@@ -49,18 +30,20 @@ function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModa
   return(
     <div className={styles["modal-container"]}>
 
-      <button 
-        onClick={() => closeModal()}
-        className={styles["close-modal"]}
-      >
-        &times; {/* "X" */}
-      </button>
-
       <div className={styles["modal-content"]}>
+        
+        <button 
+          onClick={() => closeModal()}
+          className={styles["close-modal"]}
+        >
+          &times; {/* "X" */}
+        </button>
+
         <h2 className={styles["modal-header"]}>Wähle ein Deck</h2>
         <label htmlFor="search">Suche ein Deck</label>
         <input
           value={searchValue}
+          autoComplete="off"
           type="text"
           placeholder="Suche ein Deck..."
           name="search"

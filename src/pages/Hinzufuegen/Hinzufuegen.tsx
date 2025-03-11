@@ -1,24 +1,18 @@
 import { useState } from "react"
-import {getDeck, setDecks} from "../../deckState"
+import {getDecks, setDecks} from "../../deckState"
+import { Card, Deck } from "../../types"; 
 import DeckModal from "../../Components/DeckModal/DeckModal";
 import styles from "./Hinzufuegen.module.css"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
-import DisplayCard from "../../Components/DisplayCard/DisplayCard";
+import { useNavigate } from "react-router-dom";
+
 function Hinzufuegen(){
 
-  type Card = {
-    ausdruck: string;
-    definition: string;
-  }
-  type Deck = {
-    name: string;
-    user: string;
-    cards: Card[];
-  }
+  const navigate = useNavigate()
   
   const currentUser = localStorage.getItem("user")?.toLowerCase()
 
-  const [decks, setLocalDecks] = useState(getDeck().filter((deck: Deck) => deck.user === currentUser?.toLowerCase()))
+  const [decks, setLocalDecks] = useState(getDecks().filter((deck: Deck) => deck.user.toLowerCase() === currentUser) || [])
 
   const [deckIndex, setDeckIndex] = useState(0)
 
@@ -28,8 +22,8 @@ function Hinzufuegen(){
     Diese Funktion wird im Komponent AddCardForm benutzt, 
     um eine Karte im aktuell ausgewählten Deck hinzuzufügen 
   */
-  function addCardToDeck(newCard : {ausdruck: string, definition: string}, ind : number){
-    const updatedDeck = decks.map((deck: { name: string; cards: any[]}, index: number) => {
+  function addCardToDeck(newCard : Card, ind : number){
+    const updatedDeck = decks.map((deck: Deck, index: number) => {
       if (index === ind){
         return {...deck, cards: [...deck.cards, newCard]}
       }
@@ -44,14 +38,27 @@ function Hinzufuegen(){
       {!showModal && (
       <div className={styles["hinzufuegen-container"]}>
         <div className={styles["deck-update-container"]}>
-          {/* Formular für das Hinzufügen einer Karte */}
-          <AddCardForm onAddCard={addCardToDeck} deckIndex={deckIndex} decks={decks} deckName={""}/>
+          {decks.length === 0 ? (
+            <>
+              <p>Keine Decks gefunden</p>
+              <button 
+                type="button"
+                onClick={() => navigate("/Verwaltung")}
+                className={styles["verwaltung-button"]}
+              >
+                Zur Verwaltung
+              </button>
+          </>
+          ) : (
+            <AddCardForm onAddCard={addCardToDeck} deckIndex={deckIndex} decks={decks} deckName={""}/>
+          )}
         </div>
 
         <div className={styles["deck-anzeige"]}>
             {/* Hier werden alle Karten des ausgewählten Decks ausgegeben*/}
-          <ul className={styles["card-list"]}>
-            {decks[deckIndex].cards.map((card: {ausdruck: string, definition: string}, index: number) => (
+          {decks.length !== 0 && (
+            <ul className={styles["card-list"]}>
+            {decks[deckIndex].cards.map((card: Card, index: number) => (
               <li 
                 key={index} 
                 className={styles["card-item"]}
@@ -59,9 +66,10 @@ function Hinzufuegen(){
                 Ausdruck: {card.ausdruck}<br></br>
                 Definition: {card.definition}
               </li>
-            ))}
-          </ul>
-          
+             ))}
+           </ul>
+          )}
+
           <button 
             type="button"
             onClick={() => setShowModal(true)}

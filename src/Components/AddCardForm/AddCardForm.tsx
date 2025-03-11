@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styles from "./AddCardForm.module.css"
-import DisplayCard from "../DisplayCard/DisplayCard";
 
 type Card = {
   ausdruck: string;

@@ -1,0 +1,40 @@
+.flex-column, .flex-row {
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  /* background-color: #007bff; */
+}
+
+.flex-column {
+  flex-direction: column;
+  flex: 1
+}
+
+.flex-row {
+  flex-direction: row;
+  flex: 1;
+  flex-wrap: wrap;
+  min-height: calc(100vh - 61.6px); /*muss je nach höhe der Navbar geändert werden*/
+}
+
+.flex-column > *, .flex-row > * {
+  flex: 1;
+}
+
+.start-element {
+  margin: 1.8rem;
+  /* border: 2px solid black; */
+  padding: 2rem;
+  border-radius: 1.5rem;
+  background: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1)
+}
+  
+.start-lernen {
+  flex: 1.5
+}
+  
+.start-element:hover {
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
