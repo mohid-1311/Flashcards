@@ -201,6 +201,7 @@ function Verwaltung(): JSX.Element {
                 setDeckName("")
                 setDeckUmbenennenFormular(false)
                 setKartenIndex(-1)
+                setNeuesDeckFormular(false)
                 setSuchfilterDecks(e.target.value)
               }}
             />
@@ -370,6 +371,7 @@ function Verwaltung(): JSX.Element {
                 onChange={(e) => {
                   setDeckUmbenennenFormular(false)
                   setKartenIndex(-1)
+                  setNeueKarteFormular(false)
                   setSuchfilterKarten(e.target.value)
                 }}
               />
