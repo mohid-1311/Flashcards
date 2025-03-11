@@ -17,6 +17,11 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
 
   const [files, setFiles] = useState<File[]>([])
 
+  /**
+   * Funktion die ausgeführt wird wenn etwas über dem Importdateifeld gedroppt wird.
+   * fügt alle .json-Dateien an den Array files-useState hinzu.
+   * @param {React.DragEvent<HTMLDivElement>} ev 
+   */
   const dropHandler = async function (ev: React.DragEvent<HTMLDivElement>) {
     ev.preventDefault();
 
@@ -37,8 +42,12 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
     }
   }
 
-  const dragoverHandler = function (event: React.DragEvent<HTMLDivElement>) {
-    event.preventDefault();
+  /**
+   * Funktion, die das Standardverhalten beim dragover verhindert
+   * @param {React.DragEvent<HTMLDivElement>} ev 
+   */
+  const dragoverHandler = function (ev: React.DragEvent<HTMLDivElement>) {
+    ev.preventDefault();
   }
 
   /**
@@ -52,14 +61,11 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
       let newDeck: Deck
       try {
         newDeck = JSON.parse(await file.text())
-        console.log("JSON Object:", newDeck)
       } catch (e) {
-        console.error("invalid file", e)
         continue
       }
       // das Objekt muss eine valide Deck-Struktur haben
       if (!istDeck(newDeck)) {
-        console.log("ist kein deck")
         continue
       }
       
@@ -88,7 +94,11 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
     deleteFiles()
   }
 
-  const deleteFiles = function () {
+  /**
+   * Funktion, die vom "Leeren"-Button aufgerufen wird
+   * setzt das files-Array auf ein leeres Array, löscht also so die File-Objekte im Zwischenspeicher
+   */
+  function deleteFiles() {
     setFiles([])
   }
 
