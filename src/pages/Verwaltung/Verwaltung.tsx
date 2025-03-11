@@ -186,18 +186,6 @@ function Verwaltung(): JSX.Element {
     setDecks(neuesDeck)
   }
 
-  /**
-   * Funktion, die den Text auf eine bestimmte Länge kürzt.
-   *
-   * @param {string} text - Der zu kürzende Text
-   * @param {number} length - Breite des Elternelements
-   * @return {string} - Der gekürzte Text
-   */
-  function sliceHeader(text: string, length: number, parentWidth: number): string {
-    const maxLength = Math.floor(parentWidth / 8) 
-    return text.length <= maxLength ? text : (text.slice(0, maxLength - 3) + "...")
-  }
-
   /* Eigentliches JSX-Element mit dem Inhalt der Seite */
   return (
     <>
@@ -224,6 +212,8 @@ function Verwaltung(): JSX.Element {
                 e.stopPropagation()
                 setNeuesDeckFormular(true)
               }}
+              key={-1}
+              title="Karteikartendeck hinzufügen"
               id="deck-hinzufuegen"
             >
               {
@@ -280,10 +270,13 @@ function Verwaltung(): JSX.Element {
                         setKartenIndex(-1)
                         setNeueKarteFormular(false)
                       }} 
+                      title={deck.name}
                       key={index} 
                       className={(deck.name === deckName) ? styles["aktuelles-deck"] : undefined}
                     >
-                      {sliceHeader(deck.name, 18, 125)}
+                      <div>
+                        {deck.name}
+                      </div>
                       <button 
                         onClick={(e) => {
                           e.stopPropagation()
@@ -299,7 +292,7 @@ function Verwaltung(): JSX.Element {
                     </div>
                   )
                 } else {
-                  return (<></>)
+                  return (undefined)
                 }
               })
             }
@@ -308,7 +301,10 @@ function Verwaltung(): JSX.Element {
         <div className={styles["deck-karten-rahmen-container"]}>
           <div className={styles["deck-karten-liste-container"]}>
             <div className={styles["deck-karten-header"]}>
-              <div className={styles["deck-umbenennen"]}>
+              <div 
+                title={deckName}
+                className={styles["deck-umbenennen-container"]}
+              >
                 {
                   deckName ? 
                     (
@@ -349,7 +345,6 @@ function Verwaltung(): JSX.Element {
                         </>
                       :
                         <>
-                          {sliceHeader(deckName, 50, 400) + ` `} 
                           <FontAwesomeIcon 
                             onClick={(e) => {
                               setDeckUmbenennenFormular(true)
@@ -357,6 +352,7 @@ function Verwaltung(): JSX.Element {
                             icon={faPenToSquare}
                             className={styles["deck-umbenennen"]} 
                           />
+                          {` ` + deckName} 
                         </>
                     )
                   : 
@@ -381,7 +377,7 @@ function Verwaltung(): JSX.Element {
             <div className={styles["deck-karten-flexbox"]}>
               <table>
                 <tbody>
-                  {/* Zeile zum Hinzufügen einer Karte */ 
+                  {/* Zeile zum Hinzufügen einer Karteikarte */ 
                     deckName 
                     &&
                     (<tr 
@@ -391,6 +387,8 @@ function Verwaltung(): JSX.Element {
                         setKartenIndex(-1)
                         setNeueKarteFormular(true)
                       }}
+                      key={-1}
+                      title="Karteikarte hinzufügen"
                       id="karte-hinzufuegen"
                     >
                       <td>
@@ -403,14 +401,17 @@ function Verwaltung(): JSX.Element {
                       </td>
                       {
                         neueKarteFormular ? 
-                          <button
-                            className={styles["karte-hinzufuegen-form-schliessen"]}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                            }}
-                          >
-                            <FontAwesomeIcon icon={faXmark} />
-                          </button>
+                          <td>
+                            <button
+                              className={styles["karte-hinzufuegen-form-schliessen"]}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setNeueKarteFormular(false)
+                              }}
+                            >
+                              <FontAwesomeIcon icon={faXmark} />
+                            </button>
+                          </td>
                         :
                           undefined
                       }

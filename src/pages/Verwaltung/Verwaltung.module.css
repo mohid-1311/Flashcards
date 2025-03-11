@@ -21,7 +21,6 @@
 
 div.verwaltung-container {
     display: flex;
-    flex-wrap: nowrap;
     justify-content: space-between;
 
     height: 90vh;
@@ -32,7 +31,6 @@ div.verwaltung-container {
 /* Header für Deck-&Karteikartenliste */
 div.deck-karten-header {
     display: flex;
-    flex-wrap: nowrap;
     justify-content: space-between;
 
     padding: 20px;
@@ -74,7 +72,6 @@ input.karten-suchleiste {
 div.decks-liste-container {
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
     justify-content: flex-start;
 
     width: 15%;
@@ -88,7 +85,6 @@ div.decks-liste-container {
 div.decks-liste-flexbox {
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
     justify-content: flex-start;
 
     overflow: hidden scroll;
@@ -103,7 +99,6 @@ div.aktuelles-deck {
 
 div.decks-liste-flexbox > div {
     display: flex;
-    flex-wrap: nowrap;
     justify-content: space-between;
 
     margin-block: 5px;
@@ -125,6 +120,12 @@ div.decks-liste-flexbox > div:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Text in den Elementen der Karteikartendecks-Liste */
+div.decks-liste-flexbox > div > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* Erstes Element der Karteikartendeck-Liste (Immer das Hinzufügen-Element) */
 div.decks-liste-flexbox > div:first-of-type {
     justify-content: center;
@@ -137,7 +138,6 @@ div.decks-liste-flexbox > div:first-of-type:hover {
 
 form.deck-hinzufuegen {
     display: flex;
-    flex-wrap: nowrap;
     align-items: center;
     
     width: 100%;
@@ -152,14 +152,13 @@ input.deck-hinzufuegen {
     margin-right: 5px;
     padding: 5px;
     
-    
+    color: black;
     background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Übergeordneter Container für die Karteikarten + Bearbeitungsfeld */
 div.deck-karten-rahmen-container {
     display: flex;
-    flex-wrap: nowrap;
     justify-content: space-between;
 
     width: 80%;
@@ -169,7 +168,6 @@ div.deck-karten-rahmen-container {
 div.deck-karten-liste-container {
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
 
     box-sizing: border-box;
     
@@ -183,7 +181,6 @@ div.deck-karten-liste-container {
 div.deck-karten-flexbox {
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
     justify-content: flex-start;
 
     overflow: hidden scroll;
@@ -222,7 +219,6 @@ div.deck-karten-flexbox > table > tbody > tr:hover {
 /* Erstes Element der Karteikartentabelle (Immer das Hinzufügen-Element) */
 div.deck-karten-flexbox > table > tbody > tr:first-of-type {
     display: flex;
-    flex-wrap: nowrap;
     justify-content: center;
 
     color: black;
@@ -290,9 +286,15 @@ button.deck-hinzufuegen:disabled, button.deck-umbenennen:disabled {
     background-color: gainsboro;
 }
 
-/* Schaltfläche zum Bearbeiten des Karteikarten-Deck-Namens */
-div.deck-umbenennen {
-    max-width: 30%;
+/* Schaltfläche zum Bearbeiten des Karteikartendeck-Namens */
+div.deck-umbenennen-container {
+    align-content: center;
+
+    width: 50%;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 svg.deck-umbenennen:hover {
@@ -301,23 +303,28 @@ svg.deck-umbenennen:hover {
 
 form.deck-umbenennen {
     display: flex;
-    flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
 
+    width: 100%;
 }
 
 input.deck-umbenennen {
     border: 0;
     border-radius: 5px;
 
+    width: 100%;
+    min-width: 40px;
+
     margin-right: 5px;
     padding: 5px;
     
-    flex-grow: 1;
-    
     color: white;
     background-color: rgba(0, 0, 0, 0.1);
+}
+
+input.deck-umbenennen::placeholder {
+    color: #cecece;
 }
 
 button.deck-umbenennen > svg {
@@ -329,7 +336,6 @@ button.deck-umbenennen > svg {
 div.karte-bearbeiten-container {
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
     justify-content: flex-start;
 
     width: 29%;
@@ -357,7 +363,6 @@ div.karte-bearbeiten-header {
 div.karte-bearbeiten-flexbox {
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
     justify-content: flex-start;
 
     padding-left : 10px;
