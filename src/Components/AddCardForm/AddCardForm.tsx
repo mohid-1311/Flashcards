@@ -2,16 +2,6 @@ import { useState } from "react";
 import styles from "./AddCardForm.module.css"
 import { AddCardFormProps } from "../../types";
 
-type Card = {
-  ausdruck: string;
-  definition: string;
-};
-
-type Deck = {
-  name: string;
-  cards: Card[];
-};
-
 /*
   Wenn der Text vom Deckname zu lang ist, sollen nur die ersten 12 Zeichen angezeigt werden
 */
@@ -29,7 +19,7 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks, deckName = ""}: AddCardF
   */
   function submitCard(e : React.FormEvent<HTMLFormElement>){
 
-    {/*Verhindert, dass die Seite neugeladen wird. States bleiben also erhalten*/}
+    /*Verhindert, dass die Seite neugeladen wird. States bleiben also erhalten*/
     e.preventDefault()
 
     if(!ausdruck.trim() || !definition.trim()){
@@ -94,7 +84,6 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks, deckName = ""}: AddCardF
           </button>
         </div>
       </form>
-      {/*<DisplayCard ausdruck ={ausdruck} definition ={definition}></DisplayCard>*/}
     </>
 
   );
