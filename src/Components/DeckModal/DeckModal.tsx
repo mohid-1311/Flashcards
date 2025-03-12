@@ -11,7 +11,13 @@ function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModa
 
   // Neues Deck hinzufügen (über die Suchfilterfunktion)
   function addNewDeck(){
-    if(decks.some(deck => deck.name.toLowerCase() === searchValue.toLowerCase())){
+
+    if(searchValue.trim() === ""){
+      alert("Ungültige Eingabe")
+      return
+    }
+
+    if(decks.some(deck => deck.name.toLowerCase() === searchValue.toLowerCase().trim())){
       alert("Deck existiert bereits")
       return
     }
@@ -71,7 +77,7 @@ function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModa
               ))}
           </ul>
           {/*Wenn etwas in die Suchleiste eingegeben wurde, soll die Möglichkeit geben, ein Deck mit dem Namen der Suchleiste zu erstellen*/}
-          {searchValue && <button className={styles["add-deck"]} onClick={() => {addNewDeck(); closeModal()}}>Add new {sliceHeader(searchValue)} deck</button>}
+          {searchValue.trim() && <button className={styles["add-deck"]} onClick={() => {addNewDeck(); closeModal()}}>Add new {sliceHeader(searchValue)} deck</button>}
       </div>
     </div>
   );
