@@ -5,3 +5,9 @@
     align-items: center;
 }
 
+.deckName {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-wrap: nowrap;
+    max-width: 50vw; 
+  }

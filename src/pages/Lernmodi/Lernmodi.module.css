@@ -58,3 +58,10 @@
   text-align: left;
   color: black;
 }
+
+.deckName {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-wrap: nowrap;
+  max-width: 50vw; 
+}

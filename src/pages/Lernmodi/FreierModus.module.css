@@ -43,3 +43,10 @@
 .card:hover {
     background-color: grey;
 }
+
+.deckName {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-wrap: nowrap;
+    max-width: 50vw; 
+  }
