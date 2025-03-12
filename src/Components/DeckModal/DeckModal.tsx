@@ -21,7 +21,7 @@ function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModa
       alert("Deck existiert bereits")
       return
     }
-    const newDeck = {name: searchValue, user: currentUser, cards: []}
+    const newDeck = {name: searchValue.trim(), user: currentUser, cards: []}
 
     setLocalDecks((prevDecks) => {
       const updatedDecks = [...prevDecks, newDeck]
