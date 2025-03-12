@@ -37,6 +37,7 @@
     border-radius: 10px;
     margin: 2%;
     word-wrap: break-word;
+    overflow: auto;
 }
 
 .card:hover {
