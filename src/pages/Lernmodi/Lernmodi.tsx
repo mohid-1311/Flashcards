@@ -20,7 +20,7 @@ function Lernmodi() {
 
     return (
         <div className={styles.container}>
-            <h1>{deckName}</h1>
+            <h1 className ={styles.deckName}>{deckName}</h1>
             <h2>Spielmodus auswählen</h2>
             <div className={styles.buttonContainer}>
                 <div>

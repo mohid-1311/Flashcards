@@ -42,7 +42,7 @@ function FreierModus() {
   return (
     <>
       <div className={styles.container}>
-        <h1>{deckName}</h1>
+        <h1 className={styles.deckName}>{deckName}</h1>
         <h2>Freier Lernmodus</h2>
         <div className={styles.buttonContainer}>
           {selectedDeck.cards.length === 0 ? (

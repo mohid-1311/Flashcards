@@ -50,7 +50,7 @@ function Hinzufuegen(){
               </button>
           </>
           ) : (
-            <AddCardForm onAddCard={addCardToDeck} deckIndex={deckIndex} decks={decks} deckName={""}/>
+            <AddCardForm onAddCard={addCardToDeck} deckIndex={deckIndex} decks={decks}/>
           )}
         </div>
 
