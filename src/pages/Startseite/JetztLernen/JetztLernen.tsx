@@ -3,13 +3,6 @@ import {Link} from "react-router-dom"
 
 function JetztLernen({decks}: {decks: any}) {
 
-  function cutString(str: string, maxLen: number = 30) {
-    if (str.length <= maxLen) {
-      return str
-    }
-    return str.substring(0, maxLen - 3) + "..."
-  }
-
   return (
     <div className={styles["root"]}>
       <div className={styles["jetzt-lernen-header"]}>
