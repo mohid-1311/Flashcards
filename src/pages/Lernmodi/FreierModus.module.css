@@ -37,8 +37,19 @@
     border-radius: 10px;
     margin: 2%;
     word-wrap: break-word;
+    overflow: auto;
 }
 
 .card:hover {
     background-color: grey;
 }
+
+.fehlerMeldung{
+    color: red;
+}
+.deckName {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-wrap: nowrap;
+    max-width: 50vw; 
+  }

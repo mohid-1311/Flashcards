@@ -42,16 +42,21 @@ function FreierModus() {
   return (
     <>
       <div className={styles.container}>
-        <h1>{deckName}</h1>
+        <h1 className={styles.deckName}>{deckName}</h1>
         <h2>Freier Lernmodus</h2>
         <div className={styles.buttonContainer}>
-          <h3>{currentIndex+1}/{selectedDeck.cards.length}</h3>
-          {selectedDeck.cards.length > 0 && (
-            <button onClick={handleToggleDefinition} className={styles.card}>
-              {showDefinition
-                ? selectedDeck.cards[currentIndex].definition
-                : selectedDeck.cards[currentIndex].ausdruck}
-            </button>
+          {selectedDeck.cards.length === 0 ? (
+            <h1 className={styles.fehlerMeldung}>Es sind keine Karten im Deck. Füge Karten hinzu, um zu lernen!</h1>) : (
+            <>
+              <h3>{currentIndex+1}/{selectedDeck.cards.length}</h3>
+              {selectedDeck.cards.length > 0 && (
+                <button onClick={handleToggleDefinition} className={styles.card}>
+                {showDefinition
+                  ? selectedDeck.cards[currentIndex].definition
+                  : selectedDeck.cards[currentIndex].ausdruck}
+                </button>
+              )}
+            </>
           )}
         </div>
         {selectedDeck.cards.length > 0 && (

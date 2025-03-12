@@ -50,7 +50,7 @@ function SchreibModus() {
 
     return (
         <div className={styles.container}>
-            <h2>Schreib Modus - {deckName}</h2>
+            <h2 className={styles.deckName}>Schreib Modus - {deckName}</h2>
             <input
                 type="text"
                 value={selectedDeck.cards[currentIndex].ausdruck}

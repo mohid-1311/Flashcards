@@ -18,7 +18,6 @@ export type AddCardFormProps = {
   onAddCard: (card: { ausdruck: string; definition: string }, deckIndex: number) => void;
   deckIndex: number;
   decks: Deck[]
-  deckName?: string
 }
 
 export type AnmeldungCompProps = {
