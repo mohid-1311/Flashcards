@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./AddCardForm.module.css"
+import { AddCardFormProps } from "../../types";
 
 type Card = {
   ausdruck: string;
@@ -10,13 +11,6 @@ type Deck = {
   name: string;
   cards: Card[];
 };
-
-interface AddCardFormProps {
-  onAddCard: (card: { ausdruck: string; definition: string }, deckIndex: number) => void;
-  deckIndex: number;
-  decks: Deck[]
-  deckName?: string
-}
 
 /*
   Wenn der Text vom Deckname zu lang ist, sollen nur die ersten 12 Zeichen angezeigt werden
@@ -63,9 +57,10 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks, deckName = ""}: AddCardF
   return(
     <>
       <form onSubmit={submitCard} className={styles["form-container"]}>
-        <h1>
-          {sliceHeader(deckName || decks[deckIndex].name, 12)} - Deck
-        </h1>
+        <h2>Deck</h2>
+        <h2 title={decks[deckIndex].name} className={styles["form-header"]}>
+          {decks[deckIndex].name}
+        </h2>
         <div className={styles["form-group"]}>
           {/*Ausdruck Eingabe*/}
           <label htmlFor="ausdruck" className={styles["form-label"]}>Ausdruck</label>

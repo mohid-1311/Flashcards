@@ -1,10 +1,7 @@
 import { useState } from "react";
-<<<<<<< Updated upstream
-=======
 import { setDecks } from "../../deckState"
 import { DeckModalProps } from "../../types";
 import { sliceHeader } from "../AddCardForm/AddCardForm";
->>>>>>> Stashed changes
 import styles from "./DeckModal.module.css"
 
 function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModalProps){
@@ -73,11 +70,7 @@ function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModa
               ))}
           </ul>
 
-<<<<<<< Updated upstream
-          {searchValue && <button onClick={() => {addNewDeck(); closeModal()}}>Add new {searchValue} deck</button>}
-=======
           {searchValue && <button className={styles["add-deck"]} onClick={() => {addNewDeck(); closeModal()}}>Add new {sliceHeader(searchValue)} deck</button>}
->>>>>>> Stashed changes
       </div>
     </div>
   );
