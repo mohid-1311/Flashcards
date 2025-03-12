@@ -28,16 +28,6 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks}: AddCardFormProps){
     }
     
     const newCard = { ausdruck: ausdruck.trim(), definition: definition.trim()}
-    
-    let index = deckIndex
-    if (deckName){
-      const foundIndex = decks.findIndex((deck) => deck.name === deckName)
-      if(foundIndex === -1 || foundIndex === undefined){
-        alert("Kein Deck gefunden")
-        return
-      }
-      index = foundIndex
-    }
 
     onAddCard(newCard, deckIndex);
     setAusdruck("")

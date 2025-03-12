@@ -27,25 +27,22 @@ function Verwaltung(): JSX.Element {
   const [suchfilterKarten, setSuchfilterKarten] = useState("")
 
   /**
-   * Funktion, die überprüft, ob der Name des Decks bereits vergeben wurde 
-   * und passt den Button des Formulars entsprechend an.
+   * Funktion, die überprüft, ob der Name folgende Kriterien erfüllt:
+   * - Keine Deck-Namen nur aus Leerzeichen
+   * - Keine Decks mit gleichem Namen
+   * - Keine Decks mit unsichtbarem Zeichen am Anfang
+   * - Keine Decks mit unsichtbarem Zeichen am Ende
    *
-   * @param {React.ChangeEvent<HTMLInputElement>} event - Das Event beim Ändern des Inhalts des Inputs
-   * @return {void}
+   * @param {string} deckName - Der zu überprüfenden Name
+   * @return {boolean}
    */
-    function pruefeDeckNamen(event: React.ChangeEvent<HTMLInputElement>): void {
-      const buttonElement = (((event.target as HTMLInputElement).parentElement as HTMLFormElement).elements[1] as HTMLButtonElement)
-                          
-      if (decks.some((deck: Deck) => (
-          deck.name.trim().toLowerCase() === event.target.value.trim().toLowerCase()) || 
-          event.target.value.trim().startsWith("‎") || 
-          event.target.value.trim().endsWith("‎")
-        )) 
-      {
-        buttonElement.disabled = true
-      } else {
-        buttonElement.disabled = false
-      }
+    function deckNameBelegt(deckName: string): boolean {
+      return decks.some((deck: Deck) => (
+        deckName.trim() === "" || // Keine Deck-Namen nur aus Leerzeichen
+        deckName.trim().toLowerCase() === deck.name.trim().toLowerCase()) || // Keine Decks mit gleichem Namen
+        deckName.trim().startsWith("‎") || // Keine Decks mit unsichtbarem Zeichen am Anfang
+        deckName.trim().endsWith("‎") // Keine Decks mit unsichtbarem Zeichen am Ende
+      )
     }
 
   /** 
@@ -138,7 +135,7 @@ function Verwaltung(): JSX.Element {
    * 
    * @param {Card} attribut - Karten-Attribut, welches verändert werden soll
    * @param {string} neuerWert - Neuer Wert des Karten-Attributs
-   * @returns {void}
+   * @return {void}
    */
   function setzeKartenAttribut(attribut: keyof Card, neuerWert: string): void {
     decks.find((deck: Deck) => (deck.name === aktuellesDeck && deck.user === localStorage.getItem("user")))?.cards.forEach((card: Card, index: number) => {
@@ -231,6 +228,13 @@ function Verwaltung(): JSX.Element {
                 neuesDeckFormular ? 
                   <form 
                     name="neues-deck"
+                    onKeyUp={(e) => {
+                      if(e.key === "Escape") {
+                        e.preventDefault()
+
+                        setNeuesDeckFormular(false)
+                      }
+                    }}
                     onSubmit={(e) => {
                       e.preventDefault()
                       
@@ -243,11 +247,13 @@ function Verwaltung(): JSX.Element {
                       type="text" 
                       placeholder="Name eingeben..." 
                       defaultValue={
-                        decks.some((deck: Deck) => deck.name.toLowerCase() === suchfilterDecks.toLowerCase()) ? "" : suchfilterDecks
+                        deckNameBelegt(suchfilterDecks) ? "" : suchfilterDecks
                       }
                       required
                       className={styles["deck-hinzufuegen"]}
-                      onChange={(event) => {pruefeDeckNamen(event)}}
+                      onChange={(e) => {
+                        (((e.target as HTMLInputElement).parentElement as HTMLFormElement).elements[1] as HTMLButtonElement).disabled = deckNameBelegt(e.target.value)
+                      }}
                     />
                     <button
                       type="submit"
@@ -314,6 +320,13 @@ function Verwaltung(): JSX.Element {
                       deckUmbenennenFormular ?
                         <>
                           <form
+                            onKeyUp={(e) => {
+                              if(e.key === "Escape") {
+                                e.preventDefault()
+
+                                setDeckUmbenennenFormular(false)
+                              }
+                            }}
                             onSubmit={(e) => {
                               e.preventDefault()
 
@@ -330,7 +343,9 @@ function Verwaltung(): JSX.Element {
                               }
                               required
                               className={styles["deck-umbenennen"]}
-                              onChange={(event) => {pruefeDeckNamen(event)}}
+                              onChange={(e) => {
+                                (((e.target as HTMLInputElement).parentElement as HTMLFormElement).elements[1] as HTMLButtonElement).disabled = deckNameBelegt(e.target.value)
+                              }}
                             >
                             </input>
                             <button className={styles["deck-umbenennen"]}>
