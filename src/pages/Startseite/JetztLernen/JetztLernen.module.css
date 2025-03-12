@@ -6,7 +6,7 @@
   align-items: center;
 }
 
-h1 {
+.jetzt-lernen-titel {
   font-size: 3rem;
   margin-top: 0rem;
   margin-bottom: 1.5rem;
@@ -37,7 +37,7 @@ h1 {
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 }
 
-a {
+.deck-liste-link {
   color: black;
   font-style: normal;
   text-decoration: none; 
