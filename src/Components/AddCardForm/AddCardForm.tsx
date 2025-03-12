@@ -27,7 +27,7 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks, deckName = ""}: AddCardF
       return
     }
     
-    const newCard = { ausdruck, definition}
+    const newCard = { ausdruck: ausdruck.trim(), definition: definition.trim()}
     
     let index = deckIndex
     if (deckName){
