@@ -11,14 +11,14 @@ function Startseite(){
 
   return(
     <div className={`${styles["flex-row"]}`}>
-      <div className={styles["start-element"]}>
-       <JetztLernen decks={decks} />
+      <div className={styles["start-lernen"]}>
+        <JetztLernen decks={decks} />
       </div>
       <div className={`${styles["flex-column"]}`}>
-        <div className={styles["start-element"]}>
+        <div className={styles["start-unklar"]}>
           <Hinzufuegen />
         </div>
-        <div className={styles["start-element"]}>
+        <div className={styles["start-import"]}>
           <ImportDateifeld decks={decks} setLocalDecks={setLocalDecks} />
         </div>
       </div>
