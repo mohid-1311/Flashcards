@@ -81,7 +81,8 @@ function Hinzufuegen(){
 
       </div>
      )}
-
+     {/* Wenn Deck auswählen angeklickt wurde, soll das DeckModal angezeigt  werden, damit man ein Deck auswählen kann.
+     */}
       {showModal && (
         <DeckModal
           setLocalDecks={setLocalDecks}
