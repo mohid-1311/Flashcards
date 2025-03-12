@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { AddCardFormProps } from "../../types";
 import styles from "./AddCardForm.module.css"
+import { AddCardFormProps } from "../../types";
 
 /*
   Wenn der Text vom Deckname zu lang ist, sollen nur die ersten 12 Zeichen angezeigt werden
 */
-function sliceHeader(text: string){
-  return text.length <= 15 ? text : (text.slice(0, 12) + "...")
+export function sliceHeader(text: string, length: number = 15){
+  return text.length <= length ? text : (text.slice(0, length-3) + "...")
 }
 
 function AddCardForm({ onAddCard, deckIndex = 0, decks, deckName = ""}: AddCardFormProps){
@@ -47,9 +47,10 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks, deckName = ""}: AddCardF
   return(
     <>
       <form onSubmit={submitCard} className={styles["form-container"]}>
-        <h1>
-          {sliceHeader(deckName || decks[deckIndex].name)} - Deck
-        </h1>
+        <h2>Deck</h2>
+        <h2 title={decks[deckIndex].name} className={styles["form-header"]}>
+          {decks[deckIndex].name}
+        </h2>
         <div className={styles["form-group"]}>
           {/*Ausdruck Eingabe*/}
           <label htmlFor="ausdruck" className={styles["form-label"]}>Ausdruck</label>
@@ -83,7 +84,6 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks, deckName = ""}: AddCardF
           </button>
         </div>
       </form>
-      {/*<DisplayCard ausdruck ={ausdruck} definition ={definition}></DisplayCard>*/}
     </>
 
   );

@@ -55,3 +55,12 @@
 .form-button:hover {
   background-color: #0056b3;
 }
+
+.form-header {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-bottom: 1rem;
+}

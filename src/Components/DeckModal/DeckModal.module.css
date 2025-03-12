@@ -36,7 +36,6 @@
   color: red;
 }
 
-
 .modal-header {
   font-size: 1.5rem;
   font-weight: bold;
@@ -64,6 +63,8 @@
   list-style-type: none;
   padding: 0;
   margin: 0;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .modal-list-item {
@@ -74,9 +75,11 @@
   background-color: #f8f9fa;
   margin-bottom: 0.5rem;
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-wrap: anywhere;
 }
 
 .add-deck{
+  max-width: 100%;
   background-color: #007bff;
   color: white;
   font-weight: bold;
@@ -86,6 +89,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
+  word-break: break-all;
 }
 
 .modal-list-item:hover {
