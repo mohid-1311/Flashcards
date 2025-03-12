@@ -9,7 +9,7 @@ export function sliceHeader(text: string, length: number = 15){
   return text.length <= length ? text : (text.slice(0, length-3) + "...")
 }
 
-function AddCardForm({ onAddCard, deckIndex = 0, decks, deckName = ""}: AddCardFormProps){
+function AddCardForm({ onAddCard, deckIndex = 0, decks}: AddCardFormProps){
   const [ausdruck, setAusdruck] = useState("")
   const [definition, setDefinition] = useState("")
 
@@ -28,18 +28,8 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks, deckName = ""}: AddCardF
     }
     
     const newCard = { ausdruck, definition}
-    
-    let index = deckIndex
-    if (deckName){
-      const foundIndex = decks.findIndex((deck) => deck.name === deckName)
-      if(foundIndex === -1 || foundIndex === undefined){
-        alert("Kein Deck gefunden")
-        return
-      }
-      index = foundIndex
-    }
 
-    onAddCard(newCard, index);
+    onAddCard(newCard, deckIndex);
     setAusdruck("")
     setDefinition("")
   }
