@@ -2,32 +2,9 @@ import { JSX, useState } from "react"
 import styles from "./Verwaltung.module.css"
 import { getDecks, setDecks } from "../../deckState"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
+import { Deck, Card } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark, faPlus, faSquareCaretLeft as fasFaSquareCaretLeft, faPenToSquare, faPen } from "@fortawesome/free-solid-svg-icons"
-
-/**
- * Karteikarten-Typ mit Definition.
- * 
- * @typedef {Object} Card
- * @property {string} ausdruck - Ausdruck der Karteikarte
- * @property {string} definition - Definition des Ausdrucks der Karteikarte
- */
-type Card = {
-  ausdruck: string
-  definition: string
-}
-/**
- * Karteikartendeck-Typ mit Definition.
- * 
- * @typedef {Object} Deck
- * @property {string} name - Name des Karteikartendecks
- * @property {Card[]} cards - Liste mit Karten des Karteikartendecks
- */
-type Deck = {
-  name: string
-  user: string
-  cards: Card[]
-}
 
 /**
  * Verwaltung-Komponente:
@@ -396,7 +373,7 @@ function Verwaltung(): JSX.Element {
                       <td>
                         {
                           neueKarteFormular ? 
-                            <AddCardForm onAddCard={addCardToDeck} deckIndex={-1} decks={decks} deckName={deckName} />
+                            <AddCardForm onAddCard={addCardToDeck} deckIndex={decks.findIndex((deck: Deck) => deck.name === deckName)} decks={decks} />
                           :
                             <FontAwesomeIcon icon={faPlus} />
                         }
