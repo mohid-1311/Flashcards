@@ -43,3 +43,7 @@
 .card:hover {
     background-color: grey;
 }
+
+.fehlerMeldung{
+    color: red;
+}
