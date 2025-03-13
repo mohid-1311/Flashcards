@@ -39,7 +39,7 @@ function App() {
         {!showNav && (<NavBar/>)}
         <Routes>
           <Route path="/Anmeldung" element={<Anmeldung setShowNav={setShowNav} setIsAuthentificated={setIsAuthenticated}/>} />
-          <Route path="/Flashcards/Startseite" element={ProtectedRoute(<Startseite/>)}></Route>
+          <Route path="/Startseite" element={ProtectedRoute(<Startseite/>)}></Route>
           <Route path="/Hinzufuegen" element={ProtectedRoute(<Hinzufuegen/>)}></Route>
           <Route path="/Verwaltung" element={ProtectedRoute(<Verwaltung/>)}></Route>
           <Route path="/Fortschritt" element={ProtectedRoute(<Fortschritt/>)}></Route>
