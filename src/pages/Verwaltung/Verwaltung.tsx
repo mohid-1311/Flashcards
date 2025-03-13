@@ -73,10 +73,8 @@ function Verwaltung(): JSX.Element {
    * @return {void}
    */
   function deckEntfernen(deckName: string): void {
-    if (window.confirm("Möchtest Du dieses Karteikarten-Deck wirklich löschen?")) {
-      setLocalDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user.toLowerCase() !== aktuellerNutzer)))
-      setDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user.toLowerCase() !== aktuellerNutzer)))
-    }
+    setLocalDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user.toLowerCase() !== aktuellerNutzer)))
+    setDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user.toLowerCase() !== aktuellerNutzer)))
   }
 
   /**
@@ -114,20 +112,18 @@ function Verwaltung(): JSX.Element {
    * @return {void}
    */
   function karteEntfernen(kartenIndex: number): void {
-    if (window.confirm("Möchtest Du diese Karteikarte wirklich löschen?")) {
-      const neueDecks = decks.map((deck: Deck) => {
-        if (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer) {
-          return {
-            ...deck,
-            cards: deck.cards.filter((card: Card, index: number) => index !== kartenIndex)
-          }
+    const neueDecks = decks.map((deck: Deck) => {
+      if (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer) {
+        return {
+          ...deck,
+          cards: deck.cards.filter((card: Card, index: number) => index !== kartenIndex)
         }
-        return deck
-      })
+      }
+      return deck
+    })
 
-      setLocalDecks(neueDecks)
-      setDecks(neueDecks)
-    }
+    setLocalDecks(neueDecks)
+    setDecks(neueDecks)
   }
 
   /**
