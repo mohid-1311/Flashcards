@@ -14,7 +14,9 @@ import { faXmark, faPlus, faSquareCaretLeft as fasFaSquareCaretLeft, faPenToSqua
  * @return {JSX.Element}
  */
 function Verwaltung(): JSX.Element {
-  const [decks, setLocalDecks] = useState(getDecks())
+  const aktuellerNutzer = localStorage.getItem("user")?.toLowerCase()
+  
+  const [decks, setLocalDecks] = useState(getDecks().filter((deck: Deck) => deck.user.toLowerCase() === aktuellerNutzer) || [])
   
   const [aktuellesDeck, setAktuellesDeck] = useState("")
   const [kartenIndex, setKartenIndex] = useState(-1)
@@ -56,7 +58,7 @@ function Verwaltung(): JSX.Element {
   function deckHinzufuegen(deckName: string): void {
     deckName = deckName.trim() // Leerzeichen vor und nach dem Namen entfernen
 
-    const neueDecks = [...decks, {name: deckName, user: localStorage.getItem("user"), cards: []}]
+    const neueDecks = [...decks, {name: deckName, user: aktuellerNutzer, cards: []}]
     
     setLocalDecks(neueDecks)
     setDecks(neueDecks)
@@ -72,8 +74,8 @@ function Verwaltung(): JSX.Element {
    */
   function deckEntfernen(deckName: string): void {
     if (window.confirm("Möchtest Du dieses Karteikarten-Deck wirklich löschen?")) {
-      setLocalDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user !== localStorage.getItem("user"))))
-      setDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user !== localStorage.getItem("user"))))
+      setLocalDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user.toLowerCase() !== aktuellerNutzer)))
+      setDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user.toLowerCase() !== aktuellerNutzer)))
     }
   }
 
@@ -88,7 +90,7 @@ function Verwaltung(): JSX.Element {
     neuerWert = neuerWert.trim() // Leerzeichen vor und nach dem Namen entfernen
 
     const neueDecks = decks.map((deck: Deck) => {
-      if (deck.name === aktuellesDeck && deck.user === localStorage.getItem("user")) {
+      if (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer) {
         return {
           ...deck,
           name: neuerWert
@@ -114,7 +116,7 @@ function Verwaltung(): JSX.Element {
   function karteEntfernen(kartenIndex: number): void {
     if (window.confirm("Möchtest Du diese Karteikarte wirklich löschen?")) {
       const neueDecks = decks.map((deck: Deck) => {
-        if (deck.name === aktuellesDeck && deck.user === localStorage.getItem("user")) {
+        if (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer) {
           return {
             ...deck,
             cards: deck.cards.filter((card: Card, index: number) => index !== kartenIndex)
@@ -138,7 +140,7 @@ function Verwaltung(): JSX.Element {
    * @return {void}
    */
   function setzeKartenAttribut(attribut: keyof Card, neuerWert: string): void {
-    decks.find((deck: Deck) => (deck.name === aktuellesDeck && deck.user === localStorage.getItem("user")))?.cards.forEach((card: Card, index: number) => {
+    decks.find((deck: Deck) => (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer))?.cards.forEach((card: Card, index: number) => {
       if (index === kartenIndex) {
         card[attribut] = neuerWert
   
@@ -184,7 +186,7 @@ function Verwaltung(): JSX.Element {
   /* Von Mohids Komponente */
   function addCardToDeck(newCard : {ausdruck: string, definition: string}): void {
     const neuesDeck = decks.map((deck: Deck) => {
-      if (deck.name === aktuellesDeck && deck.user === localStorage.getItem("user")) {
+      if (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer) {
         return {...deck, cards: [...deck.cards, newCard]}
       }
       return deck
@@ -268,7 +270,7 @@ function Verwaltung(): JSX.Element {
             </div>
             }
             {/* Für alle Karteikartendecks wird ein Element hinzugefügt */
-              decks.filter((deck: Deck, index: number) => (deck.user === localStorage.getItem("user"))).map((deck: Deck, index: number) => {
+              decks.filter((deck: Deck, index: number) => (deck.user.toLowerCase() === aktuellerNutzer)).map((deck: Deck, index: number) => {
                 if (entsprichtSuchfilterDeck(deck)) {
                   return (
                     <div
@@ -431,7 +433,7 @@ function Verwaltung(): JSX.Element {
                   {/* Für alle Karteikarten wird eine Zeile hinzugefügt */
                     aktuellesDeck 
                     && 
-                    decks.find((deck: Deck) => (deck.name === aktuellesDeck && deck.user === localStorage.getItem("user")))?.cards?.map((card: Card, index: number) => (
+                    decks.find((deck: Deck) => (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer))?.cards?.map((card: Card, index: number) => (
                       entsprichtSuchfilterKarte(card) 
                       && (
                         <tr 
