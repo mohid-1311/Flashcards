@@ -14,7 +14,7 @@ function NavBar() {
   }
 
   const links = [
-    { link: "./Startseite", label: "Startseite" },
+    { link: "./Flashcards/Startseite", label: "Startseite" },
     { link: "./Hinzufuegen", label: "Hinzufügen" },
     { link: "./Verwaltung", label: "Verwaltung" },
     { link: "./Importieren", label: "Importieren" },
