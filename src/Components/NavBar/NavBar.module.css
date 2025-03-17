@@ -22,9 +22,8 @@
   flex: 0;
   padding: 10px;
 }
-
-.link:hover, .logout-link:hover {
-  background-color: #006ade;
+.link:hover, .logout-link:hover, .link.current-page  {
+  background-color: #006ade !important;
   
   text-decoration: underline;
   text-decoration-color: white;
