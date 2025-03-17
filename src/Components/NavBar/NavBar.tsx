@@ -1,20 +1,19 @@
 // import React from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons"
 import styles from "./NavBar.module.css"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 
 function NavBar() {
 
+  const location = useLocation();
   const navigate = useNavigate()
   function handleLogout() {
     localStorage.setItem('isAuthenticated', "false")
     navigate("/Anmeldung")
   }
-  
-  const [currentPage, setCurrentPage] = useState("")
 
   const links = [
     { link: "./Startseite", label: "Startseite" },
@@ -28,14 +27,10 @@ function NavBar() {
       <ul className={styles["link-liste"]}>
         {links.map((link, index) => (
           <Link 
-            className={`${styles["link"]} ${(currentPage === link.label || (currentPage === "" && index === 0)) ? styles["current-page"] : ""}`} 
+            className={`${styles["link"]} ${((`.${location.pathname}`) === link.link) ? styles["current-page"] : ""}`} 
             to={link.link}
-            onClick={() => setCurrentPage(link.label)}
           >
-            <li 
-              key={index} 
-              className={`${styles[`link-text`]}`}
-            >
+            <li key={index} className={`${styles[`link-text`]}`}>
               <h3>{link.label}</h3>
             </li>
           </Link>
