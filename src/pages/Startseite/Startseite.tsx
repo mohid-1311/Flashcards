@@ -1,6 +1,6 @@
 import styles from "./Startseite.module.css"
 import JetztLernen from "./JetztLernen/JetztLernen"
-import Hinzufuegen from "./Hinzufuegen/Hinzufuegen"
+import Motivation from "../../Components/Motivation/Motivation"
 import ImportDateifeld from "../../Components/ImportDateifeld/ImportDateifeld"
 import { useState } from "react"
 import {getDecks} from "../../deckState"
@@ -16,7 +16,7 @@ function Startseite(){
       </div>
       <div className={`${styles["flex-column"]}`}>
         <div className={styles["start-unklar"]}>
-          <Hinzufuegen />
+          <Motivation />
         </div>
         <div className={styles["start-import"]}>
           <h4>Schnell-Importieren</h4>
