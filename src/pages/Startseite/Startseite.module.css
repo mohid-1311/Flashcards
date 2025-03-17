@@ -16,6 +16,7 @@
   flex: 1;
   flex-wrap: wrap;
   min-height: calc(100vh - 61.6px); /*muss je nach höhe der Navbar geändert werden*/
+  max-height: calc(100vh - 61.6px); /*muss je nach höhe der Navbar geändert werden*/
 }
 
 .flex-column > *, .flex-row > * {

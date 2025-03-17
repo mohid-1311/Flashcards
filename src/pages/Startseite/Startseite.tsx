@@ -11,8 +11,10 @@ function Startseite(){
 
   return(
     <div className={`${styles["flex-row"]}`}>
-      <div className={styles["start-lernen"]}>
-        <JetztLernen decks={decks} />
+      <div className={`${styles["flex-column"]}`}>
+        <div className={styles["start-lernen"]}>
+          <JetztLernen decks={decks} />
+        </div>
       </div>
       <div className={`${styles["flex-column"]}`}>
         <div className={styles["start-unklar"]}>
