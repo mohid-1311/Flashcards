@@ -354,7 +354,7 @@ function Verwaltung(): JSX.Element {
                       :
                         <>
                           <FontAwesomeIcon 
-                            onClick={(e) => {
+                            onClick={() => {
                               setDeckUmbenennenFormular(true)
                             }}
                             icon={faPenToSquare}

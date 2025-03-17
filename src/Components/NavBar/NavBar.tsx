@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons"
 import styles from "./NavBar.module.css"
+import { useState } from "react"
 
 
 function NavBar() {
@@ -12,6 +13,8 @@ function NavBar() {
     localStorage.setItem('isAuthenticated', "false")
     navigate("/Anmeldung")
   }
+  
+  const [currentPage, setCurrentPage] = useState("")
 
   const links = [
     { link: "./Startseite", label: "Startseite" },
@@ -24,8 +27,15 @@ function NavBar() {
     <nav>
       <ul className={styles["link-liste"]}>
         {links.map((link, index) => (
-          <Link className={styles["link"]} to={link.link}>
-            <li key={index} className={styles["link-text"]}>
+          <Link 
+            className={`${styles["link"]} ${(currentPage === link.label || (currentPage === "" && index === 0)) ? styles["current-page"] : ""}`} 
+            to={link.link}
+            onClick={() => setCurrentPage(link.label)}
+          >
+            <li 
+              key={index} 
+              className={`${styles[`link-text`]}`}
+            >
               <h3>{link.label}</h3>
             </li>
           </Link>
