@@ -38,18 +38,16 @@ function Motivation() {
 
   let randomZitat: string = motivationsZitate[Math.floor(Math.random() * motivationsZitate.length)]
   let strichIndex: number = randomZitat.lastIndexOf("–")
-  console.log(strichIndex)
+
+  let fontsize = 5
+  if (randomZitat.length > 80) fontsize += -1
+  if (randomZitat.length > 400) fontsize += -1
+  if (randomZitat.length > 500) fontsize += -1
+  if (document.documentElement.clientWidth < 1000) fontsize += -1
+  if (document.documentElement.clientWidth < 800) fontsize += 1
 
   return (
-    <div className={styles[`motivation-${
-      randomZitat.length > 80
-      ? (
-        randomZitat.length > 500
-        ? "larger"
-        : "x-large"
-      )
-      : "xx-large"
-    }`]}>
+    <div className={styles[`motivation-${fontsize}`]}>
       {randomZitat.substring(0, strichIndex)}
       <br />
       {randomZitat.substring(strichIndex, randomZitat.length)}

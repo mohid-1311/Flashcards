@@ -1,25 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Charm:wght@400;700&display=swap');
 
-.motivation-larger {
+.motivation-1 {
+  font-size: small;
+}
+
+.motivation-2 {
+  font-size: large;
+}
+
+.motivation-3 {
   font-size: larger;
 }
 
-.motivation-x-large {
+.motivation-4 {
   font-size: x-large;
 }
 
-.motivation-xx-large {
+.motivation-5 {
   font-size: xx-large;
 }
 
-.motivation-larger, .motivation-x-large, .motivation-xx-large {
+.motivation-1,
+.motivation-2,
+.motivation-3,
+.motivation-4,
+.motivation-5 {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  
+
   font-family: "Charm", cursive;
   font-weight: 700;
   font-style: normal;

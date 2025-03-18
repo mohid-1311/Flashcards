@@ -1,5 +1,5 @@
 .root {
-  max-height: 100%;
+  max-height: inherit;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -28,7 +28,7 @@
   flex-grow: 1;
   max-height: 100vh;
   width: 100%;
-  padding: 2rem;
+  padding: 1rem;
   overflow-y: auto;
 }
 
