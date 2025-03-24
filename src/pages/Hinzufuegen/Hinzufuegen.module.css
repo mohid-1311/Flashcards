@@ -5,7 +5,7 @@
   justify-content: space-around;
   padding: 2rem;
   background-color: #f7f7f7;
-  min-height: 100vh;
+  min-height: calc(100vh - 61.6px);
   align-items: flex-start;
 }
 
@@ -27,7 +27,6 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #fff;
-
 }
 
 .card-item {

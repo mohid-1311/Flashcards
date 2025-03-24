@@ -77,7 +77,7 @@ function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModa
               ))}
           </ul>
           {/*Wenn etwas in die Suchleiste eingegeben wurde, soll die Möglichkeit geben, ein Deck mit dem Namen der Suchleiste zu erstellen*/}
-          {searchValue.trim() && <button className={styles["add-deck"]} onClick={() => {addNewDeck(); closeModal()}}>Add new {sliceHeader(searchValue)} deck</button>}
+          {searchValue.trim() && <button className={styles["add-deck"]} onClick={() => {addNewDeck(); closeModal()}}>{sliceHeader(searchValue)} Deck hinzufügen</button>}
       </div>
     </div>
   );
