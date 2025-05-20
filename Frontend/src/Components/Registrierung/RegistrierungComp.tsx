@@ -22,14 +22,7 @@ function RegistrierungComp({setAnmeldung} : SetAnmeldung){
     const userExists = userArray.some((user: User) => user.uName.toLowerCase() === username.toLowerCase())
 
     if (passwort !== passwortWiederholen){
-      alert("Passwort stimmen nicht überein!")
-      setPasswort("")
-      setPasswortWiederholen("")
-      return
-    }
-
-    if (passwort.length < 3 || passwort.length > 12){
-      alert("Passwort muss zwischen 3 und 12 Zeichen lang sein!")
+      alert("Passwort stimmt nicht überein!")
       setPasswort("")
       setPasswortWiederholen("")
       return
@@ -56,15 +49,15 @@ function RegistrierungComp({setAnmeldung} : SetAnmeldung){
           <h1>Registrierung</h1>
           <div className={styles["registrierung-username"]}>
             <label htmlFor="nutzername">Username</label>
-            <input type="text" name="nutzername" className={styles["nutzername-input"]} required onChange={(e) => setUsername(e.target.value)}/>
+            <input type="text" name="nutzername" className={styles["nutzername-input"]} minLength={4} maxLength={16} required onChange={(e) => setUsername(e.target.value)}/>
           </div>
           <div className={styles["registrierung-passwort"]}>
             <label htmlFor="passwort">Passwort</label>
-            <input type="password" name="passwort" value={passwort} className={styles["passwort-input"]}required onChange={(e) => setPasswort(e.target.value)}/>
+            <input type="password" name="passwort" value={passwort} className={styles["passwort-input"]} minLength={4} maxLength={20} required onChange={(e) => setPasswort(e.target.value)}/>
           </div>
           <div className={styles["registrierung-passwort"]}>
             <label htmlFor="passwort-wiederholen">Passwort wiederholen</label>
-            <input type="password" name="passwort" value={passwortWiederholen} className={styles["passwort-input"]}required onChange={(e) => setPasswortWiederholen(e.target.value)}/>
+            <input type="password" name="passwort" value={passwortWiederholen} className={styles["passwort-input"]} minLength={4} maxLength={20} required onChange={(e) => setPasswortWiederholen(e.target.value)}/>
           </div>
           <button type="submit" className={styles["button-submit"]}>Registrieren</button>
         </div>
