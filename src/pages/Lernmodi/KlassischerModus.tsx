@@ -15,10 +15,6 @@ interface Deck {
   cards: Card[];
 }
 
-//
-//const deckName = "Mathe"; //Deck muss übergeben werden!
-
-
 function KlassischerModus() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -33,7 +29,7 @@ function KlassischerModus() {
     if (currentIndex < selectedDeck.cards.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      setCurrentIndex(0); //Loop zum Anfang zurück
+      setCurrentIndex(0);
     }
   };
 
@@ -44,7 +40,8 @@ function KlassischerModus() {
   return (
     <>
       <div className={styles.container}>
-        <h2 className={styles.deckName}>Klassischer Modus - {selectedDeck.name} </h2>
+        <h1 className={styles.deckName}>{deckName}</h1>
+        <h2>Klassischer Lernmodus</h2>
         <div className={styles.deckContainer}>
           
           {selectedDeck.cards.length > 0 && (
