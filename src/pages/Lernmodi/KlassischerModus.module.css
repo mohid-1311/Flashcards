@@ -71,6 +71,10 @@
     background-color: grey;
   }
 
+  .fehlerMeldung{
+    color: red;
+}
+
   .deckName {
     text-overflow: ellipsis;
     overflow: hidden;
