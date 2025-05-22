@@ -260,6 +260,8 @@ function Verwaltung(): JSX.Element {
                       defaultValue={
                         deckNameBelegt(suchfilterDecks) ? "" : suchfilterDecks
                       }
+                      minLength={2}
+                      maxLength={32}
                       required
                       className={styles["deck-hinzufuegen"]}
                       onChange={(e) => {
@@ -352,6 +354,8 @@ function Verwaltung(): JSX.Element {
                             defaultValue={
                               aktuellesDeck
                             }
+                            minLength={2}
+                            maxLength={32}
                             required
                             className={styles["deck-umbenennen"]}
                             onChange={(e) => {

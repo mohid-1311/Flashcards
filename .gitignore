@@ -5,3 +5,8 @@
 
 # production
 */public
+*/build
+
+# other
+.env
+.drawio
