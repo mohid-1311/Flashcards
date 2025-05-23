@@ -2,6 +2,7 @@ import { useState } from "react";
 import { setData } from "../../data"
 import { SetAnmeldung } from "../../types";
 import styles from "../Anmeldung/Anmeldung.module.css"
+import bcrypt from "bcryptjs";
 
 interface User {
   uName: string;
@@ -14,7 +15,7 @@ function RegistrierungComp({setAnmeldung} : SetAnmeldung){
   const [passwort, setPasswort] = useState("")
   const [passwortWiederholen, setPasswortWiederholen] = useState("")
 
-  function login(e : React.FormEvent<HTMLFormElement>){
+  async function login(e : React.FormEvent<HTMLFormElement>){
     e.preventDefault();
 
     const userArray: User[] = JSON.parse(localStorage.getItem("loginData") || "[]");
@@ -35,7 +36,9 @@ function RegistrierungComp({setAnmeldung} : SetAnmeldung){
     else {
       alert("Erfolgreich registriert")
       setAnmeldung(true)
-      const data = {uName: username, pw: passwort}
+      const hashedPasswort = await bcrypt.hash(passwort, 10);
+      console.log(bcrypt.compare(passwort, hashedPasswort));
+      const data = {uName: username, pw: hashedPasswort}
       userArray.push(data)
       setData(userArray)
     }
