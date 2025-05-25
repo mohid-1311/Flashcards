@@ -1,8 +1,9 @@
 import { useState } from "react";
 import styles from "./Anmeldung.module.css"
 import { useNavigate } from "react-router-dom";
-import { User, AnmeldungCompProps } from "../../types";
+import { AnmeldungCompProps } from "../../types";
 import bcrypt from "bcryptjs";
+import { getBenutzer } from "../../daten";
 
 function AnmeldungComp({setAnmeldung, setShowNav, setIsAuthentificated} : AnmeldungCompProps){
 
@@ -12,21 +13,17 @@ function AnmeldungComp({setAnmeldung, setShowNav, setIsAuthentificated} : Anmeld
 
   async function login(e: React.FormEvent<HTMLFormElement>){
     e.preventDefault();
-    console.log(JSON.parse(localStorage.getItem("loginData") || "[]"))
-    const userArray: User[] = JSON.parse(localStorage.getItem("loginData") || "[]");
 
-    const userExists = userArray.some((user: User) => user.uName === username)
-
-    if(!userExists) {
+    const benutzer = await getBenutzer(username);
+    if(!benutzer) {
       alert("Ungültiger Benutzer")
       return;
     }
     
-    const benutzerPasswort = userArray.find((user) => user.uName === username)?.pw;
-    if(!benutzerPasswort) return;
+    if(!benutzer.passwort) return;
 
-    const passwortKorrekt = await bcrypt.compare(passwort, benutzerPasswort);
-
+    const passwortKorrekt = await bcrypt.compare(passwort, benutzer.passwort);
+    
     if (!passwortKorrekt) {
       alert("Ungültiges Passwort")
       return;
@@ -39,7 +36,6 @@ function AnmeldungComp({setAnmeldung, setShowNav, setIsAuthentificated} : Anmeld
     navigate("/Startseite")
     return
   }
-  //userExists ? navigate("/Startseite") : alert("Ungültige Eingabewerte")
   
   return(
     <div className={styles["anmeldung-container"]}>

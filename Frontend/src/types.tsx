@@ -1,6 +1,6 @@
 export type User = {
-  uName: string;
-  pw: string
+  name: string;
+  passwort: string
 }
 
 export type Card = {

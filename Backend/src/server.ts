@@ -8,14 +8,49 @@ import { karteikarten } from "./db/schema/karteikarten";
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
-  throw new Error("DATABASE_URL environment variable is not set.");
+  throw new Error("DATABASE_URL Umgebungsvariable ist nicht gesetzt!");
 }
 
 const app = express();
 const db = drizzle(databaseUrl);
+
 app.get("/benutzer", async (request, response) => {
-  const benutzerListe = await db.select().from(benutzer);
-  response.json(benutzerListe);
+  const nameParam = request.query.name as string | undefined;
+  
+  if(!nameParam) {
+    response.status(400).json("Keinen Namen übergeben!");
+    return;
+  }
+
+  const benutzerListe = await db.select().from(benutzer).where(eq(benutzer.name, nameParam));
+
+  response.setHeader("Access-Control-Allow-Origin", "*");
+  response.setHeader("Access-Control-Allow-Methods", "GET");
+  response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  response.setHeader("Content-Type", "application/json; charset=utf-8");
+  response.status(200).json(benutzerListe);
+});
+
+app.post("/benutzer", async (request, response) => {
+  const nameParam = request.query.name as string | undefined;
+  const passwortParam = request.query.passwort as string | undefined;
+
+  if(!nameParam) {
+    response.status(400).json("Keinen Namen übergeben!");
+    return;
+  }
+  if(!passwortParam) {
+    response.status(400).json("Kein Passwort übergeben!");
+    return;
+  }
+  
+  await db.insert(benutzer).values({name: nameParam, passwort: passwortParam});
+
+  response.setHeader("Access-Control-Allow-Origin", "*");
+  response.setHeader("Access-Control-Allow-Methods", "POST");
+  response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  response.setHeader("Content-Type", "application/json; charset=utf-8");
+  response.status(204);
 });
 
 app.get("/decks", async (request, response) => {

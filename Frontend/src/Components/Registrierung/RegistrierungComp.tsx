@@ -1,13 +1,8 @@
 import { useState } from "react";
-import { setData } from "../../data"
-import { SetAnmeldung } from "../../types";
+import { getBenutzer, addBenutzer } from "../../daten"
+import { User, SetAnmeldung } from "../../types";
 import styles from "../Anmeldung/Anmeldung.module.css"
 import bcrypt from "bcryptjs";
-
-interface User {
-  uName: string;
-  pw: string;
-}
 
 function RegistrierungComp({setAnmeldung} : SetAnmeldung){
 
@@ -17,11 +12,9 @@ function RegistrierungComp({setAnmeldung} : SetAnmeldung){
 
   async function login(e : React.FormEvent<HTMLFormElement>){
     e.preventDefault();
-
-    const userArray: User[] = JSON.parse(localStorage.getItem("loginData") || "[]");
-
-    const userExists = userArray.some((user: User) => user.uName.toLowerCase() === username.toLowerCase())
-
+    
+    const benutzerVorhanden = await getBenutzer(username) ? true : false;
+    
     if (passwort !== passwortWiederholen){
       alert("Passwort stimmt nicht überein!")
       setPasswort("")
@@ -29,7 +22,7 @@ function RegistrierungComp({setAnmeldung} : SetAnmeldung){
       return
     }
 
-    if (userExists){
+    if (benutzerVorhanden){
       alert("Benutzername bereits vergeben")
       return
     }
@@ -37,15 +30,12 @@ function RegistrierungComp({setAnmeldung} : SetAnmeldung){
       alert("Erfolgreich registriert")
       setAnmeldung(true)
       const hashedPasswort = await bcrypt.hash(passwort, 10);
-      console.log(bcrypt.compare(passwort, hashedPasswort));
-      const data = {uName: username, pw: hashedPasswort}
-      userArray.push(data)
-      setData(userArray)
+      const data: User = {name: username, passwort: hashedPasswort};
+      addBenutzer(data);
     }
   }
 
   return(
-    
     <div className={styles["registrierung-container"]}>
       <form onSubmit={(e) => login(e)} >
         <div className={styles["registrierung-display"]}>
@@ -60,7 +50,7 @@ function RegistrierungComp({setAnmeldung} : SetAnmeldung){
           </div>
           <div className={styles["registrierung-passwort"]}>
             <label htmlFor="passwort-wiederholen">Passwort wiederholen</label>
-            <input type="password" name="passwort" value={passwortWiederholen} className={styles["passwort-input"]} minLength={4} maxLength={20} required onChange={(e) => setPasswortWiederholen(e.target.value)}/>
+            <input type="password" name="passwort-wiederholen" value={passwortWiederholen} className={styles["passwort-input"]} minLength={4} maxLength={20} required onChange={(e) => setPasswortWiederholen(e.target.value)}/>
           </div>
           <button type="submit" className={styles["button-submit"]}>Registrieren</button>
         </div>
