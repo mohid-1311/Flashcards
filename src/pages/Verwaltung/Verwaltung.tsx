@@ -35,7 +35,7 @@ function Verwaltung(): JSX.Element {
    * @param {string} neuerWert - Neuer Wert des Karten-Attributs
    * @returns {void}
    */
-  function setzeKartenAttribut(attribut: keyof Card, neuerWert: string): void {
+  function setzeKartenAttribut<K extends keyof Card>(attribut: K, neuerWert: Card[K]): void {
     decks.find((deck: Deck) => (deck.name === deckName && deck.user === localStorage.getItem("user")))?.cards.forEach((card: Card, index: number) => {
       if (index === kartenIndex) {
         card[attribut] = neuerWert
@@ -152,7 +152,7 @@ function Verwaltung(): JSX.Element {
    * @return {void}
    */
   /* Von Mohids Komponente */
-  function addCardToDeck(newCard : {ausdruck: string, definition: string}): void {
+  function addCardToDeck(newCard : {ausdruck: string, definition: string, weight: number}): void {
     const neuesDeck = decks.map((deck: Deck) => {
       if (deck.name === deckName && deck.user === localStorage.getItem("user")) {
         return {...deck, cards: [...deck.cards, newCard]}
@@ -413,6 +413,7 @@ function Verwaltung(): JSX.Element {
                         >
                           <td>{card.ausdruck}</td>
                           <td>{card.definition}</td>
+                          <td>{card.weight}</td>
                           <td>
                             <button 
                               onClick={(e) => {

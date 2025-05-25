@@ -11,6 +11,7 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
     for (let card of o.cards) {
       if (typeof card.ausdruck !== "string") return false
       if (typeof card.definition !== "string") return false
+      if (typeof card.weight !== "number") return false
     }
     return true;
   }

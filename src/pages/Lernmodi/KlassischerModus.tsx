@@ -7,6 +7,7 @@ import {useLocation} from 'react-router'
 interface Card {
   ausdruck: string;
   definition: string;
+  weight: number;
 }
 
 interface Deck {
