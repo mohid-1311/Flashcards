@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getDecks, updateCardWeight } from '../../deckState'; 
 import styles from './KlassischerModus.module.css';
 import { useLocation } from 'react-router';
-import { Card, Deck } from "../../types";
+import { Deck } from "../../types";
 
 function KlassischerModus() {
   const location = useLocation();
@@ -18,7 +18,7 @@ function KlassischerModus() {
   const decks: Deck[] = getDecks();
   const updatedDeck = decks.find(deck => deck.name === deckName && deck.user === username);
   if (updatedDeck) setSelectedDeck(updatedDeck);
-  }, [currentIndex]);
+  }, [currentIndex, deckName, username]);
 
   const adjustWeight = (result: 'falsch' | 'schwer' | 'richtig') => {
     if (!selectedDeck) return;
@@ -36,7 +36,7 @@ function KlassischerModus() {
       case 'schwer': 
         newWeight = Math.max(1, newWeight - 1);
         break;
-        
+
       case 'richtig':
         newWeight = newWeight + 1; 
         break;
@@ -50,19 +50,29 @@ function KlassischerModus() {
   };
 
   const getWeightedRandomIndex = (): number => {
-    if (!selectedDeck || selectedDeck.cards.length === 0) return 0;
+  if (!selectedDeck || selectedDeck.cards.length === 0) return 0;
 
-    const weights = selectedDeck.cards.map(card => 1 / card.weight);
-    const totalWeight = weights.reduce((a, b) => a + b, 0);
+  let lastIndex = currentIndex; 
+  let newIndex = lastIndex;
+
+  const weights = selectedDeck.cards.map(card => 1 / card.weight);
+  const totalWeight = weights.reduce((a, b) => a + b, 0);
+  
+  while (newIndex === lastIndex) { 
     const rand = Math.random() * totalWeight;
-
     let acc = 0;
+
     for (let i = 0; i < weights.length; i++) {
       acc += weights[i];
-      if (rand < acc) return i;
+      if (rand < acc) {
+        newIndex = i;
+        break;
+      }
     }
-    return 0;
-  };
+  }
+  return newIndex;
+};
+
 
   const handleNextCard = (result: 'falsch' | 'schwer' | 'richtig') => {
     adjustWeight(result);
