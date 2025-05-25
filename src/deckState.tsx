@@ -85,3 +85,30 @@ export function setDecks(newDecks : typeof decks){
   localStorage.setItem("decks", JSON.stringify(decks)); 
 }
 
+/*
+
+*/
+export function updateCardWeight(
+  deckName: string,
+  cardIndex: number,
+  newWeight: number
+) {
+  const user = localStorage.getItem("user")?.toLowerCase()
+  const decks: Deck[] = getDecks();
+
+  const updatedDecks = decks.map(deck => {
+    if (deck.name === deckName && deck.user === user) {
+      const updatedCards = deck.cards.map((card, index) => {
+        if (index === cardIndex) {
+          return { ...card, weight: newWeight };
+        }
+        return card;
+      });
+      return { ...deck, cards: updatedCards };
+    }
+    return deck;
+  });
+
+  localStorage.setItem("decks", JSON.stringify(updatedDecks));
+}
+
