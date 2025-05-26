@@ -18,7 +18,7 @@ function NavBar() {
     { link: "./Startseite", label: "Startseite" },
     { link: "./Hinzufuegen", label: "Hinzufügen" },
     { link: "./Verwaltung", label: "Verwaltung" },
-    { link: "./Importieren", label: "Importieren" },
+    { link: "./Importieren", label: "Import/Export" },
   ]
 
   return (
