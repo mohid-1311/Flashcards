@@ -36,6 +36,18 @@ function Verwaltung(): JSX.Element {
    * @param {string} deckName - Der zu überprüfenden Name
    * @return {boolean}
    */
+
+  function setzeKartenAttribut<K extends keyof Card>(attribut: K, neuerWert: Card[K]): void {
+    decks.find((deck: Deck) => (deck.name === deckName && deck.user === localStorage.getItem("user")))?.cards.forEach((card: Card, index: number) => {
+      if (index === kartenIndex) {
+        card[attribut] = neuerWert
+  
+        setLocalDecks([...decks])
+        setDecks([...decks])
+      }
+    })
+  }
+
     function deckNameBelegt(deckName: string): boolean {
       return decks.some((deck: Deck) => (
         deckName.trim().toLowerCase() === deck.name.trim().toLowerCase()) || // Keine Decks mit gleichem Namen
@@ -59,6 +71,7 @@ function Verwaltung(): JSX.Element {
         eingabe.trim().endsWith("‎") // Keine Eingabe mit unsichtbarem Zeichen am Ende
       )
     }
+
 
   /** 
    * Funktion, die beim Klicken auf den Hinzufügen-Button der Decks 
@@ -193,7 +206,7 @@ function Verwaltung(): JSX.Element {
    * @return {void}
    */
   /* Von Mohids Komponente */
-  function addCardToDeck(newCard : Card): void {
+  function addCardToDeck(newCard : {ausdruck: string, definition: string, weight: number}): void {
     const neuesDeck = decks.map((deck: Deck) => {
       if (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer) {
         return {...deck, cards: [...deck.cards, newCard]}
@@ -451,9 +464,11 @@ function Verwaltung(): JSX.Element {
                           key={index} 
                           className={index === kartenIndex ? styles["aktuelle-karte"] : undefined}
                         >
+
                           {Object.keys(karte).map((attributName) => (
                             <td>{karte[attributName as keyof Card] || "<Kein Wert>"}</td>
                           ))}
+
                           <td>
                             <button 
                               onClick={(e) => {
