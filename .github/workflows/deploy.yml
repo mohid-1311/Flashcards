@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Change Directory
+      run: cd ./Frontend/
+
     - name: Checkout Repository
       uses: actions/checkout@v3
 
@@ -18,14 +21,13 @@ jobs:
       with:
         node-version: '16'
 
-    - name: Change Directory
-      run: cd ./Frontend/
-
     - name: Install Dependencies
       run: npm install
 
     - name: Build Project
       run: npm run build
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
