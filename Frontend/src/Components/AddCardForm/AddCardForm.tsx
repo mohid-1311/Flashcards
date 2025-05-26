@@ -12,6 +12,7 @@ export function sliceHeader(text: string, length: number = 15){
 function AddCardForm({ onAddCard, deckIndex = 0, decks}: AddCardFormProps){
   const [ausdruck, setAusdruck] = useState("")
   const [definition, setDefinition] = useState("")
+  const [weight, setWeight] = useState(10)
 
   /*
     Erstellt eine neue Karte, die dann als Parameter an onAddCard übergeben wir
@@ -27,11 +28,12 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks}: AddCardFormProps){
       return
     }
     
-    const newCard = { ausdruck: ausdruck.trim(), definition: definition.trim()}
+    const newCard = { ausdruck: ausdruck.trim(), definition: definition.trim(), weight }
 
     onAddCard(newCard, deckIndex);
     setAusdruck("")
     setDefinition("")
+    setWeight(10)
   }
   
   return(
@@ -64,6 +66,7 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks}: AddCardFormProps){
             className={styles["form-textarea"]}
           ></textarea>
         </div>
+
         <div className={styles["form-group"]}>
           {/*Formular abschicken*/}
           <button 

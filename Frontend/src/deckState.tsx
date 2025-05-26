@@ -2,6 +2,7 @@
 export interface Card {
   ausdruck: string;
   definition: string;
+  weight: number;
 }
 
 export interface Deck {
@@ -20,32 +21,32 @@ let decks = [
     name: "Mathe", 
     user: "Florian",
     cards: [
-      { ausdruck: "Albert Einstein", definition: "Mathematiker" },
-      { ausdruck: "Relationen", definition: "Keine Ahnung" }
+      { ausdruck: "Albert Einstein", definition: "Mathematiker", weight: 10},
+      { ausdruck: "Relationen", definition: "Keine Ahnung", weight: 10 }
     ] 
   },
   { 
     name: "Englisch", 
     user: "Mohid",
     cards: [
-      { ausdruck: "Hello", definition: "Hallo" },
-      { ausdruck: "Goodbye", definition: "Auf Wiedersehen" }
+      { ausdruck: "Hello", definition: "Hallo", weight: 10 },
+      { ausdruck: "Goodbye", definition: "Auf Wiedersehen", weight: 10 }
     ] 
   },
   { 
     name: "Deutsch", 
     user: "Mohid",
     cards: [
-      { ausdruck: "Goethe", definition: "Dichter" },
-      { ausdruck: "Schiller", definition: "Dichter" }
+      { ausdruck: "Goethe", definition: "Dichter", weight: 10 },
+      { ausdruck: "Schiller", definition: "Dichter", weight: 10 }
     ] 
   },
   { 
     name: "Physik", 
     user: "Moritz",
     cards: [
-      { ausdruck: "Marie Curie", definition: "Physikerin" },
-      { ausdruck: "ABC", definition: "Buchstaben" },
+      { ausdruck: "Marie Curie", definition: "Physikerin", weight: 10 },
+      { ausdruck: "ABC", definition: "Buchstaben", weight: 10 },
     ] 
   }
 ];
@@ -82,5 +83,32 @@ export function setDecks(newDecks : typeof decks){
   const oldDecks = decks.filter((deck: Deck) => deck.user.toLowerCase() !== user)
   decks = [...oldDecks, ...newDecks]
   localStorage.setItem("decks", JSON.stringify(decks)); 
+}
+
+/*
+
+*/
+export function updateCardWeight(
+  deckName: string,
+  cardIndex: number,
+  newWeight: number
+) {
+  const user = localStorage.getItem("user")?.toLowerCase()
+  const decks: Deck[] = getDecks();
+
+  const updatedDecks = decks.map(deck => {
+    if (deck.name === deckName && deck.user === user) {
+      const updatedCards = deck.cards.map((card, index) => {
+        if (index === cardIndex) {
+          return { ...card, weight: newWeight };
+        }
+        return card;
+      });
+      return { ...deck, cards: updatedCards };
+    }
+    return deck;
+  });
+
+  localStorage.setItem("decks", JSON.stringify(updatedDecks));
 }
 

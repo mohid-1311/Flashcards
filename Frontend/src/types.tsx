@@ -5,7 +5,8 @@ export type User = {
 
 export type Card = {
   ausdruck: string,
-  definition: string
+  definition: string,
+  weight: number
 }
 
 export type Deck = {
@@ -15,7 +16,7 @@ export type Deck = {
 }
 
 export type AddCardFormProps = {
-  onAddCard: (card: { ausdruck: string; definition: string }, deckIndex: number) => void;
+  onAddCard: (card: { ausdruck: string; definition: string; weight: number}, deckIndex: number) => void;
   deckIndex: number;
   decks: Deck[]
 }

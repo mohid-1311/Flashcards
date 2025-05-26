@@ -36,6 +36,9 @@ function Verwaltung(): JSX.Element {
    * @param {string} deckName - Der zu überprüfenden Name
    * @return {boolean}
    */
+
+  
+
     function deckNameBelegt(deckName: string): boolean {
       return decks.some((deck: Deck) => (
         deckName.trim().toLowerCase() === deck.name.trim().toLowerCase()) || // Keine Decks mit gleichem Namen
@@ -59,6 +62,7 @@ function Verwaltung(): JSX.Element {
         eingabe.trim().endsWith("‎") // Keine Eingabe mit unsichtbarem Zeichen am Ende
       )
     }
+
 
   /** 
    * Funktion, die beim Klicken auf den Hinzufügen-Button der Decks 
@@ -148,7 +152,7 @@ function Verwaltung(): JSX.Element {
    * @param {string} neuerWert - Neuer Wert des Karten-Attributs
    * @return {void}
    */
-  function setzeKartenAttribut(attribut: keyof Card, neuerWert: string): void {
+  function setzeKartenAttribut<K extends keyof Card>(attribut: K, neuerWert: Card[K]): void {
     decks.find((deck: Deck) => (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer))?.cards.forEach((card: Card, index: number) => {
       if (index === kartenIndex) {
         card[attribut] = neuerWert
@@ -458,6 +462,7 @@ function Verwaltung(): JSX.Element {
                           {Object.keys(karte).map((attributName) => (
                             <td>{karte[attributName as keyof Card] || "<Kein Wert>"}</td>
                           ))}
+
                           <td>
                             <button 
                               onClick={(e) => {
