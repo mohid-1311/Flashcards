@@ -30,6 +30,12 @@ function App() {
   }, [isAuthenticated, navigate])
 
   useEffect(() => {
+    if(isAuthenticated && location.pathname === "/") {
+      navigate("/Startseite");
+  }
+}, [isAuthenticated, location.pathname, navigate]);
+
+  useEffect(() => {
     setShowNav(location.pathname.toLowerCase() === "/anmeldung");
   }, [location]);
 
