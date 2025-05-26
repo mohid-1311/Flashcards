@@ -23,7 +23,7 @@ jobs:
       working-directory: ./Backend
 
     - name: Backend - Start Project
-      run: npm run start
+      run: nohup npm run start &> output.log &
       working-directory: ./Backend
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
