@@ -18,14 +18,13 @@ jobs:
       with:
         node-version: '16'
 
-    - name: Change Directory
-      run: cd ./Frontend/
-
     - name: Install Dependencies
       run: npm install
+      working-directory: ./Frontend
 
     - name: Build Project
       run: npm run build
+      working-directory: ./Frontend
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
