@@ -50,14 +50,14 @@ function KlassischerModus() {
   };
 
   const getWeightedRandomIndex = (): number => {
-  if (!selectedDeck || selectedDeck.cards.length === 0) return 0;
+  if (!selectedDeck || selectedDeck.cards.length <=1 ) return 0;
 
   let lastIndex = currentIndex; 
   let newIndex = lastIndex;
 
   const weights = selectedDeck.cards.map(card => 1 / card.weight);
   const totalWeight = weights.reduce((a, b) => a + b, 0);
-  
+
   while (newIndex === lastIndex) { 
     const rand = Math.random() * totalWeight;
     let acc = 0;
