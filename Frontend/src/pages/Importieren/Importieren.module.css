@@ -54,6 +54,18 @@
   background-color: #dcdcdc;
 }
 
+.exportieren-deck-liste-element:hover {
+  cursor: pointer;
+
+  background-color: lightblue;
+
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.2);
+}
+
+.element-ausgewaehlt {
+  background-color: lightblue;
+}
+
 .exportieren-liste-element:hover {
   background-color: rgba(0, 0, 0, 0.1);
   box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.2);

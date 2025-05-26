@@ -20,8 +20,15 @@ function Importieren(){
   function selectDeckOnClick(deckName: string) {
     return (e: React.MouseEvent) => {
       e.stopPropagation()
-      setSelectedDeck(deckName)
-      console.log(`export: selected ${deckName} deck`)
+      let deck = selectedDeck
+      if (deck === deckName) {
+        console.log(`deselected deck ${deck}`)
+        deck = ""
+      } else {
+        deck = deckName
+        console.log(`export: selected ${deck} deck`)
+      }
+      setSelectedDeck(deck)
     }
   }
 
@@ -36,7 +43,11 @@ function Importieren(){
           ? <i><br />no decks available</i>
           : decks.map((deck: Deck, index: number)=> {
           return (
-            <li onClick={selectDeckOnClick(deck.name)} className={styles["exportieren-deck-liste-element"]}>
+            <li 
+              onClick={selectDeckOnClick(deck.name)} 
+              className={styles["exportieren-deck-liste-element"] +
+                (deck.name === selectedDeck ? " " + styles["element-ausgewaehlt"] : "")}
+            >
               {cutString(deck.name)}
             </li>
           )
