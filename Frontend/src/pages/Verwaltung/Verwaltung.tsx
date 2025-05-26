@@ -4,7 +4,7 @@ import { getDecks, setDecks } from "../../deckState"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
 import { Deck, Card } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faXmark, faPlus, faPenToSquare, faPen, faSquareCaretLeft } from "@fortawesome/free-solid-svg-icons"
+import { faXmark, faPlus, faPenToSquare, faPen, faSquareCaretLeft, faCheck } from "@fortawesome/free-solid-svg-icons"
 
 /**
  * Verwaltung-Komponente:
@@ -24,6 +24,9 @@ function Verwaltung(): JSX.Element {
   const [neuesDeckFormular, setNeuesDeckFormular] = useState(false)
   const [neueKarteFormular, setNeueKarteFormular] = useState(false)
   const [deckUmbenennenFormular, setDeckUmbenennenFormular] = useState(false)
+
+  const [karteEntfernenIndex, setKarteEntfernenIndex] = useState(-1)
+  const [deckEntfernenName, setDeckEntfernenName] = useState("")
 
   const [suchfilterDecks, setSuchfilterDecks] = useState("")
   const [suchfilterKarten, setSuchfilterKarten] = useState("")
@@ -223,6 +226,8 @@ function Verwaltung(): JSX.Element {
                 setAktuellesDeck("")
                 setDeckUmbenennenFormular(false)
                 setKartenIndex(-1)
+                setKarteEntfernenIndex(-1)
+                setDeckEntfernenName("")
                 setNeuesDeckFormular(false)
                 setSuchfilterDecks(e.target.value)
               }}
@@ -294,6 +299,8 @@ function Verwaltung(): JSX.Element {
                         setAktuellesDeck(deck.name)
                         setDeckUmbenennenFormular(false)
                         setKartenIndex(-1)
+                        setKarteEntfernenIndex(-1)
+                        setDeckEntfernenName("")
                         setNeueKarteFormular(false)
                       }} 
                       title={deck.name}
@@ -306,14 +313,25 @@ function Verwaltung(): JSX.Element {
                       <button 
                         onClick={(e) => {
                           e.stopPropagation()
-                          setAktuellesDeck("")
-                          setDeckUmbenennenFormular(false)
-                          setKartenIndex(-1)
-                          deckEntfernen(deck.name)
+                          if(deckEntfernenName === deck.name) {
+                            setAktuellesDeck("")
+                            setDeckUmbenennenFormular(false)
+                            setKartenIndex(-1)
+                            setKarteEntfernenIndex(-1)
+                            setDeckEntfernenName("")
+                            deckEntfernen(deck.name)
+                          } else {
+                            setDeckEntfernenName(deck.name)
+                          }
                         }}
                         className={styles["deck-entfernen"]}
                       >
-                        <FontAwesomeIcon icon={faXmark} />
+                        {
+                          deckEntfernenName === deck.name ? 
+                            <FontAwesomeIcon icon={faCheck} />
+                          : 
+                            <FontAwesomeIcon icon={faXmark} /> 
+                        }
                       </button>
                     </div>
                   )
@@ -398,6 +416,8 @@ function Verwaltung(): JSX.Element {
                 onChange={(e) => {
                   setDeckUmbenennenFormular(false)
                   setKartenIndex(-1)
+                  setKarteEntfernenIndex(-1)
+                  setDeckEntfernenName("")
                   setNeueKarteFormular(false)
                   setSuchfilterKarten(e.target.value)
                 }}
@@ -413,6 +433,8 @@ function Verwaltung(): JSX.Element {
                           e.stopPropagation()
                           setDeckUmbenennenFormular(false)
                           setKartenIndex(-1)
+                          setKarteEntfernenIndex(-1)
+                          setDeckEntfernenName("")
                           setNeueKarteFormular(true)
                         }}
                         key={-1}
@@ -467,12 +489,23 @@ function Verwaltung(): JSX.Element {
                             <button 
                               onClick={(e) => {
                                 e.stopPropagation()
-                                setKartenIndex(-1)
-                                karteEntfernen(index)
+                                if(karteEntfernenIndex === index) {
+                                  setKartenIndex(-1)
+                                  setKarteEntfernenIndex(-1)
+                                  setDeckEntfernenName("")
+                                  karteEntfernen(index)
+                                } else {
+                                  setKarteEntfernenIndex(index)
+                                }
                               }}
                               className={styles["karte-entfernen"]}
                             >
-                              <FontAwesomeIcon icon={faXmark} />
+                              {
+                                karteEntfernenIndex === index ? 
+                                  <FontAwesomeIcon icon={faCheck} />
+                                : 
+                                  <FontAwesomeIcon icon={faXmark} /> 
+                              }
                             </button>
                           </td>
                         </tr>
