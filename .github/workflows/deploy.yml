@@ -18,14 +18,26 @@ jobs:
       with:
         node-version: '16'
 
-    - name: Install Dependencies
+    - name: Backend - Install Dependencies
       run: npm install
+      working-directory: ./Backend
 
-    - name: Build Project
+    - name: Backend - Start Project
+      run: nohup npm run start &> output.log &
+      working-directory: ./Backend
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+    - name: Frontend - Install Dependencies
+      run: npm install
+      working-directory: ./Frontend
+
+    - name: Frontend - Build Project
       run: npm run build
+      working-directory: ./Frontend
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }} 
-        publish_dir: ./build
+        publish_dir: ./Frontend/build

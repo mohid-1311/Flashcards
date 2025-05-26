@@ -197,7 +197,7 @@ function Verwaltung(): JSX.Element {
    * @return {void}
    */
   /* Von Mohids Komponente */
-  function addCardToDeck(newCard : {ausdruck: string, definition: string, weight: number}): void {
+  function addCardToDeck(newCard : Card): void {
     const neuesDeck = decks.map((deck: Deck) => {
       if (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer) {
         return {...deck, cards: [...deck.cards, newCard]}
@@ -264,6 +264,8 @@ function Verwaltung(): JSX.Element {
                       defaultValue={
                         deckNameBelegt(suchfilterDecks) ? "" : suchfilterDecks
                       }
+                      minLength={2}
+                      maxLength={32}
                       required
                       className={styles["deck-hinzufuegen"]}
                       onChange={(e) => {
@@ -356,6 +358,8 @@ function Verwaltung(): JSX.Element {
                             defaultValue={
                               aktuellesDeck
                             }
+                            minLength={2}
+                            maxLength={32}
                             required
                             className={styles["deck-umbenennen"]}
                             onChange={(e) => {
@@ -455,7 +459,6 @@ function Verwaltung(): JSX.Element {
                           key={index} 
                           className={index === kartenIndex ? styles["aktuelle-karte"] : undefined}
                         >
-
                           {Object.keys(karte).map((attributName) => (
                             <td>{karte[attributName as keyof Card] || "<Kein Wert>"}</td>
                           ))}
