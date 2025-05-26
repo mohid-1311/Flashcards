@@ -66,12 +66,6 @@
   background-color: lightblue;
 }
 
-.exportieren-liste-element:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.2);
-  text-decoration: underline;
-}
-
 .importieren-header {
   background-color: #3d8d36;
   text-align: start;
