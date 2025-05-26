@@ -18,11 +18,21 @@ jobs:
       with:
         node-version: '16'
 
-    - name: Install Dependencies
+    - name: Backend - Install Dependencies
+      run: npm install
+      working-directory: ./Backend
+
+    - name: Backend - Start Project
+      run: npm run start
+      working-directory: ./Backend
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+    - name: Frontend - Install Dependencies
       run: npm install
       working-directory: ./Frontend
 
-    - name: Build Project
+    - name: Frontend - Build Project
       run: npm run build
       working-directory: ./Frontend
 
