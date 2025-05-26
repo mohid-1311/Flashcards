@@ -138,6 +138,7 @@ div.decks-liste-flexbox > div:first-of-type:hover {
 
 form.deck-hinzufuegen {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     
     width: 100%;
@@ -147,7 +148,7 @@ input.deck-hinzufuegen {
     border: 0;
     border-radius: 5px;
 
-    min-width: 40px;
+    width: inherit;
 
     margin-right: 5px;
     padding: 5px;
@@ -290,7 +291,7 @@ button.deck-hinzufuegen:disabled, button.deck-umbenennen:disabled {
 div.deck-umbenennen-container {
     align-content: center;
 
-    width: 50%;
+    width: 40%;
 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -314,7 +315,6 @@ input.deck-umbenennen {
     border-radius: 5px;
 
     width: 100%;
-    min-width: 40px;
 
     margin-right: 5px;
     padding: 5px;
@@ -340,7 +340,7 @@ div.karte-bearbeiten-container {
 
     width: 29%;
 
-    margin-top: 63px;
+    margin-top: 25px;
 
     box-sizing: border-box;
 
@@ -381,8 +381,8 @@ textarea.karte-bearbeiten-eingabe {
     margin-inline: 5px;
     padding: 5px;
 
-    height: 4em;
-    min-height: 2em;
+    height: 6.4em;
+    min-height: 1.8em;
     resize: vertical;
 
     border: 0;

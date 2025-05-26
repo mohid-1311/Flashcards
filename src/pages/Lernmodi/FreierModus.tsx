@@ -31,7 +31,7 @@ function FreierModus() {
     if (currentIndex < selectedDeck.cards.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      setCurrentIndex(0); // Loop zum Anfang zurück
+      setCurrentIndex(0);
     }
   };
 
@@ -49,13 +49,11 @@ function FreierModus() {
             <h1 className={styles.fehlerMeldung}>Es sind keine Karten im Deck. Füge Karten hinzu, um zu lernen!</h1>) : (
             <>
               <h3>{currentIndex+1}/{selectedDeck.cards.length}</h3>
-              {selectedDeck.cards.length > 0 && (
-                <button onClick={handleToggleDefinition} className={styles.card}>
-                {showDefinition
-                  ? selectedDeck.cards[currentIndex].definition
-                  : selectedDeck.cards[currentIndex].ausdruck}
-                </button>
-              )}
+              <button onClick={handleToggleDefinition} className={styles.card}>
+              {showDefinition
+                ? selectedDeck.cards[currentIndex].definition || "<Keine Definition vorhanden>"
+                : selectedDeck.cards[currentIndex].ausdruck || "<Kein Ausdruck vorhanden>"}
+               </button>
             </>
           )}
         </div>

@@ -1,5 +1,5 @@
 // import React from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons"
 import styles from "./NavBar.module.css"
@@ -7,6 +7,7 @@ import styles from "./NavBar.module.css"
 
 function NavBar() {
 
+  const location = useLocation();
   const navigate = useNavigate()
   function handleLogout() {
     localStorage.setItem('isAuthenticated', "false")
@@ -24,13 +25,14 @@ function NavBar() {
     <nav>
       <ul className={styles["link-liste"]}>
         {links.map((link, index) => (
-          <Link className={styles["link"]} to={link.link}>
-            <li key={index} className={styles["link-text"]}>
+          <Link 
+            className={`${styles["link"]} ${((`.${location.pathname}`) === link.link) ? styles["current-page"] : ""}`} to={link.link} key={index}>
+            <li key={index} className={`${styles[`link-text`]}`}>
               <h3>{link.label}</h3>
             </li>
           </Link>
         ))}
-        <Link onClick={handleLogout} className={styles["logout-link"]} to="./Anmeldung">
+        <Link onClick={handleLogout} className={styles["logout-link"]} to="./Anmeldung" key={links.length}>
           <li key={links.length} className={styles["logout-link-text"]}>
             <button
               className={styles["logout-button"]}

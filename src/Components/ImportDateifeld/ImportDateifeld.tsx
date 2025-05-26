@@ -110,7 +110,7 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
         onDrop={dropHandler}
         onDragOver={dragoverHandler}>
         {(files.length < 1) ?
-          "drag json files here" :
+          "drag json files to import here" :
           files.map((file: File) => {
             return (
               <div>{file.name}</div>

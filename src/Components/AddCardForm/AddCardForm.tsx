@@ -3,7 +3,7 @@ import styles from "./AddCardForm.module.css"
 import { AddCardFormProps } from "../../types";
 
 /*
-  Wenn der Text vom Deckname zu lang ist, sollen nur die ersten 12 Zeichen angezeigt werden
+  Wenn der Text vom Deckname zu lang ist, sollen nur die ersten 12 Zeichen angezeigt werden.
 */
 export function sliceHeader(text: string, length: number = 15){
   return text.length <= length ? text : (text.slice(0, length-3) + "...")
@@ -28,7 +28,7 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks}: AddCardFormProps){
       return
     }
     
-    const newCard = { ausdruck, definition, weight}
+    const newCard = { ausdruck: ausdruck.trim(), definition: definition.trim(), weight }
 
     onAddCard(newCard, deckIndex);
     setAusdruck("")

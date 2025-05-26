@@ -1,40 +1,68 @@
-.flex-column, .flex-row {
-  background-color: #f8f8f8;
+.start-flex-container {
+  height: calc(100vh - 61.6px);
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  /* background-color: #007bff; */
-}
-
-.flex-column {
   flex-direction: column;
-  flex: 1
-}
-
-.flex-row {
-  flex-direction: row;
-  flex: 1;
   flex-wrap: wrap;
-  min-height: calc(100vh - 61.6px); /*muss je nach höhe der Navbar geändert werden*/
+  background-color: #f8f8f8;
 }
 
-.flex-column > *, .flex-row > * {
-  flex: 1;
+.start-box-lernen,
+.start-box-unklar,
+.start-box-import {
+  box-sizing: border-box;
+  height: 50%;
+  width: 50%;
+  padding: 2rem;
 }
 
-.start-element {
-  margin: 1.8rem;
+.start-box-lernen {
+  max-height: 100%;
+  height: 100%;
+}
+
+@media (max-width: 800px) {
+
+  .start-flex-container {
+    height: initial;
+    flex-wrap: nowrap;
+  }
+
+  .start-box-lernen,
+  .start-box-unklar,
+  .start-box-import {
+    box-sizing: content-box;
+    max-height: 30rem;
+    width: initial;
+  }
+}
+
+.start-lernen,
+.start-unklar,
+.start-import {
+  box-sizing: border-box;
+  max-height: inherit;
+  height: 100%;
+  width: 100%;
   /* border: 2px solid black; */
   padding: 2rem;
   border-radius: 1.5rem;
   background: white;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1)
 }
-  
+
 .start-lernen {
-  flex: 1.5
+  padding: 0;
 }
-  
-.start-element:hover {
+
+.start-import>h4 {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+.start-lernen:hover,
+.start-unklar:hover,
+.start-import:hover {
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
 }
