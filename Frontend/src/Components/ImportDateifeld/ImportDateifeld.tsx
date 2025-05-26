@@ -11,7 +11,8 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
     for (let card of o.cards) {
       if (typeof card.ausdruck !== "string") return false
       if (typeof card.definition !== "string") return false
-      if (typeof card.weight !== "number") return false
+      // weight has a standard and is therefore not required
+      // if (typeof card.weight !== "number") return false
     }
     return true;
   }
@@ -73,6 +74,13 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
       if (!istDeck(newDeck)) {
         console.log(`parsed object from ${file.name} is not a deck`)
         continue
+      }
+
+      // weight wird falls nicht vorhanden auf standard wert 10 gesetzt
+      for (let card of newDeck.cards) {
+        if (!card.weight) {
+          card.weight = 10
+        }
       }
       
       // nach Deck mit gleichem Namen suchen
