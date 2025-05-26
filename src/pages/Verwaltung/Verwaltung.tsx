@@ -37,16 +37,7 @@ function Verwaltung(): JSX.Element {
    * @return {boolean}
    */
 
-  function setzeKartenAttribut<K extends keyof Card>(attribut: K, neuerWert: Card[K]): void {
-    decks.find((deck: Deck) => (deck.name === deckName && deck.user === localStorage.getItem("user")))?.cards.forEach((card: Card, index: number) => {
-      if (index === kartenIndex) {
-        card[attribut] = neuerWert
   
-        setLocalDecks([...decks])
-        setDecks([...decks])
-      }
-    })
-  }
 
     function deckNameBelegt(deckName: string): boolean {
       return decks.some((deck: Deck) => (
@@ -161,7 +152,7 @@ function Verwaltung(): JSX.Element {
    * @param {string} neuerWert - Neuer Wert des Karten-Attributs
    * @return {void}
    */
-  function setzeKartenAttribut(attribut: keyof Card, neuerWert: string): void {
+  function setzeKartenAttribut<K extends keyof Card>(attribut: K, neuerWert: Card[K]): void {
     decks.find((deck: Deck) => (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer))?.cards.forEach((card: Card, index: number) => {
       if (index === kartenIndex) {
         card[attribut] = neuerWert
