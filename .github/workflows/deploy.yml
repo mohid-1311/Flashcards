@@ -18,6 +18,9 @@ jobs:
       with:
         node-version: '16'
 
+    - name: Change Directory
+      run: cd ./Frontend/
+
     - name: Install Dependencies
       run: npm install
 

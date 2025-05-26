@@ -1,7 +1,9 @@
 import { useState } from "react";
 import styles from "./Anmeldung.module.css"
 import { useNavigate } from "react-router-dom";
-import { User, AnmeldungCompProps } from "../../types";
+import { AnmeldungCompProps } from "../../types";
+import bcrypt from "bcryptjs";
+import { getBenutzer } from "../../daten";
 
 function AnmeldungComp({setAnmeldung, setShowNav, setIsAuthentificated} : AnmeldungCompProps){
 
@@ -9,24 +11,32 @@ function AnmeldungComp({setAnmeldung, setShowNav, setIsAuthentificated} : Anmeld
   const [passwort, setPasswort] = useState("")
   const navigate = useNavigate()
 
-  function login(e: React.FormEvent<HTMLFormElement>){
+  async function login(e: React.FormEvent<HTMLFormElement>){
     e.preventDefault();
-    console.log(JSON.parse(localStorage.getItem("loginData") || "[]"))
-    const userArray: User[] = JSON.parse(localStorage.getItem("loginData") || "[]");
 
-    const userExists = userArray.some((user: User) => user.uName === username && user.pw === passwort)
-
-    if(userExists){
-      localStorage.setItem("user", username)
-      localStorage.setItem("isAuthenticated", "true")
-      setIsAuthentificated(true)
-      setShowNav(false)
-      navigate("/Startseite")
-      return
+    const benutzer = await getBenutzer(username);
+    if(!benutzer) {
+      alert("Ungültiger Benutzer")
+      return;
     }
-    alert("Ungültige Eingabewerte")
-    //userExists ? navigate("/Startseite") : alert("Ungültige Eingabewerte")
+    
+    if(!benutzer.passwort) return;
+
+    const passwortKorrekt = await bcrypt.compare(passwort, benutzer.passwort);
+    
+    if (!passwortKorrekt) {
+      alert("Ungültiges Passwort")
+      return;
+    }
+
+    localStorage.setItem("user", username)
+    localStorage.setItem("isAuthenticated", "true")
+    setIsAuthentificated(true)
+    setShowNav(false)
+    navigate("/Startseite")
+    return
   }
+  
   return(
     <div className={styles["anmeldung-container"]}>
       <form onSubmit={(e) => login(e)}>
@@ -39,6 +49,8 @@ function AnmeldungComp({setAnmeldung, setShowNav, setIsAuthentificated} : Anmeld
               className={styles["nutzername-input"]} 
               name="nutzername" 
               onChange={(e) => setUsername(e.target.value)}
+              minLength={4}
+              maxLength={16}
               required
             />
           </div>
@@ -50,6 +62,8 @@ function AnmeldungComp({setAnmeldung, setShowNav, setIsAuthentificated} : Anmeld
               className={styles["nutzername-passwort"]}
               name="passwort" 
               onChange={(e) => setPasswort(e.target.value)}
+              minLength={4}
+              maxLength={20}
               required
             />
           </div>
