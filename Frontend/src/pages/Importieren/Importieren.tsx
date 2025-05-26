@@ -42,7 +42,6 @@ function Importieren(){
           )
         })}
         </ul>
-        <h3><i>WORK IN PROGRESS</i></h3>
       </div>
       <div className={styles["importieren-div"]}>
         <div className={styles["importieren-header"]}>
