@@ -38,21 +38,28 @@ function Importieren(){
         <div className={styles["exportieren-header"]}>
           <h3>Exportieren</h3>
         </div>
-        <ul className={styles["exportieren-deck-liste"]}>
-          {decks.length === 0
-          ? <i><br />no decks available</i>
-          : decks.map((deck: Deck, index: number)=> {
-          return (
-            <li 
-              onClick={selectDeckOnClick(deck.name)} 
-              className={styles["exportieren-deck-liste-element"] +
-                (deck.name === selectedDeck ? " " + styles["element-ausgewaehlt"] : "")}
-            >
-              {cutString(deck.name)}
-            </li>
-          )
-        })}
-        </ul>
+        <div className={styles["exportieren-body"]}>
+          <ul className={styles["exportieren-deck-liste"]}>
+            {decks.length === 0
+            ? <i><br />no decks available</i>
+            : decks.map((deck: Deck, index: number)=> {
+            return (
+              <li 
+                onClick={selectDeckOnClick(deck.name)} 
+                className={styles["exportieren-deck-liste-element"] +
+                  (deck.name === selectedDeck ? " " + styles["element-ausgewaehlt"] : "")}
+                  >
+                {cutString(deck.name)}
+              </li>
+            )
+          })}
+          </ul>
+          <div className={styles["exportieren-buttons"]}>
+            <button className={styles["exportieren-button-json"]}>
+              Exportieren (.json)
+            </button>
+          </div>
+        </div>
       </div>
       <div className={styles["importieren-div"]}>
         <div className={styles["importieren-header"]}>

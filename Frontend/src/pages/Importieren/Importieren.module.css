@@ -35,9 +35,17 @@
   color: white;
 }
 
-.exportieren-deck-liste {
+.exportieren-body {
   display: flex;
   flex-direction: column;
+  height: 100%
+}
+
+.exportieren-deck-liste {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: center;
+  flex-grow: 1;
   justify-content: flex-start;
   align-items: flex-start;
   list-style-type: none;
@@ -64,6 +72,10 @@
 
 .element-ausgewaehlt {
   background-color: lightblue;
+}
+
+.exportieren-buttons {
+  justify-self: flex-end;
 }
 
 .importieren-header {
