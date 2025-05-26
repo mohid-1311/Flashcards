@@ -3,7 +3,7 @@ import styles from "./Anmeldung.module.css"
 import { useNavigate } from "react-router-dom";
 import { AnmeldungCompProps } from "../../types";
 import bcrypt from "bcryptjs";
-import { getBenutzer } from "../../daten";
+import { getBenutzer } from "../../data";
 
 function AnmeldungComp({setAnmeldung, setShowNav, setIsAuthentificated} : AnmeldungCompProps){
 

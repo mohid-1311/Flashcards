@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getBenutzer, addBenutzer } from "../../daten"
+import { getBenutzer, addBenutzer } from "../../data"
 import { User, SetAnmeldung } from "../../types";
 import styles from "../Anmeldung/Anmeldung.module.css"
 import bcrypt from "bcryptjs";

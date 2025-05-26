@@ -12,6 +12,7 @@ if (!databaseUrl) {
 }
 
 const app = express();
+const port = process.env.PORT || 4000 
 const db = drizzle(databaseUrl);
 
 app.get("/benutzer", async (request, response) => {
@@ -75,6 +76,6 @@ app.get("/karteikarten", async (request, response) => {
   }
 });
 
-app.listen(90, () => {
+app.listen(port, () => {
   console.log("Server gestartet");
 });

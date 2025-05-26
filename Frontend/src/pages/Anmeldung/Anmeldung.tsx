@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AnmeldungComp from "../../Components/Anmeldung/AnmeldungComp";
 import RegistrierungComp from "../../Components/Registrierung/RegistrierungComp";
-import "../../daten";
+import "../../data";
 
 
 type AnmeldungProps = {
