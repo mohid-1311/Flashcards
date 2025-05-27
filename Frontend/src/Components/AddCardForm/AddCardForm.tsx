@@ -10,7 +10,7 @@ export function sliceHeader(text: string, length: number = 15){
 }
 
 function AddCardForm({ onAddCard, deckIndex = 0, decks}: AddCardFormProps){
-  const [ausdruck, setAusdruck] = useState("")
+  const [term, setTerm] = useState("")
   const [definition, setDefinition] = useState("")
   const [weight, setWeight] = useState(10)
 
@@ -23,15 +23,15 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks}: AddCardFormProps){
     /*Verhindert, dass die Seite neugeladen wird. States bleiben also erhalten*/
     e.preventDefault()
 
-    if(!ausdruck.trim() || !definition.trim()){
+    if(!term.trim() || !definition.trim()){
       alert("Bitte füllen Sie alle Felder aus.")
       return
     }
     
-    const newCard = { ausdruck: ausdruck.trim(), definition: definition.trim(), weight }
+    const newCard = { term: term.trim(), definition: definition.trim(), weight }
 
     onAddCard(newCard, deckIndex);
-    setAusdruck("")
+    setTerm("")
     setDefinition("")
     setWeight(10)
   }
@@ -45,13 +45,13 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks}: AddCardFormProps){
         </h2>
         <div className={styles["form-group"]}>
           {/*Ausdruck Eingabe*/}
-          <label htmlFor="ausdruck" className={styles["form-label"]}>Ausdruck</label>
+          <label htmlFor="term" className={styles["form-label"]}>Ausdruck</label>
           <input 
             type="text" 
-            name="ausdruck" 
-            value={ausdruck} 
+            name="term" 
+            value={term} 
             required
-            onChange={e => setAusdruck(e.target.value)}
+            onChange={e => setTerm(e.target.value)}
             className={styles["form-input"]}
           />
         </div>

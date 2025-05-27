@@ -1,5 +1,5 @@
 import { JSX, useState } from "react"
-import styles from "./Verwaltung.module.css"
+import styles from "./Management.module.css"
 import { getDecks, setDecks } from "../../deckState"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
 import { Deck, Card } from "../../types";
@@ -7,29 +7,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark, faPlus, faPenToSquare, faPen, faSquareCaretLeft, faCheck } from "@fortawesome/free-solid-svg-icons"
 
 /**
- * Verwaltung-Komponente:
+ * Management-Komponente:
  *  - Decks-Liste
  *  - Karteikarten-Liste
  *  - Karteikarten-Bearbeitungsfeld
  * @return {JSX.Element}
  */
-function Verwaltung(): JSX.Element {
-  const aktuellerNutzer = localStorage.getItem("user")?.toLowerCase()
+function Management(): JSX.Element {
+  const currentUser = localStorage.getItem("user")?.toLowerCase()
   
-  const [decks, setLocalDecks] = useState(getDecks().filter((deck: Deck) => deck.user.toLowerCase() === aktuellerNutzer) || [])
+  const [decks, setLocalDecks] = useState(getDecks().filter((deck: Deck) => deck.user.toLowerCase() === currentUser) || [])
   
-  const [aktuellesDeck, setAktuellesDeck] = useState("")
-  const [kartenIndex, setKartenIndex] = useState(-1)
+  const [currentDeck, setCurrentDeck] = useState("")
+  const [cardIndex, setCardIndex] = useState(-1)
 
-  const [neuesDeckFormular, setNeuesDeckFormular] = useState(false)
-  const [neueKarteFormular, setNeueKarteFormular] = useState(false)
-  const [deckUmbenennenFormular, setDeckUmbenennenFormular] = useState(false)
+  const [newDeckForm, setNewDeckForm] = useState(false)
+  const [newCardForm, setNewCardForm] = useState(false)
+  const [renameDeckForm, setRenameDeckForm] = useState(false)
 
-  const [karteEntfernenIndex, setKarteEntfernenIndex] = useState(-1)
-  const [deckEntfernenName, setDeckEntfernenName] = useState("")
+  const [removeCardIndex, setRemoveCardIndex] = useState(-1)
+  const [removeDeckIndex, setRemoveDeckIndex] = useState("")
 
-  const [suchfilterDecks, setSuchfilterDecks] = useState("")
-  const [suchfilterKarten, setSuchfilterKarten] = useState("")
+  const [searchFilterDecks, setSearchFilterDecks] = useState("")
+  const [searchFilterCards, setSearchFilterCards] = useState("")
 
   /**
    * Funktion, die überprüft, ob der Name folgende Kriterien erfüllt:
@@ -39,13 +39,10 @@ function Verwaltung(): JSX.Element {
    * @param {string} deckName - Der zu überprüfenden Name
    * @return {boolean}
    */
-
-  
-
-    function deckNameBelegt(deckName: string): boolean {
+    function deckNameExists(deckName: string): boolean {
       return decks.some((deck: Deck) => (
         deckName.trim().toLowerCase() === deck.name.trim().toLowerCase()) || // Keine Decks mit gleichem Namen
-        eingabeUngueltig(deckName) // Keine Decks mit ungueltigem Namen
+        invalidInput(deckName) // Keine Decks mit ungueltigem Namen
       )
     }
 
@@ -55,14 +52,14 @@ function Verwaltung(): JSX.Element {
      * - Keine Eingabe mit unsichtbarem Zeichen am Anfang
      * - Keine Eingabe mit unsichtbarem Zeichen am Ende
      *
-     * @param {string} eingabe - Die zu überprüfende Eingabe
+     * @param {string} input - Die zu überprüfende Eingabe
      * @return {boolean}
      */
-    function eingabeUngueltig(eingabe: string): boolean {
+    function invalidInput(input: string): boolean {
       return (
-        eingabe.trim() === "" || // Keine Eingabe nur aus Leerzeichen
-        eingabe.trim().startsWith("‎") || // Keine Eingabe mit unsichtbarem Zeichen am Anfang
-        eingabe.trim().endsWith("‎") // Keine Eingabe mit unsichtbarem Zeichen am Ende
+        input.trim() === "" || // Keine Eingabe nur aus Leerzeichen
+        input.trim().startsWith("‎") || // Keine Eingabe mit unsichtbarem Zeichen am Anfang
+        input.trim().endsWith("‎") // Keine Eingabe mit unsichtbarem Zeichen am Ende
       )
     }
 
@@ -75,13 +72,13 @@ function Verwaltung(): JSX.Element {
    * @param {string} deckName - Name des Decks 
    * @return {void}
    */
-  function deckHinzufuegen(deckName: string): void {
-    deckName = deckName.trim() // Leerzeichen vor und nach dem Namen entfernen
+  function addDeck(deckName: string): void {
+    deckName = deckName.trim() // Leerzeichen vor und nach dem Namen remove
 
-    const neueDecks = [...decks, {name: deckName, user: aktuellerNutzer, cards: []}]
+    const newDecks = [...decks, {name: deckName, user: currentUser, cards: []}]
     
-    setLocalDecks(neueDecks)
-    setDecks(neueDecks)
+    setLocalDecks(newDecks)
+    setDecks(newDecks)
   }
 
   /**
@@ -92,35 +89,35 @@ function Verwaltung(): JSX.Element {
    * @param {string} deckName - Name des Decks 
    * @return {void}
    */
-  function deckEntfernen(deckName: string): void {
-    setLocalDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user.toLowerCase() !== aktuellerNutzer)))
-    setDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user.toLowerCase() !== aktuellerNutzer)))
+  function removeDeck(deckName: string): void {
+    setLocalDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user.toLowerCase() !== currentUser)))
+    setDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user.toLowerCase() !== currentUser)))
   }
 
   /**
    * Funktion, die beim Abschicken des Umbenennen-Formulars
    * aufgerufen wird, um den neuen Namen des Decks zu setzen.
    *
-   * @param {string} neuerWert - Neuer Name des Decks 
+   * @param {string} newName - Neuer Name des Decks 
    * @return {void}
    */
-  function deckUmbenennen(neuerWert: string): void {
-    neuerWert = neuerWert.trim() // Leerzeichen vor und nach dem Namen entfernen
+  function renameDeck(newName: string): void {
+    newName = newName.trim() // Leerzeichen vor und nach dem Namen remove
 
-    const neueDecks = decks.map((deck: Deck) => {
-      if (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer) {
+    const newDecks = decks.map((deck: Deck) => {
+      if (deck.name === currentDeck && deck.user.toLowerCase() === currentUser) {
         return {
           ...deck,
-          name: neuerWert
+          name: newName
         }
       }
       return deck
     })
 
-    setLocalDecks(neueDecks)
-    setDecks(neueDecks)
+    setLocalDecks(newDecks)
+    setDecks(newDecks)
 
-    setAktuellesDeck(neuerWert)
+    setCurrentDeck(newName)
   }
 
   /**
@@ -128,22 +125,22 @@ function Verwaltung(): JSX.Element {
    * aufgerufen wird, um diese nach einem Dialogfenster zu löschen.
    * Bearbeitetes Decks wird synchronisiert.
    *
-   * @param {number} kartenIndex - Index der Karteikarte 
+   * @param {number} cardIndex - Index der Karteikarte 
    * @return {void}
    */
-  function karteEntfernen(kartenIndex: number): void {
-    const neueDecks = decks.map((deck: Deck) => {
-      if (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer) {
+  function karteEntfernen(cardIndex: number): void {
+    const newDecks = decks.map((deck: Deck) => {
+      if (deck.name === currentDeck && deck.user.toLowerCase() === currentUser) {
         return {
           ...deck,
-          cards: deck.cards.filter((card: Card, index: number) => index !== kartenIndex)
+          cards: deck.cards.filter((card: Card, index: number) => index !== cardIndex)
         }
       }
       return deck
     })
 
-    setLocalDecks(neueDecks)
-    setDecks(neueDecks)
+    setLocalDecks(newDecks)
+    setDecks(newDecks)
   }
 
   /**
@@ -151,14 +148,14 @@ function Verwaltung(): JSX.Element {
    * um den Wert in der entsprechenden Karteikarte zu aktualisieren.
    * Bearbeitetes Decks wird synchronisiert.
    * 
-   * @param {Card} attribut - Karten-Attribut, welches verändert werden soll
-   * @param {string} neuerWert - Neuer Wert des Karten-Attributs
+   * @param {Card} attribute - Karten-Attribut, welches verändert werden soll
+   * @param {string} newValue - Neuer Wert des Karten-Attributs
    * @return {void}
    */
-  function setzeKartenAttribut<K extends keyof Card>(attribut: K, neuerWert: Card[K]): void {
-    decks.find((deck: Deck) => (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer))?.cards.forEach((card: Card, index: number) => {
-      if (index === kartenIndex) {
-        card[attribut] = neuerWert
+  function setzeKartenAttribut<K extends keyof Card>(attribute: K, newValue: Card[K]): void {
+    decks.find((deck: Deck) => (deck.name === currentDeck && deck.user.toLowerCase() === currentUser))?.cards.forEach((card: Card, index: number) => {
+      if (index === cardIndex) {
+        card[attribute] = newValue
   
         setLocalDecks([...decks])
         setDecks([...decks])
@@ -173,9 +170,9 @@ function Verwaltung(): JSX.Element {
    * @param {Deck} deck - Das zu überprüfende Deck
    * @return {boolean} - True, wenn das Deck dem Suchfilter entspricht
    */
-  function entsprichtSuchfilterDeck(deck: Deck): boolean {
-    return suchfilterDecks.split(" ").every(suchbegriff => 
-      `${deck.name}`.toLowerCase().includes(suchbegriff.toLowerCase())
+  function deckMatchesSearchFilter(deck: Deck): boolean {
+    return searchFilterDecks.split(" ").every(searchTerm => 
+      `${deck.name}`.toLowerCase().includes(searchTerm.toLowerCase())
     )
   }
 
@@ -183,12 +180,12 @@ function Verwaltung(): JSX.Element {
    * Funktion, die überprüft, ob jedes, durch ein Leerzeichen getrenntes Wort 
    * der Suchleiste mit dem Inhalt einer Karteikarte übereinstimmt.
    *
-   * @param {Card} karte - Die zu überprüfende Karte
+   * @param {Card} card - Die zu überprüfende Karte
    * @return {boolean} - True, wenn die Karteikarte dem Suchfilter entspricht
    */
-  function entsprichtSuchfilterKarte(karte: Card): boolean {
-    return suchfilterKarten.split(" ").every(suchbegriff => 
-      `${karte.ausdruck} ${karte.definition}`.toLowerCase().includes(suchbegriff.toLowerCase())
+  function cardMatchesSearchFilter(card: Card): boolean {
+    return searchFilterCards.split(" ").every(searchTerm => 
+      `${card.term} ${card.definition}`.toLowerCase().includes(searchTerm.toLowerCase())
     )
   }
 
@@ -199,87 +196,87 @@ function Verwaltung(): JSX.Element {
    * @param {Card} newCard - neue Karte
    * @return {void}
    */
-  /* Von Mohids Komponente */
+  /* Von Mohid's Komponente */
   function addCardToDeck(newCard : Card): void {
-    const neuesDeck = decks.map((deck: Deck) => {
-      if (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer) {
+    const newDeck = decks.map((deck: Deck) => {
+      if (deck.name === currentDeck && deck.user.toLowerCase() === currentUser) {
         return {...deck, cards: [...deck.cards, newCard]}
       }
       return deck
     })
-    setLocalDecks(neuesDeck)
-    setDecks(neuesDeck)
+    setLocalDecks(newDeck)
+    setDecks(newDeck)
   }
 
   /* Eigentliches JSX-Element mit dem Inhalt der Seite */
   return (
     <>
-      <div className={styles["verwaltung-container"]}>
-        <div className={styles["decks-liste-container"]}>
-          <div className={styles["decks-liste-header"]}>
+      <div className={styles["management-container"]}>
+        <div className={styles["decks-list-container"]}>
+          <div className={styles["decks-list-header"]}>
             {/* Decks-Suchleiste */}
             <input
-              className={styles["decks-suchleiste"]} 
+              className={styles["decks-searchbar"]} 
               type="text" 
               placeholder="Decks durchsuchen..." 
               onChange={(e) => {
-                setAktuellesDeck("")
-                setDeckUmbenennenFormular(false)
-                setKartenIndex(-1)
-                setKarteEntfernenIndex(-1)
-                setDeckEntfernenName("")
-                setNeuesDeckFormular(false)
-                setSuchfilterDecks(e.target.value)
+                setCurrentDeck("")
+                setRenameDeckForm(false)
+                setCardIndex(-1)
+                setRemoveCardIndex(-1)
+                setRemoveDeckIndex("")
+                setNewDeckForm(false)
+                setSearchFilterDecks(e.target.value)
               }}
             />
           </div>
-          <div className={styles["decks-liste-flexbox"]} >
+          <div className={styles["decks-list-flexbox"]} >
             {/* Element zum Hinzufügen eines Karteikartendecks */
             <div 
               onClick={(e) =>{
                 e.stopPropagation()
-                setNeuesDeckFormular(true)
+                setNewDeckForm(true)
               }}
               key={-1}
               title="Karteikartendeck hinzufügen"
-              id="deck-hinzufuegen"
+              id="deck-add"
             >
               {
-                neuesDeckFormular ? 
+                newDeckForm ? 
                   <form 
-                    name="neues-deck"
+                    name="new-deck"
                     onKeyUp={(e) => {
                       if(e.key === "Escape") {
                         e.preventDefault()
 
-                        setNeuesDeckFormular(false)
+                        setNewDeckForm(false)
                       }
                     }}
                     onSubmit={(e) => {
                       e.preventDefault()
                       
-                      deckHinzufuegen(((e.target as HTMLFormElement).elements[0] as HTMLInputElement).value)
-                      setNeuesDeckFormular(false)
+                      addDeck(((e.target as HTMLFormElement).elements[0] as HTMLInputElement).value)
+                      setNewDeckForm(false)
                     }}
-                    className={styles["deck-hinzufuegen"]} 
+                    className={styles["deck-add"]} 
                   >
                     <input 
                       type="text" 
                       placeholder="Name eingeben..." 
                       defaultValue={
-                        deckNameBelegt(suchfilterDecks) ? "" : suchfilterDecks
+                        deckNameExists(searchFilterDecks) ? "" : searchFilterDecks
                       }
                       minLength={2}
                       maxLength={32}
                       required
-                      className={styles["deck-hinzufuegen"]}
+                      className={styles["deck-add"]}
                       onChange={(e) => {
-                        (((e.target as HTMLInputElement).parentElement as HTMLFormElement).elements[1] as HTMLButtonElement).disabled = deckNameBelegt(e.target.value)
+                        (((e.target as HTMLInputElement).parentElement as HTMLFormElement).elements[1] as HTMLButtonElement).disabled = deckNameExists(e.target.value)
                       }}
                     />
                     <button
                       type="submit"
-                      className={styles["deck-hinzufuegen"]} 
+                      className={styles["deck-add"]} 
                     >
                       <FontAwesomeIcon icon={faPlus} />
                     </button>
@@ -290,22 +287,22 @@ function Verwaltung(): JSX.Element {
             </div>
             }
             {/* Für alle Karteikartendecks wird ein Element hinzugefügt */
-              decks.filter((deck: Deck, index: number) => (deck.user.toLowerCase() === aktuellerNutzer)).map((deck: Deck, index: number) => {
-                if (entsprichtSuchfilterDeck(deck)) {
+              decks.filter((deck: Deck, index: number) => (deck.user.toLowerCase() === currentUser)).map((deck: Deck, index: number) => {
+                if (deckMatchesSearchFilter(deck)) {
                   return (
                     <div
                       onClick={(e) => {
                         e.stopPropagation()
-                        setAktuellesDeck(deck.name)
-                        setDeckUmbenennenFormular(false)
-                        setKartenIndex(-1)
-                        setKarteEntfernenIndex(-1)
-                        setDeckEntfernenName("")
-                        setNeueKarteFormular(false)
+                        setCurrentDeck(deck.name)
+                        setRenameDeckForm(false)
+                        setCardIndex(-1)
+                        setRemoveCardIndex(-1)
+                        setRemoveDeckIndex("")
+                        setNewCardForm(false)
                       }} 
                       title={deck.name}
                       key={index} 
-                      className={(deck.name === aktuellesDeck) ? styles["aktuelles-deck"] : undefined}
+                      className={(deck.name === currentDeck) ? styles["current-deck"] : undefined}
                     >
                       <div>
                         {deck.name}
@@ -313,21 +310,21 @@ function Verwaltung(): JSX.Element {
                       <button 
                         onClick={(e) => {
                           e.stopPropagation()
-                          if(deckEntfernenName === deck.name) {
-                            setAktuellesDeck("")
-                            setDeckUmbenennenFormular(false)
-                            setKartenIndex(-1)
-                            setKarteEntfernenIndex(-1)
-                            setDeckEntfernenName("")
-                            deckEntfernen(deck.name)
+                          if(removeDeckIndex === deck.name) {
+                            setCurrentDeck("")
+                            setRenameDeckForm(false)
+                            setCardIndex(-1)
+                            setRemoveCardIndex(-1)
+                            setRemoveDeckIndex("")
+                            removeDeck(deck.name)
                           } else {
-                            setDeckEntfernenName(deck.name)
+                            setRemoveDeckIndex(deck.name)
                           }
                         }}
-                        className={styles["deck-entfernen"]}
+                        className={styles["deck-remove"]}
                       >
                         {
-                          deckEntfernenName === deck.name ? 
+                          removeDeckIndex === deck.name ? 
                             <FontAwesomeIcon icon={faCheck} />
                           : 
                             <FontAwesomeIcon icon={faXmark} /> 
@@ -342,50 +339,50 @@ function Verwaltung(): JSX.Element {
             }
           </div>
         </div>
-        <div className={styles["deck-karten-rahmen-container"]}>
-          <div className={styles["deck-karten-liste-container"]}>
-            <div className={styles["deck-karten-header"]}>
+        <div className={styles["deck-cards-rahmen-container"]}>
+          <div className={styles["deck-cards-list-container"]}>
+            <div className={styles["deck-cards-header"]}>
               <div 
-                title={aktuellesDeck}
-                className={styles["deck-umbenennen-container"]}
+                title={currentDeck}
+                className={styles["deck-rename-container"]}
               >
                 {
-                  aktuellesDeck ? 
+                  currentDeck ? 
                     (
-                      deckUmbenennenFormular ?
+                      renameDeckForm ?
                         <form
-                          name="deck-umbenennen"
+                          name="deck-rename"
                           onKeyUp={(e) => {
                             if(e.key === "Escape") {
                               e.preventDefault()
 
-                              setDeckUmbenennenFormular(false)
+                              setRenameDeckForm(false)
                             }
                           }}
                           onSubmit={(e) => {
                             e.preventDefault()
 
-                            deckUmbenennen(((e.target as HTMLFormElement).elements[0] as HTMLInputElement).value)
-                            setDeckUmbenennenFormular(false)
+                            renameDeck(((e.target as HTMLFormElement).elements[0] as HTMLInputElement).value)
+                            setRenameDeckForm(false)
                           }}
-                          className={styles["deck-umbenennen"]}
+                          className={styles["deck-rename"]}
                         >
                           <input
                             type="text" 
                             placeholder="Name eingeben..." 
                             defaultValue={
-                              aktuellesDeck
+                              currentDeck
                             }
                             minLength={2}
                             maxLength={32}
                             required
-                            className={styles["deck-umbenennen"]}
+                            className={styles["deck-rename"]}
                             onChange={(e) => {
-                              (((e.target as HTMLInputElement).parentElement as HTMLFormElement).elements[1] as HTMLButtonElement).disabled = deckNameBelegt(e.target.value)
+                              (((e.target as HTMLInputElement).parentElement as HTMLFormElement).elements[1] as HTMLButtonElement).disabled = deckNameExists(e.target.value)
                             }}
                           >
                           </input>
-                          <button className={styles["deck-umbenennen"]}>
+                          <button className={styles["deck-rename"]}>
                             <FontAwesomeIcon icon={faPen} />
                           </button>
                         </form>
@@ -393,12 +390,12 @@ function Verwaltung(): JSX.Element {
                         <>
                           <FontAwesomeIcon 
                             onClick={() => {
-                              setDeckUmbenennenFormular(true)
+                              setRenameDeckForm(true)
                             }}
                             icon={faPenToSquare}
-                            className={styles["deck-umbenennen"]} 
+                            className={styles["deck-rename"]} 
                           />
-                          {` ` + aktuellesDeck} 
+                          {` ` + currentDeck} 
                         </>
                     )
                   : 
@@ -410,53 +407,53 @@ function Verwaltung(): JSX.Element {
               </div>
               {/* Karteikarten-Suchleiste */}
               <input 
-                className={styles["karten-suchleiste"]} 
+                className={styles["cards-searchbar"]} 
                 type="text" 
                 placeholder="Karteikarten durchsuchen..." 
                 onChange={(e) => {
-                  setDeckUmbenennenFormular(false)
-                  setKartenIndex(-1)
-                  setKarteEntfernenIndex(-1)
-                  setDeckEntfernenName("")
-                  setNeueKarteFormular(false)
-                  setSuchfilterKarten(e.target.value)
+                  setRenameDeckForm(false)
+                  setCardIndex(-1)
+                  setRemoveCardIndex(-1)
+                  setRemoveDeckIndex("")
+                  setNewCardForm(false)
+                  setSearchFilterCards(e.target.value)
                 }}
               />
             </div>
-            <div className={styles["deck-karten-flexbox"]}>
+            <div className={styles["deck-cards-flexbox"]}>
               <table>
                 <tbody>
                   {/* Zeile zum Hinzufügen einer Karteikarte */ 
-                    aktuellesDeck ? 
+                    currentDeck ? 
                       <tr 
                         onClick={(e) => {
                           e.stopPropagation()
-                          setDeckUmbenennenFormular(false)
-                          setKartenIndex(-1)
-                          setKarteEntfernenIndex(-1)
-                          setDeckEntfernenName("")
-                          setNeueKarteFormular(true)
+                          setRenameDeckForm(false)
+                          setCardIndex(-1)
+                          setRemoveCardIndex(-1)
+                          setRemoveDeckIndex("")
+                          setNewCardForm(true)
                         }}
                         key={-1}
                         title="Karteikarte hinzufügen"
-                        id="karte-hinzufuegen"
+                        id="card-add"
                       >
                         <td>
                           {
-                            neueKarteFormular ? 
-                              <AddCardForm onAddCard={addCardToDeck} deckIndex={decks.findIndex((deck: Deck) => deck.name === aktuellesDeck)} decks={decks} />
+                            newCardForm ? 
+                              <AddCardForm onAddCard={addCardToDeck} deckIndex={decks.findIndex((deck: Deck) => deck.name === currentDeck)} decks={decks} />
                             :
                               <FontAwesomeIcon icon={faPlus} />
                           }
                         </td>
                         {
-                          neueKarteFormular ? 
+                          newCardForm ? 
                             <td>
                               <button
-                                className={styles["karte-hinzufuegen-form-schliessen"]}
+                                className={styles["card-add-form-close"]}
                                 onClick={(e) => {
                                   e.stopPropagation()
-                                  setNeueKarteFormular(false)
+                                  setNewCardForm(false)
                                 }}
                               >
                                 <FontAwesomeIcon icon={faXmark} />
@@ -470,38 +467,38 @@ function Verwaltung(): JSX.Element {
                       null
                   }
                   {/* Für alle Karteikarten wird eine Zeile hinzugefügt */
-                    aktuellesDeck ?
-                      decks.find((deck: Deck) => (deck.name === aktuellesDeck && deck.user.toLowerCase() === aktuellerNutzer))?.cards?.filter((karte: Card) => entsprichtSuchfilterKarte(karte)).map((karte: Card, index: number) => (
+                    currentDeck ?
+                      decks.find((deck: Deck) => (deck.name === currentDeck && deck.user.toLowerCase() === currentUser))?.cards?.filter((card: Card) => cardMatchesSearchFilter(card)).map((card: Card, index: number) => (
                         <tr 
                           onClick={(e) => {
                             e.stopPropagation()
-                            setKartenIndex(index)
-                            setNeueKarteFormular(false)
+                            setCardIndex(index)
+                            setNewCardForm(false)
                           }}
                           key={index} 
-                          className={index === kartenIndex ? styles["aktuelle-karte"] : undefined}
+                          className={index === cardIndex ? styles["current-card"] : undefined}
                         >
-                          {Object.keys(karte).map((attributName) => (
-                            <td>{karte[attributName as keyof Card] || "<Kein Wert>"}</td>
+                          {Object.keys(card).map((attributName) => (
+                            <td>{card[attributName as keyof Card] || "<Kein Wert>"}</td>
                           ))}
 
                           <td>
                             <button 
                               onClick={(e) => {
                                 e.stopPropagation()
-                                if(karteEntfernenIndex === index) {
-                                  setKartenIndex(-1)
-                                  setKarteEntfernenIndex(-1)
-                                  setDeckEntfernenName("")
+                                if(removeCardIndex === index) {
+                                  setCardIndex(-1)
+                                  setRemoveCardIndex(-1)
+                                  setRemoveDeckIndex("")
                                   karteEntfernen(index)
                                 } else {
-                                  setKarteEntfernenIndex(index)
+                                  setRemoveCardIndex(index)
                                 }
                               }}
-                              className={styles["karte-entfernen"]}
+                              className={styles["card-remove"]}
                             >
                               {
-                                karteEntfernenIndex === index ? 
+                                removeCardIndex === index ? 
                                   <FontAwesomeIcon icon={faCheck} />
                                 : 
                                   <FontAwesomeIcon icon={faXmark} /> 
@@ -517,21 +514,21 @@ function Verwaltung(): JSX.Element {
               </table>
             </div>
           </div>
-          <div className={`${styles["karte-bearbeiten-container"]}`}>
-            <div className={`${styles["karte-bearbeiten-header"]}`}>
+          <div className={`${styles["card-edit-container"]}`}>
+            <div className={`${styles["card-edit-header"]}`}>
               <h3>Karteikarte bearbeiten:</h3>
             </div>
-            <div className={`${styles["karte-bearbeiten-flexbox"]}`}>
+            <div className={`${styles["card-edit-flexbox"]}`}>
               {/* Für jedes Karteikarten-Attribut wird eine Eingabe hinzugefügt */
-                (aktuellesDeck && decks.find((deck: Deck) => (deck.name === aktuellesDeck)).cards[kartenIndex]) ? 
-                  Object.keys(decks.find((deck: Deck) => (deck.name === aktuellesDeck))?.cards[kartenIndex] || {}).map((attributName, index) => (
+                (currentDeck && decks.find((deck: Deck) => (deck.name === currentDeck)).cards[cardIndex]) ? 
+                  Object.keys(decks.find((deck: Deck) => (deck.name === currentDeck))?.cards[cardIndex] || {}).map((attributName, index) => (
                     <>
                       <h4 key={`${attributName}-header-${index}`}>{attributName.charAt(0).toUpperCase() + attributName.slice(1)}</h4>
                       <textarea 
-                        className={styles["karte-bearbeiten-eingabe"]}
+                        className={styles["card-edit-input"]}
                         key={`${attributName}-text`}
                         name={attributName}
-                        value={decks.find((deck: Deck) => (deck.name === aktuellesDeck))?.cards[kartenIndex][attributName as keyof Card]}
+                        value={decks.find((deck: Deck) => (deck.name === currentDeck))?.cards[cardIndex][attributName as keyof Card]}
                         placeholder={`${attributName.charAt(0).toUpperCase() + attributName.slice(1)} eingeben...`}
                         required
                         onChange={(e) => {
@@ -553,4 +550,4 @@ function Verwaltung(): JSX.Element {
   )
 }
 
-export default Verwaltung
+export default Management

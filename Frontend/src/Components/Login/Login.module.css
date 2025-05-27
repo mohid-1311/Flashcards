@@ -1,5 +1,5 @@
-.anmeldung-container,
-.registrierung-container {
+.login-container,
+.signup-container {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -10,8 +10,8 @@
   box-sizing: border-box;
 }
 
-.anmeldung-display,
-.registrierung-display {
+.login-display,
+.signup-display {
   width: min(90%, 400px);
   background: #ffffff;
   padding: 2rem;
@@ -23,37 +23,37 @@
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.anmeldung-display h1,
-.registrierung-display h1 {
+.login-display h1,
+.signup-display h1 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
   color: #333;
 }
 
-.anmeldung-username,
-.anmeldung-passwort,
-.registrierung-username,
-.registrierung-passwort {
+.login-username,
+.login-password,
+.signup-username,
+.signup-password {
   display: flex;
   flex-direction: column;
   text-align: left;
   margin-bottom: 1rem;
 }
 
-.anmeldung-username label,
-.anmeldung-passwort label,
-.registrierung-username label,
-.registrierung-passwort label {
+.login-username label,
+.login-password label,
+.signup-username label,
+.signup-password label {
   font-size: 1rem;
   margin-bottom: 0.25rem;
   font-weight: bold;
   color: #555;
 }
 
-.anmeldung-username input,
-.anmeldung-passwort input,
-.registrierung-username input,
-.registrierung-passwort input {
+.login-username input,
+.login-password input,
+.signup-username input,
+.signup-password input {
   width: 100%;
   padding: 0.75rem;
   border-radius: 6px;
@@ -63,10 +63,10 @@
   box-sizing: border-box;
 }
 
-.anmeldung-username input:focus,
-.anmeldung-passwort input:focus,
-.registrierung-username input:focus,
-.registrierung-passwort input:focus {
+.login-username input:focus,
+.login-password input:focus,
+.signup-username input:focus,
+.signup-password input:focus {
   border-color: #007bff;
   outline: none;
   box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);

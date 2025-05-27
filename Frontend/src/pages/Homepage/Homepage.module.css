@@ -7,8 +7,8 @@
   background-color: #f8f8f8;
 }
 
-.start-box-lernen,
-.start-box-unklar,
+.start-box-learning,
+.start-box-motivation,
 .start-box-import {
   box-sizing: border-box;
   height: 50%;
@@ -16,7 +16,7 @@
   padding: 2rem;
 }
 
-.start-box-lernen {
+.start-box-learning {
   max-height: 100%;
   height: 100%;
 }
@@ -28,8 +28,8 @@
     flex-wrap: nowrap;
   }
 
-  .start-box-lernen,
-  .start-box-unklar,
+  .start-box-learning,
+  .start-box-motivation,
   .start-box-import {
     box-sizing: content-box;
     max-height: 30rem;
@@ -37,8 +37,8 @@
   }
 }
 
-.start-lernen,
-.start-unklar,
+.start-learning,
+.start-motivation,
 .start-import {
   box-sizing: border-box;
   max-height: inherit;
@@ -51,7 +51,7 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1)
 }
 
-.start-lernen {
+.start-learning {
   padding: 0;
 }
 
@@ -61,8 +61,8 @@
   text-align: center;
 }
 
-.start-lernen:hover,
-.start-unklar:hover,
+.start-learning:hover,
+.start-motivation:hover,
 .start-import:hover {
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
 }

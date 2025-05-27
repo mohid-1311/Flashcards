@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './Schreibmodus.module.css';
+import styles from './WritingMode.module.css';
 import { getDecks } from '../../deckState';
 
 const deckName = "Mathe"; // Deck muss übergeben werden!
@@ -15,7 +15,7 @@ interface Deck {
 }
 
 //TO-DO: Auslagerung von Codedopplungen
-function SchreibModus() {
+function WritingMode() {
     const decks: Deck[] = getDecks();
     const selectedDeck: Deck = decks.find((deck: Deck) => deck.name === deckName) || { name: deckName, cards: [] };
 
@@ -79,5 +79,5 @@ function SchreibModus() {
     );
 }
 
-export default SchreibModus;
+export default WritingMode;
 

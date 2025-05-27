@@ -1,4 +1,4 @@
-.root {
+.site-root {
   max-height: inherit;
   display: flex;
   flex-direction: column;
@@ -6,7 +6,7 @@
   align-items: center;
 }
 
-.jetzt-lernen-header {
+.start-learning-header {
   width: 100%;
   padding: 1.2rem;
   border-radius: 1rem 1rem 0 0;
@@ -15,13 +15,13 @@
   color: white;
 }
 
-.jetzt-lernen-titel {
+.start-learning-title {
   margin-top: 0rem;
   margin-bottom: 1.5rem;
   display: inline;
 }
 
-.deck-liste {
+.deck-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -32,7 +32,7 @@
   overflow-y: auto;
 }
 
-.deck-liste-element {
+.deck-list-element {
   max-width: 20vw;
   list-style-type: none;
   font-size: 1.5rem;
@@ -46,13 +46,13 @@
   text-overflow: ellipsis;
 }
 
-.deck-liste-element:hover {
+.deck-list-element:hover {
   background-color: rgba(0, 0, 0, 0.05);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
   text-decoration: underline;
 }
 
-.deck-liste-link {
+.deck-list-link {
   color: black;
   font-style: normal;
   text-decoration: none; 

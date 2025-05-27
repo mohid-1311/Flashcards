@@ -2,11 +2,11 @@ import { useState } from "react"
 import {getDecks, setDecks} from "../../deckState"
 import { Card, Deck } from "../../types"; 
 import DeckModal from "../../Components/DeckModal/DeckModal";
-import styles from "./Hinzufuegen.module.css"
+import styles from "./Add.module.css"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
 import { useNavigate } from "react-router-dom";
 
-function Hinzufuegen(){
+function Add(){
 
   const navigate = useNavigate()
   
@@ -36,7 +36,7 @@ function Hinzufuegen(){
   return(
     <>
       {!showModal && (
-      <div className={styles["hinzufuegen-container"]}>
+      <div className={styles["add-container"]}>
         <div className={styles["deck-update-container"]}>
           {decks.length === 0 ? (
             <>
@@ -44,7 +44,7 @@ function Hinzufuegen(){
               <button 
                 type="button"
                 onClick={() => navigate("/Verwaltung")}
-                className={styles["verwaltung-button"]}
+                className={styles["management-button"]}
               >
                 Zur Verwaltung
               </button>
@@ -54,7 +54,7 @@ function Hinzufuegen(){
           )}
         </div>
 
-        <div className={styles["deck-anzeige"]}>
+        <div className={styles["deck-list"]}>
             {/* Hier werden alle Karten des ausgewählten Decks ausgegeben*/}
           {decks.length !== 0 && (
             <ul className={styles["card-list"]}>
@@ -63,7 +63,7 @@ function Hinzufuegen(){
                 key={index} 
                 className={styles["card-item"]}
                 >
-                Ausdruck: {card.ausdruck}<br></br>
+                Ausdruck: {card.term}<br></br>
                 Definition: {card.definition}
               </li>
              ))}
@@ -75,7 +75,7 @@ function Hinzufuegen(){
             onClick={() => setShowModal(true)}
             className={styles["select-deck-button"]}
           >
-            Stapel Auswählen
+            Stapel auswählen
           </button>
         </div>
 
@@ -95,4 +95,4 @@ function Hinzufuegen(){
     </>
   );
 }
-export default Hinzufuegen
+export default Add

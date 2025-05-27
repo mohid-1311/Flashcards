@@ -1,9 +1,9 @@
 import { mysqlTable, AnyMySqlColumn, int, text } from "drizzle-orm/mysql-core"
-import { decks } from "../schema/decks"
+import { decks } from "./decks"
 
-export const karteikarten = mysqlTable('karteikarten', {
+export const cards = mysqlTable('cards', {
   id: int().primaryKey().autoincrement(),
-  ausdruck: text(),
+  term: text(),
   definition: text(),
   weight: int(),
   deck_id: int().references((): AnyMySqlColumn => decks.id)

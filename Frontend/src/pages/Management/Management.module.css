@@ -1,25 +1,25 @@
 /* Scrollbar */
-.decks-liste-flexbox::-webkit-scrollbar, .deck-karten-flexbox::-webkit-scrollbar, .karte-bearbeiten-eingabe::-webkit-scrollbar, 
-.decks-liste-flexbox::-webkit-scrollbar-corner, .deck-karten-flexbox::-webkit-scrollbar-corner, .karte-bearbeiten-eingabe::-webkit-scrollbar-corner
+.decks-list-flexbox::-webkit-scrollbar, .deck-cards-flexbox::-webkit-scrollbar, .card-edit-input::-webkit-scrollbar, 
+.decks-list-flexbox::-webkit-scrollbar-corner, .deck-cards-flexbox::-webkit-scrollbar-corner, .card-edit-input::-webkit-scrollbar-corner
 {
     width: 10px;
 }
 
-.decks-liste-flexbox::-webkit-scrollbar-thumb, .deck-karten-flexbox::-webkit-scrollbar-thumb, .karte-bearbeiten-eingabe::-webkit-scrollbar-thumb
+.decks-list-flexbox::-webkit-scrollbar-thumb, .deck-cards-flexbox::-webkit-scrollbar-thumb, .card-edit-input::-webkit-scrollbar-thumb
 {
     border-radius: 5px;
     
     background: #808080;
 }
 
-.decks-liste-flexbox::-webkit-scrollbar-thumb:hover, .deck-karten-flexbox::-webkit-scrollbar-thumb:hover, .karte-bearbeiten-eingabe::-webkit-scrollbar-thumb:hover
+.decks-list-flexbox::-webkit-scrollbar-thumb:hover, .deck-cards-flexbox::-webkit-scrollbar-thumb:hover, .card-edit-input::-webkit-scrollbar-thumb:hover
 {
     cursor: pointer;
 
     background: #5f5f5f;
 }
 
-div.verwaltung-container {
+div.management-container {
     display: flex;
     justify-content: space-between;
 
@@ -29,7 +29,7 @@ div.verwaltung-container {
 }
 
 /* Header für Deck-&Karteikartenliste */
-div.deck-karten-header {
+div.deck-cards-header {
     display: flex;
     justify-content: space-between;
 
@@ -41,7 +41,7 @@ div.deck-karten-header {
     background-color: #3d8d36;
 }
 
-div.decks-liste-header {
+div.decks-list-header {
     padding: 20px;
 
     border-radius: 8px 8px 0 0;
@@ -50,8 +50,9 @@ div.decks-liste-header {
 }
 
 /* Suchleisten */
-input.decks-suchleiste {
+input.decks-searchbar {
     width: 100%;
+    height: 25px;
 
     padding: 0.3em;
 
@@ -59,8 +60,9 @@ input.decks-suchleiste {
     border-radius: 5px;
 }
 
-input.karten-suchleiste {
+input.cards-searchbar {
     width: 40%;
+    height: 25px;
 
     padding: 0.3em;
 
@@ -69,7 +71,7 @@ input.karten-suchleiste {
 }
 
 /* Übergeordneter Container für die Karteikartendecks */
-div.decks-liste-container {
+div.decks-list-container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -82,7 +84,7 @@ div.decks-liste-container {
 }
 
 /* Karteikartendecks-Liste (flexbox) */
-div.decks-liste-flexbox {
+div.decks-list-flexbox {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -93,11 +95,11 @@ div.decks-liste-flexbox {
 }
 
 /* Elemente der Karteikartendecks-Liste */
-div.aktuelles-deck {
+div.current-deck {
     background-color: lightblue !important;
 }
 
-div.decks-liste-flexbox > div {
+div.decks-list-flexbox > div {
     display: flex;
     justify-content: space-between;
 
@@ -112,7 +114,7 @@ div.decks-liste-flexbox > div {
     font-size: larger;
 }
 
-div.decks-liste-flexbox > div:hover {
+div.decks-list-flexbox > div:hover {
     cursor: pointer;
 
     background-color: lightblue;
@@ -121,22 +123,22 @@ div.decks-liste-flexbox > div:hover {
 }
 
 /* Text in den Elementen der Karteikartendecks-Liste */
-div.decks-liste-flexbox > div > div {
+div.decks-list-flexbox > div > div {
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 /* Erstes Element der Karteikartendeck-Liste (Immer das Hinzufügen-Element) */
-div.decks-liste-flexbox > div:first-of-type {
+div.decks-list-flexbox > div:first-of-type {
     justify-content: center;
     background-color: #e2ffcf;
 }
 
-div.decks-liste-flexbox > div:first-of-type:hover {
+div.decks-list-flexbox > div:first-of-type:hover {
     background-color: #bed8ad;
 }
 
-form.deck-hinzufuegen {
+form.deck-add {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -144,7 +146,7 @@ form.deck-hinzufuegen {
     width: 100%;
 }
 
-input.deck-hinzufuegen {
+input.deck-add {
     border: 0;
     border-radius: 5px;
 
@@ -158,7 +160,7 @@ input.deck-hinzufuegen {
 }
 
 /* Übergeordneter Container für die Karteikarten + Bearbeitungsfeld */
-div.deck-karten-rahmen-container {
+div.deck-cards-rahmen-container {
     display: flex;
     justify-content: space-between;
 
@@ -166,7 +168,7 @@ div.deck-karten-rahmen-container {
 }
 
 /* Übergeordneter Container für die Karteikarten */
-div.deck-karten-liste-container {
+div.deck-cards-list-container {
     display: flex;
     flex-direction: column;
 
@@ -179,7 +181,7 @@ div.deck-karten-liste-container {
 }
 
 /* Karteikartenliste (flexbox) */
-div.deck-karten-flexbox {
+div.deck-cards-flexbox {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -192,11 +194,11 @@ div.deck-karten-flexbox {
 }
 
 /* Zeile in der Karteikartentabelle */ 
-tr.aktuelle-karte {
+tr.current-card {
     background-color: #0049c1 !important;
 }
 
-div.deck-karten-flexbox > table > tbody > tr {
+div.deck-cards-flexbox > table > tbody > tr {
     display: inline-table;
 
     margin-block: 2px;
@@ -209,7 +211,7 @@ div.deck-karten-flexbox > table > tbody > tr {
     border-radius: 10px;
 }
 
-div.deck-karten-flexbox > table > tbody > tr:hover {
+div.deck-cards-flexbox > table > tbody > tr:hover {
     cursor: pointer;
     
     background-color: #0049c1;
@@ -218,7 +220,7 @@ div.deck-karten-flexbox > table > tbody > tr:hover {
 }
 
 /* Erstes Element der Karteikartentabelle (Immer das Hinzufügen-Element) */
-div.deck-karten-flexbox > table > tbody > tr:first-of-type {
+div.deck-cards-flexbox > table > tbody > tr:first-of-type {
     display: flex;
     justify-content: center;
 
@@ -226,16 +228,16 @@ div.deck-karten-flexbox > table > tbody > tr:first-of-type {
     background-color: #e2ffcf;
 }
 
-div.deck-karten-flexbox > table > tbody > tr:first-of-type:hover {
+div.deck-cards-flexbox > table > tbody > tr:first-of-type:hover {
     background-color: #bed8ad;
 }
 
-div.deck-karten-flexbox > table > tbody > tr:first-of-type > td {
+div.deck-cards-flexbox > table > tbody > tr:first-of-type > td {
     width: auto;
 }
 
 /* Spalten in der Karteikartentabelle mit Attributen der Karteikarte */
-div.deck-karten-flexbox > table > tbody > tr > td {
+div.deck-cards-flexbox > table > tbody > tr > td {
     width: 48%;
 
     padding: 8px;
@@ -245,14 +247,14 @@ div.deck-karten-flexbox > table > tbody > tr > td {
 }
 
 /* Buttons fürs Entfernen/Hinzufügen/Umbenennen eines Decks/einer Karte */
-button.deck-entfernen {
+button.deck-remove {
     position: sticky;
     right: 15px;
 
     margin-left: 5px;
 }
 
-button.deck-hinzufuegen, button.deck-entfernen, button.deck-umbenennen, button.karte-entfernen, button.karte-hinzufuegen-form-schliessen {
+button.deck-add, button.deck-remove, button.deck-rename, button.card-remove, button.card-add-form-close {
     aspect-ratio: 1 / 1;
 
     height: 22px;
@@ -265,30 +267,30 @@ button.deck-hinzufuegen, button.deck-entfernen, button.deck-umbenennen, button.k
     background-color: #007bff;
 }
 
-button.deck-entfernen:hover, button.karte-entfernen:hover, button.karte-hinzufuegen-form-schliessen:hover {
+button.deck-remove:hover, button.card-remove:hover, button.card-add-form-close:hover {
     cursor: pointer;
     background-color: red;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-button.deck-hinzufuegen:enabled:hover {
+button.deck-add:enabled:hover {
     cursor: pointer;
     background-color: green;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-button.deck-umbenennen:enabled:hover {
+button.deck-rename:enabled:hover {
     cursor: pointer;
     background-color: #0049c1;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-button.deck-hinzufuegen:disabled, button.deck-umbenennen:disabled {
+button.deck-add:disabled, button.deck-rename:disabled {
     background-color: gainsboro;
 }
 
 /* Schaltfläche zum Bearbeiten des Karteikartendeck-Namens */
-div.deck-umbenennen-container {
+div.deck-rename-container {
     align-content: center;
 
     width: 40%;
@@ -298,11 +300,11 @@ div.deck-umbenennen-container {
     white-space: nowrap;
 }
 
-svg.deck-umbenennen:hover {
+svg.deck-rename:hover {
     cursor: pointer;
 }
 
-form.deck-umbenennen {
+form.deck-rename {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -310,7 +312,7 @@ form.deck-umbenennen {
     width: 100%;
 }
 
-input.deck-umbenennen {
+input.deck-rename {
     border: 0;
     border-radius: 5px;
 
@@ -323,24 +325,24 @@ input.deck-umbenennen {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-input.deck-umbenennen::placeholder {
+input.deck-rename::placeholder {
     color: #cecece;
 }
 
-button.deck-umbenennen > svg {
+button.deck-rename > svg {
     display: block;
     margin: auto;
 }
 
 /* Übergeordneter Container fürs Bearbeitungsfeld einer Karteikarte */
-div.karte-bearbeiten-container {
+div.card-edit-container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 
     width: 29%;
 
-    margin-top: 25px;
+    margin-top: 27px;
 
     box-sizing: border-box;
 
@@ -350,7 +352,7 @@ div.karte-bearbeiten-container {
 }
 
 /* Header für Karteikarte-Bearbeiten */
-div.karte-bearbeiten-header {
+div.card-edit-header {
     padding: 8px;
 
     border-radius: 0 8px 0 0;
@@ -360,7 +362,7 @@ div.karte-bearbeiten-header {
 }
 
 /* Karteikartenattribute-Liste (flexbox) */
-div.karte-bearbeiten-flexbox {
+div.card-edit-flexbox {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -372,12 +374,12 @@ div.karte-bearbeiten-flexbox {
 }
 
 /* Attribut-Element für eine Karteikarte */
-div.karte-bearbeiten-flexbox > h4 {
+div.card-edit-flexbox > h4 {
     margin-block-start: 1em;
     margin-block-end: 0.5em;
 }
 
-textarea.karte-bearbeiten-eingabe {
+textarea.card-edit-input {
     margin-inline: 5px;
     padding: 5px;
 

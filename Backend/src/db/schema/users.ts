@@ -1,6 +1,6 @@
 import { mysqlTable, varchar } from "drizzle-orm/mysql-core"
 
-export const benutzer = mysqlTable('benutzer', {
+export const users = mysqlTable('users', {
   name: varchar({ length: 16 }).primaryKey(),
-  passwort: varchar({ length: 64 })
+  password: varchar({ length: 64 })
 });

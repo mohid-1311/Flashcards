@@ -1,13 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Lernmodi.module.css';
+import styles from './LearningModes.module.css';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 
 
-function Lernmodi() {
+function LearningModes() {
     const navigate = useNavigate();
 
     const handleNavigation = (path: string) => {
@@ -50,4 +50,4 @@ function Lernmodi() {
     );
 }
 
-export default Lernmodi;
+export default LearningModes;

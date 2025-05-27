@@ -1,4 +1,4 @@
-.hinzufuegen-container {
+.add-container {
   gap: 5rem;
   display: flex;
   flex-direction: row;
@@ -57,7 +57,7 @@
   background-color: #0056b3;
 }
 
-.verwaltung-button {
+.management-button {
   background-color: #ff4d4d;
   color: white;
   border: none;
@@ -69,11 +69,11 @@
   transition: background-color 0.3s ease;
 }
 
-.verwaltung-button:hover {
+.management-button:hover {
   background-color: #d43f3f;
 }
 
-.deck-anzeige {
+.deck-list {
   display: flex;
   gap: 1rem;
   flex-grow: 1;

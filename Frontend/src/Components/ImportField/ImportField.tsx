@@ -1,15 +1,15 @@
 import { useState } from "react";
-import styles from "./ImportDateifeld.module.css"
+import styles from "./ImportField.module.css"
 import { setDecks } from "../../deckState"
 import { Card, Deck } from "../../types"
 
-function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: any }) {
+function ImportField({ decks, setLocalDecks }: { decks: any, setLocalDecks: any }) {
 
-  function istDeck(o: Deck) {
+  function isDeck(o: Deck) {
     if (typeof o.name !== "string") return false;
     if (typeof o.cards !== "object") return false;
     for (let card of o.cards) {
-      if (typeof card.ausdruck !== "string") return false
+      if (typeof card.term !== "string") return false
       if (typeof card.definition !== "string") return false
       // weight has a standard and is therefore not required
       // if (typeof card.weight !== "number") return false
@@ -71,7 +71,7 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
       console.log(`successfully parsed ${file.name}`)
 
       // das Objekt muss eine valide Deck-Struktur haben
-      if (!istDeck(newDeck)) {
+      if (!isDeck(newDeck)) {
         console.log(`parsed object from ${file.name} is not a deck`)
         continue
       }
@@ -97,7 +97,7 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
 
       // falls ein Deck mit dem Namen bereits existiert
       newDeck.cards.forEach((newCard: Card) => {
-        if (deckToUpdate?.cards.every((card: Card) => card.ausdruck !== newCard.ausdruck)) {
+        if (deckToUpdate?.cards.every((card: Card) => card.term !== newCard.term)) {
           deckToUpdate?.cards.push(newCard)
         }
       })
@@ -125,7 +125,7 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
         onDrop={dropHandler}
         onDragOver={dragoverHandler}>
         {(files.length < 1) ?
-          "drag json files to import here" :
+          "json-Datei für Import hier ablegen!" :
           files.map((file: File) => {
             return (
               <div>{file.name}</div>
@@ -145,4 +145,4 @@ function ImportDateifeld({ decks, setLocalDecks }: { decks: any, setLocalDecks: 
   )
 }
 
-export default ImportDateifeld
+export default ImportField

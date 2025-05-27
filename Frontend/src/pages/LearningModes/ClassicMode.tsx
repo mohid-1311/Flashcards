@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { getDecks, updateCardWeight } from '../../deckState'; 
-import styles from './KlassischerModus.module.css';
+import styles from './ClassicMode.module.css';
 import { useLocation } from 'react-router';
 import { Deck } from "../../types";
 
-function KlassischerModus() {
+function ClassicMode() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const deckName = queryParams.get('deckName');
@@ -97,7 +97,7 @@ function KlassischerModus() {
           <>
             <h3>{currentIndex + 1}/{selectedDeck.cards.length}</h3>
             <button onClick={handleToggleDefinition} className={styles.card}>
-              {showDefinition ? selectedDeck.cards[currentIndex].definition : selectedDeck.cards[currentIndex].ausdruck}
+              {showDefinition ? selectedDeck.cards[currentIndex].definition : selectedDeck.cards[currentIndex].term}
             </button>
           </>
         )}
@@ -113,4 +113,4 @@ function KlassischerModus() {
   );
 }
 
-export default KlassischerModus;
+export default ClassicMode;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { getDecks } from '../../deckState';
-import styles from './FreierModus.module.css';
+import styles from './FreeMode.module.css';
 import { useLocation } from 'react-router';
 
 
@@ -15,7 +15,7 @@ interface Deck {
   cards: Card[];
 }
 
-function FreierModus() {
+function FreeMode() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const deckName = queryParams.get('deckName');
@@ -65,4 +65,4 @@ function FreierModus() {
   );
 }
 
-export default FreierModus;
+export default FreeMode;

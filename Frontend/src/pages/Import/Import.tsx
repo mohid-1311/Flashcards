@@ -1,4 +1,4 @@
-import ImportDateifeld from "../../Components/ImportDateifeld/ImportDateifeld";
+import ImportField from "../../Components/ImportField/ImportField";
 import styles from "./Import.module.css"
 import { useState } from "react"
 import { Deck } from "../../types"
@@ -65,7 +65,7 @@ function Import(){
         <div className={styles["import-header"]}>
           <h3>Importieren</h3>
         </div>
-        <ImportDateifeld decks={decks} setLocalDecks={setLocalDecks} />
+        <ImportField decks={decks} setLocalDecks={setLocalDecks} />
       </div>
     </div>
   );
