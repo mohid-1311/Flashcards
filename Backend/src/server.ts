@@ -1,10 +1,11 @@
 import "dotenv/config";
-import express from "express";
+import express, { response } from "express";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { benutzer } from "./db/schema/benutzer";
 import { decks } from "./db/schema/decks";
 import { karteikarten } from "./db/schema/karteikarten";
+import { GelUUID } from "drizzle-orm/gel-core";
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
@@ -54,6 +55,30 @@ app.post("/benutzer", async (request, response) => {
   response.status(204);
 });
 
+app.put("/benutzer", async(request, response) => {
+  const nameParam = request.query.name as string;
+  const passwortParam = request.query.passwort as string | undefined;
+
+  if(!passwortParam)
+  {
+    response.status(400).json("Kein Passwort übergeben");
+    return;
+  }
+
+  try{
+    await db
+    .update(benutzer)
+    .set({passwort: passwortParam})
+    .where(eq(benutzer.name, nameParam));
+
+    response.status(200).json("Passwort aktualisiert");
+  }
+  catch(error)
+  {
+    response.status(500).json("Fehler beim aktualisieren")
+  }
+});
+
 app.get("/decks", async (request, response) => {
   const benutzerParam = request.query.benutzer_name as string | undefined;
   
@@ -73,6 +98,33 @@ app.get("/karteikarten", async (request, response) => {
     response.status(200).json(karteikartenListe);
   } else {
     response.status(400).json("Keine Deck-ID übergeben!");
+  }
+});
+
+app.put("/karteikarten", async(request, response) => {
+  const term = request.query.term as string;
+  const definition = request.query.definition as string;
+  const id = Number(request.query.ID);
+
+  if(!term || !definition || isNaN(id))
+  {
+    response.status(400).json("Fehlende Angaben");
+    return;
+  }
+  
+  try{
+    await db
+    .update(karteikarten)
+    .set(
+      {
+        ausdruck: term,
+        definition: definition,
+      })
+    .where(eq(karteikarten.id, id));
+  }
+  catch(error)
+  {
+    response.status(500).json("Fehler beim aktualisieren")
   }
 });
 
