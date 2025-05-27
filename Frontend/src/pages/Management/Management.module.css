@@ -238,7 +238,7 @@ div.deck-cards-flexbox > table > tbody > tr:first-of-type > td {
 
 /* Spalten in der Karteikartentabelle mit Attributen der Karteikarte */
 div.deck-cards-flexbox > table > tbody > tr > td {
-    width: 48%;
+    width: 50%;
 
     padding: 8px;
 
