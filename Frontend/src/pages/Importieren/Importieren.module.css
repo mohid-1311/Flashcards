@@ -9,7 +9,7 @@
   padding: 2rem;
 }
 
-.exportieren-div, .importieren-div {
+.export-div, .import-div {
   box-sizing: content-box;
   display: flex;
   flex-direction: column;
@@ -22,11 +22,11 @@
   box-shadow: 0px 0px 20px gainsboro;
 }
 
-.exportieren-div > *, .importieren-div > * {
+.export-div > *, .import-div > * {
   padding: 1rem;
 }
 
-.exportieren-header {
+.export-header {
   background-color: #3d8d36;
   text-align: start;
   border: 20px;
@@ -35,13 +35,13 @@
   color: white;
 }
 
-.exportieren-body {
+.export-body {
   display: flex;
   flex-direction: column;
   height: 100%
 }
 
-.exportieren-deck-liste {
+.export-deck-list {
   display: flex;
   flex-wrap: wrap;
   flex-direction: center;
@@ -52,7 +52,7 @@
   overflow-y: auto;
 }
 
-.exportieren-deck-liste-element {
+.export-deck-list-element {
   list-style-type: none;
   font-size: 1.5rem;
   margin: 2px;
@@ -62,7 +62,7 @@
   background-color: #dcdcdc;
 }
 
-.exportieren-deck-liste-element:hover {
+.export-deck-list-element:hover {
   cursor: pointer;
 
   background-color: lightblue;
@@ -70,15 +70,15 @@
   box-shadow: 0 0px 8px rgba(0, 0, 0, 0.2);
 }
 
-.element-ausgewaehlt {
+.element-chosen {
   background-color: lightblue;
 }
 
-.exportieren-buttons {
+.export-buttons {
   justify-self: flex-end;
 }
 
-.importieren-header {
+.import-header {
   background-color: #3d8d36;
   text-align: start;
   border: 20px;

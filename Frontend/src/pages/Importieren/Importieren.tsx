@@ -34,35 +34,35 @@ function Importieren(){
 
   return(
     <div className={styles["root"]}>
-      <div className={styles["exportieren-div"]}>
-        <div className={styles["exportieren-header"]}>
+      <div className={styles["export-div"]}>
+        <div className={styles["export-header"]}>
           <h3>Exportieren</h3>
         </div>
-        <div className={styles["exportieren-body"]}>
-          <ul className={styles["exportieren-deck-liste"]}>
+        <div className={styles["export-body"]}>
+          <ul className={styles["export-deck-list"]}>
             {decks.length === 0
             ? <i><br />no decks available</i>
             : decks.map((deck: Deck, index: number)=> {
             return (
               <li 
                 onClick={selectDeckOnClick(deck.name)} 
-                className={styles["exportieren-deck-liste-element"] +
-                  (deck.name === selectedDeck ? " " + styles["element-ausgewaehlt"] : "")}
+                className={styles["export-deck-list-element"] +
+                  (deck.name === selectedDeck ? " " + styles["element-chosen"] : "")}
                   >
                 {cutString(deck.name)}
               </li>
             )
           })}
           </ul>
-          <div className={styles["exportieren-buttons"]}>
-            <button className={styles["exportieren-button-json"]}>
+          <div className={styles["export-buttons"]}>
+            <button className={styles["export-button-json"]}>
               Exportieren (.json)
             </button>
           </div>
         </div>
       </div>
-      <div className={styles["importieren-div"]}>
-        <div className={styles["importieren-header"]}>
+      <div className={styles["import-div"]}>
+        <div className={styles["import-header"]}>
           <h3>Importieren</h3>
         </div>
         <ImportDateifeld decks={decks} setLocalDecks={setLocalDecks} />
