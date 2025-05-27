@@ -5,6 +5,7 @@ import AddCardForm from "../../Components/AddCardForm/AddCardForm"
 import { Deck, Card } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark, faPlus, faPenToSquare, faPen, faSquareCaretLeft, faCheck } from "@fortawesome/free-solid-svg-icons"
+import { tl } from "../../translation";
 
 /**
  * Management-Komponente:
@@ -478,7 +479,7 @@ function Management(): JSX.Element {
                           key={index} 
                           className={index === cardIndex ? styles["current-card"] : undefined}
                         >
-                          {Object.keys(card).map((attributName) => (
+                          {(Object.keys({term:"", definition:""})).map((attributName) => (
                             <td>{card[attributName as keyof Card] || "<Kein Wert>"}</td>
                           ))}
 
@@ -519,17 +520,17 @@ function Management(): JSX.Element {
               <h3>Karteikarte bearbeiten:</h3>
             </div>
             <div className={`${styles["card-edit-flexbox"]}`}>
-              {/* Für jedes Karteikarten-Attribut wird eine Eingabe hinzugefügt */
+                {/* Für jedes Karteikarten-Attribut wird eine Eingabe hinzugefügt */
                 (currentDeck && decks.find((deck: Deck) => (deck.name === currentDeck)).cards[cardIndex]) ? 
-                  Object.keys(decks.find((deck: Deck) => (deck.name === currentDeck))?.cards[cardIndex] || {}).map((attributName, index) => (
+                  Object.keys({term:"", definition:""}).map((attributName, index) => (
                     <>
-                      <h4 key={`${attributName}-header-${index}`}>{attributName.charAt(0).toUpperCase() + attributName.slice(1)}</h4>
+                      <h4 key={`${attributName}-header-${index}`}>{tl(attributName)}</h4>
                       <textarea 
                         className={styles["card-edit-input"]}
                         key={`${attributName}-text`}
                         name={attributName}
                         value={decks.find((deck: Deck) => (deck.name === currentDeck))?.cards[cardIndex][attributName as keyof Card]}
-                        placeholder={`${attributName.charAt(0).toUpperCase() + attributName.slice(1)} eingeben...`}
+                        placeholder={`${tl(attributName)} eingeben...`}
                         required
                         onChange={(e) => {
                           e.stopPropagation()
