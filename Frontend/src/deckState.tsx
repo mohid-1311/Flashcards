@@ -1,6 +1,6 @@
 
 export interface Card {
-  ausdruck: string;
+  term: string;
   definition: string;
   weight: number;
 }
@@ -21,32 +21,32 @@ let decks = [
     name: "Mathe", 
     user: "Florian",
     cards: [
-      { ausdruck: "Albert Einstein", definition: "Mathematiker", weight: 10},
-      { ausdruck: "Relationen", definition: "Keine Ahnung", weight: 10 }
+      { term: "Albert Einstein", definition: "Mathematiker", weight: 10},
+      { term: "Relationen", definition: "Keine Ahnung", weight: 10 }
     ] 
   },
   { 
     name: "Englisch", 
     user: "Mohid",
     cards: [
-      { ausdruck: "Hello", definition: "Hallo", weight: 10 },
-      { ausdruck: "Goodbye", definition: "Auf Wiedersehen", weight: 10 }
+      { term: "Hello", definition: "Hallo", weight: 10 },
+      { term: "Goodbye", definition: "Auf Wiedersehen", weight: 10 }
     ] 
   },
   { 
     name: "Deutsch", 
     user: "Mohid",
     cards: [
-      { ausdruck: "Goethe", definition: "Dichter", weight: 10 },
-      { ausdruck: "Schiller", definition: "Dichter", weight: 10 }
+      { term: "Goethe", definition: "Dichter", weight: 10 },
+      { term: "Schiller", definition: "Dichter", weight: 10 }
     ] 
   },
   { 
     name: "Physik", 
     user: "Moritz",
     cards: [
-      { ausdruck: "Marie Curie", definition: "Physikerin", weight: 10 },
-      { ausdruck: "ABC", definition: "Buchstaben", weight: 10 },
+      { term: "Marie Curie", definition: "Physikerin", weight: 10 },
+      { term: "ABC", definition: "Buchstaben", weight: 10 },
     ] 
   }
 ];

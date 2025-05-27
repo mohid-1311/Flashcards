@@ -13,12 +13,12 @@ function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModa
   function addNewDeck(){
 
     if(searchValue.trim() === ""){
-      alert("Ungültige Eingabe")
+      alert("Ungültige Eingabe") //#TODO replace
       return
     }
 
     if(decks.some(deck => deck.name.toLowerCase() === searchValue.toLowerCase().trim())){
-      alert("Deck existiert bereits")
+      alert("Deck existiert bereits") //#TODO replace
       return
     }
     const newDeck = {name: searchValue.trim(), user: currentUser, cards: []}
