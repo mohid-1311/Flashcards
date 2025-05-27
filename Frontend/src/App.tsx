@@ -5,7 +5,7 @@ import Startseite from "./pages/Startseite/Startseite"
 import Hinzufuegen from "./pages/Hinzufuegen/Hinzufuegen"
 import Verwaltung from "./pages/Verwaltung/Verwaltung"
 import Fortschritt from "./pages/Fortschritt/Fortschritt"
-import Importieren from "./pages/Importieren/Importieren"
+import Import from "./pages/Import/Import"
 import Anmeldung from "./pages/Anmeldung/Anmeldung"
 import Lernmodi from "./pages/Lernmodi/Lernmodi"
 import FreierModus from "./pages/Lernmodi/FreierModus"
@@ -49,7 +49,7 @@ function App() {
           <Route path="/Hinzufuegen" element={ProtectedRoute(<Hinzufuegen/>)}></Route>
           <Route path="/Verwaltung" element={ProtectedRoute(<Verwaltung/>)}></Route>
           <Route path="/Fortschritt" element={ProtectedRoute(<Fortschritt/>)}></Route>
-          <Route path="/Importieren" element={ProtectedRoute(<Importieren/>)}></Route>
+          <Route path="/Importieren" element={ProtectedRoute(<Import/>)}></Route>
           <Route path="/Lernmodi" element={ProtectedRoute(<Lernmodi/>)}></Route>
           <Route path="/FreierModus" element={ProtectedRoute(<FreierModus/>)}></Route>
           <Route path="/KlassischerModus" element={ProtectedRoute(<KlassischerModus/>)}></Route>

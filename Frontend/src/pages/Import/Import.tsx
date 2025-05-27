@@ -1,10 +1,10 @@
 import ImportDateifeld from "../../Components/ImportDateifeld/ImportDateifeld";
-import styles from "./Importieren.module.css"
+import styles from "./Import.module.css"
 import { useState } from "react"
 import { Deck } from "../../types"
 import { getDecks } from "../../deckState"
 
-function Importieren(){
+function Import(){
 
   const [decks, setLocalDecks] = useState(getDecks())
 
@@ -70,4 +70,4 @@ function Importieren(){
     </div>
   );
 }
-export default Importieren
+export default Import
