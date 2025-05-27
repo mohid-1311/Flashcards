@@ -1,17 +1,17 @@
 import { User } from "./types";
 
-const url = "https://flashcards-3swd.onrender.com";
+const url = "http://localhost:4000";
 
 export function setData(dataParam: User[]) {
   localStorage.setItem("loginData", JSON.stringify(dataParam));
 }
 
-export async function getBenutzer(benutzerName: string): Promise<User | undefined> {
+export async function getUser(username: string): Promise<User | undefined> {
   try {
     const headers: Headers = new Headers()
     headers.set("Accept", "application/json");
-
-    const request: RequestInfo = new Request(`${url}/benutzer?name=${encodeURIComponent(benutzerName)}`, {
+    
+    const request: RequestInfo = new Request(`${url}/user?name=${encodeURIComponent(username)}`, {
       method: 'GET',
       headers: headers
     })
@@ -22,8 +22,8 @@ export async function getBenutzer(benutzerName: string): Promise<User | undefine
           throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
         }
         
-        const benutzer = await response.json();
-        return benutzer[0];
+        const user = await response.json();
+        return user[0];
       })
       .catch(error => {
         console.error("Fehler beim Abfragen des Benutzers:", error);
@@ -37,11 +37,11 @@ export async function getBenutzer(benutzerName: string): Promise<User | undefine
   }
 }
 
-export function addBenutzer(benutzer: User): void {
+export function addUser(user: User): void {
   try {
     const headers: Headers = new Headers();
 
-    const request: RequestInfo = new Request(`${url}/benutzer?name=${encodeURIComponent(benutzer.name)}&passwort=${encodeURIComponent(benutzer.passwort)}`, {
+    const request: RequestInfo = new Request(`${url}/user?name=${encodeURIComponent(user.name)}&password=${encodeURIComponent(user.password)}`, {
       method: 'POST',
       headers: headers
     })

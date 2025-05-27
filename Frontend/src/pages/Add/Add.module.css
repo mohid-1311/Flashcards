@@ -1,0 +1,91 @@
+.add-container {
+  gap: 5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 2rem;
+  background-color: #f7f7f7;
+  min-height: calc(100vh - 61.6px);
+  align-items: flex-start;
+}
+
+.current-deck-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.card-list {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+  max-width: 420px;
+  max-height: 380px;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.card-item {
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+  font-size: 1rem;
+  word-wrap: break-word;
+}
+
+.select-deck-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  max-width: 500px;
+}
+
+.current-deck-header-text{
+  background-color: rgb(0, 255, 102);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.select-deck-button:hover {
+  background-color: #0056b3;
+}
+
+.management-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  margin-top: 15px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.management-button:hover {
+  background-color: #d43f3f;
+}
+
+.deck-list {
+  display: flex;
+  gap: 1rem;
+  flex-grow: 1;
+  max-height: 380px;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+
+.deck-update-container{
+  flex-grow: 1;
+  text-align: center;
+}
