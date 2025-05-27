@@ -33,7 +33,7 @@ function Import(){
   }
 
   return(
-    <div className={styles["root"]}>
+    <div className={styles["site-root"]}>
       <div className={styles["export-div"]}>
         <div className={styles["export-header"]}>
           <h3>Exportieren</h3>
