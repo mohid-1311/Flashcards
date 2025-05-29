@@ -55,7 +55,7 @@ function Import(){
           })}
           </ul>
           <div className={styles["export-buttons"]}>
-            <button className={styles["export-button-json"]}>
+            <button className={styles["export-button-json"]} disabled={!selectedDeck}>
               Exportieren (.json)
             </button>
           </div>

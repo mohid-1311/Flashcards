@@ -16,7 +16,7 @@
   text-align: center;
   flex: 1;
   height: 100%;
-  margin: 0 2rem;
+  margin: 0 3rem;
   border-radius: 1rem;
   /* padding: 2rem; */
   box-shadow: 0px 0px 20px gainsboro;
@@ -36,28 +36,37 @@
 }
 
 .export-body {
+  position: relative;
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
-  height: 100%
+  height: min-content;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .export-deck-list {
+  box-sizing: border-box;
+  width: fit-content;
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: center;
-  flex-grow: 1;
+  flex: 1 1 auto;
+  flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   list-style-type: none;
   overflow-y: auto;
+  scrollbar-gutter: 5px;
 }
 
 .export-deck-list-element {
+  box-sizing: border-box;
+  width: 100%;
   list-style-type: none;
   font-size: 1.5rem;
-  margin: 2px;
+  margin: 2px 0px;
   border: 0px solid rgb(64, 64, 64);
-  padding: 1.2rem;
+  padding: 0.8rem;
   border-radius: 1rem;
   background-color: #dcdcdc;
 }
@@ -76,6 +85,17 @@
 
 .export-buttons {
   justify-self: flex-end;
+}
+
+.export-button-json {
+  margin: 16px;
+  padding: 8px 24px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 .import-header {
