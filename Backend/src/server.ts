@@ -65,6 +65,27 @@ app.get("/decks", async (request, response) => {
   }
 });
 
+app.get("/decks/names", async (request, response) => {
+  const nameParam = request.query.user as string | undefined
+
+  if (!nameParam) {
+    response.status(400).json("Keinen Namen übergeben!");
+    return;
+  }
+  let deckNamesList = await db.select({name: decks.name}).from(decks).where(eq(decks.user_name, nameParam));
+  const namesList = deckNamesList.map(deck => {
+    console.log(deck)
+    console.log(deck.name)
+    return deck.name
+  })
+
+  response.setHeader("Access-Control-Allow-Origin", "*");
+  response.setHeader("Access-Control-Allow-Methods", "GET");
+  response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  response.setHeader("Content-Type", "application/json; charset=utf-8");
+  response.status(200).json(namesList);
+});
+
 app.get("/cards", async (request, response) => {
   const deckParam = request.query.deck_id as number | undefined;
   
