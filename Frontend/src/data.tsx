@@ -60,3 +60,33 @@ export function addUser(user: User): void {
     console.error("Fehler bei der Abfrage:", error);
   }
 }
+
+export async function getDeckNames(): Promise<string[]> {
+  try{
+    const headers: Headers = new Headers()
+    headers.set("Accept", "application/json")
+    
+    const username = localStorage.getItem("user") || ""
+    
+    const request: RequestInfo = new Request(`${url}/decks/names?user=${encodeURIComponent(username)}`, {
+      method: 'GET',
+      headers: headers
+    })
+    
+    let result = []
+    const response = await fetch(request)
+    try {
+      if (!response.ok) {
+        throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
+      }
+      result = await response.json()
+    } catch(error) {
+      console.error("Fehler beim Abfragen der Decknamen:", error);
+    }
+    return result 
+
+  } catch(error) {
+    console.error("Fehler bei der Abfrage:", error);
+    return [];
+  }
+}
