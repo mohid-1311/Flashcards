@@ -26,9 +26,9 @@
   padding: 1rem;
 }
 
-.export-header {
+.export-header, .import-header {
   background-color: #3d8d36;
-  text-align: start;
+  text-align: center;
   border: 20px;
   border-radius: 1rem 1rem 0 0;
   border-color: #3d8d36;
@@ -48,7 +48,9 @@
 .export-deck-list {
   box-sizing: border-box;
   width: fit-content;
+  width: 100%;
   position: relative;
+  align-self: center;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -62,6 +64,7 @@
 .export-deck-list-element {
   box-sizing: border-box;
   width: 100%;
+  min-width: 10rem;
   list-style-type: none;
   font-size: 1.5rem;
   margin: 2px 0px;
@@ -98,11 +101,6 @@
   font-size: 16px;
 }
 
-.import-header {
-  background-color: #3d8d36;
-  text-align: start;
-  border: 20px;
-  border-radius: 1rem 1rem 0 0;
-  border-color: #3d8d36;
-  color: white;
+.export-button-json:disabled {
+  background-color: #80c0ff;
 }

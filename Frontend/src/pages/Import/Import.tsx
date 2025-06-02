@@ -32,6 +32,23 @@ function Import(){
     }
   }
 
+  function downloadDeck() {
+    let i = 0
+    while(decks[i].name !== selectedDeck) {
+      i++
+    }
+    const deckToExport = decks[i]
+    delete deckToExport.user
+    const blob = new Blob([JSON.stringify(deckToExport, null, "\t")], {type: "application/json"});
+    const formatedURL = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = formatedURL;
+    link.setAttribute('download', deckToExport.name + ".json");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+
   return(
     <div className={styles["site-root"]}>
       <div className={styles["export-div"]}>
@@ -55,7 +72,11 @@ function Import(){
           })}
           </ul>
           <div className={styles["export-buttons"]}>
-            <button className={styles["export-button-json"]} disabled={!selectedDeck}>
+            <button 
+              className={styles["export-button-json"]} 
+              disabled={!selectedDeck}
+              onClick={downloadDeck}
+            >
               Exportieren (.json)
             </button>
           </div>
