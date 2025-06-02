@@ -59,14 +59,14 @@ function Import(){
           <ul className={styles["export-deck-list"]}>
             {decks.length === 0
             ? <i><br />no decks available</i>
-            : decks.map((deck: Deck, index: number)=> {
+            : decks.map((deck: Deck) => deck.name).map((deckName: string)=> {
             return (
               <li 
-                onClick={selectDeckOnClick(deck.name)} 
+                onClick={selectDeckOnClick(deckName)} 
                 className={styles["export-deck-list-element"] +
-                  (deck.name === selectedDeck ? " " + styles["element-chosen"] : "")}
+                  (deckName === selectedDeck ? " " + styles["element-chosen"] : "")}
                   >
-                {cutString(deck.name)}
+                {deckName}
               </li>
             )
           })}

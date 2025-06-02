@@ -3,6 +3,7 @@ import StartLearning from "./StartLearning/StartLearning"
 import Motivation from "../../Components/Motivation/Motivation"
 import ImportField from "../../Components/ImportField/ImportField"
 import { useState } from "react"
+import { Deck } from "../../types"
 import {getDecks} from "../../deckState"
 
 function Homepage(){
@@ -13,7 +14,7 @@ function Homepage(){
     <div className={styles["start-flex-container"]}>
       <div className={styles["start-box-learning"]}>
         <div className={styles["start-learning"]}>
-          <StartLearning decks={decks} />
+          <StartLearning deckNames={decks.map((deck: Deck) => deck.name)} />
         </div>
       </div>
       <div className={styles["start-box-motivation"]}>
