@@ -92,7 +92,27 @@ export async function getDeck(deckname: string): Promise<Deck | undefined> {
 }
 
 export function addDeck(deck: Deck): void {
-  
+  try {
+    const headers: Headers = new Headers();
+
+    const request: RequestInfo = new Request(`${url}/deck?user_name=${encodeURIComponent(deck.user)}&deck_name=${encodeURIComponent(deck.name)}`, {
+      method: 'POST',
+      headers: headers
+    })
+
+    fetch(request)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .catch(error => {
+        console.error("Fehler beim Hinzufügen des Decks:", error);
+      });
+  } catch(error) {
+    console.error("Fehler bei der Abfrage:", error);
+  }
 }
 
 export async function getDeckNames(): Promise<string[]> {
