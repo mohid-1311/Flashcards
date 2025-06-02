@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { users } from "./db/schema/users";
 import { decks } from "./db/schema/decks";
@@ -85,6 +85,69 @@ app.get("/decks/names", async (request, response) => {
   response.setHeader("Content-Type", "application/json; charset=utf-8");
   response.status(200).json(namesList);
 });
+
+app.get("/deck", async (request, response) => {
+  const userNameParam = request.query.user_name as string | undefined
+  const deckNameParam = request.query.deck_name as string | undefined
+  
+  if(!userNameParam) {
+    response.status(400).json("Keinen Benutzer-Namen übergeben!")
+    return
+  }   
+  if(!deckNameParam) {
+    response.status(400).json("Keinen Deck-Namen überrgeben!")
+    return
+  }
+
+  const decksList = await db.select().from(decks).where(
+    and(
+      eq(decks.user_name, userNameParam), 
+      eq(decks.name, deckNameParam)
+    )
+  )
+
+  if (decksList.length === 0) {
+    response.status(404).json("Deck nicht gefunden")
+    return
+  }
+
+  response.status(200).json(decksList[0])
+})
+
+app.post("/deck", async (request, response) => {
+  const userNameParam = request.query.user_name as string | undefined
+  const deckNameParam = request.query.deck_name as string | undefined
+  
+
+  if(!userNameParam) {
+    response.status(400).json("Keinen Usernamen übergeben!");
+    return;
+  }
+  if(!deckNameParam) {
+    response.status(400).json("Keinen Decknamen übergeben!");
+    return;
+  }
+
+  const decksList = await db.select().from(decks).where(
+    and(
+      eq(decks.user_name, userNameParam), 
+      eq(decks.name, deckNameParam)
+    )
+  );
+
+  if (decksList.length > 0) {
+    response.status(409).json("Deck existiert für diesen User bereits, nicht hinzugefügt")
+    return
+  }
+  
+  await db.insert(decks).values({user_name: userNameParam, name: deckNameParam});
+
+  response.setHeader("Access-Control-Allow-Origin", "*");
+  response.setHeader("Access-Control-Allow-Methods", "POST");
+  response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  response.setHeader("Content-Type", "application/json; charset=utf-8");
+  response.status(204).json(`Deck ${deckNameParam} für user ${userNameParam} hinzugefügt`);
+})
 
 app.get("/cards", async (request, response) => {
   const deckParam = request.query.deck_id as number | undefined;

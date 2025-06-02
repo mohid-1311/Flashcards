@@ -1,6 +1,7 @@
-import { User } from "./types";
+import { User, Deck } from "./types";
 
-const url = "https://flashcards-3swd.onrender.com";
+// const url = "https://flashcards-3swd.onrender.com";
+const url = "http://localhost:4000"
 
 export function setData(dataParam: User[]) {
   localStorage.setItem("loginData", JSON.stringify(dataParam));
@@ -59,6 +60,40 @@ export function addUser(user: User): void {
   } catch(error) {
     console.error("Fehler bei der Abfrage:", error);
   }
+}
+
+export async function getDeck(deckname: string): Promise<Deck | undefined> {
+  try{
+    const headers: Headers = new Headers()
+    headers.set("Accept", "application/json")
+    
+    const username = localStorage.getItem("user") || ""
+    
+    const request: RequestInfo = new Request(`${url}/deck?user_name=${encodeURIComponent(username)}&deck_name=${encodeURIComponent(deckname)}`, {
+      method: 'GET',
+      headers: headers
+    })
+    
+    let result = undefined
+    const response = await fetch(request)
+    try {
+      if (!response.ok) {
+        throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
+      }
+      result = await response.json()
+    } catch(error) {
+      console.error("Fehler beim Abfragen der Decknamen:", error);
+    }
+    return result
+
+  } catch(error) {
+    console.error("Fehler bei der Abfrage:", error);
+    return undefined;
+  }
+}
+
+export function addDeck(deck: Deck): void {
+  
 }
 
 export async function getDeckNames(): Promise<string[]> {
