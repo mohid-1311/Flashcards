@@ -4,11 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons"
 import styles from "./NavBar.module.css"
 import { tl } from "../../translation";
+import { useState } from "react";
 
 
 function NavBar() {
   const location = useLocation();
   const navigate = useNavigate()
+  const [showSelect, setShowSelect] = useState(false)
   function handleLogout() {
     localStorage.setItem('isAuthenticated', "false")
     navigate("/Anmeldung")
@@ -32,7 +34,7 @@ function NavBar() {
             </li>
           </Link>
         ))}
-        <li>
+        <li key={links.length} className={`${styles[`link-text`]}`} onClick={() => {setShowSelect(!showSelect)}}>
           <div className={`${styles["link"]} ${styles["language-dropdown"]}`}>
             <select
               onChange={e => {
@@ -40,15 +42,16 @@ function NavBar() {
                 window.location.reload();
               }}
               defaultValue={localStorage.getItem("language") || "en"}
-              className={styles["language-select"]}
+              name="language-select"
+              className={`${styles["language-select"]}`}
             >
-              <option value="de">Deutsch</option>
-              <option value="en">English</option>
+              <option value="de">🇩🇪 DE</option>
+              <option value="en">🇬🇧 EN</option>
             </select>
           </div>
         </li>
-        <Link onClick={handleLogout} className={styles["logout-link"]} to="./Anmeldung" key={links.length}>
-          <li key={links.length} className={styles["logout-link-text"]}>
+        <Link onClick={handleLogout} className={styles["logout-link"]} to="./Anmeldung" key={links.length + 1}>
+          <li key={links.length + 1} className={styles["logout-link-text"]}>
             <button
               className={styles["logout-button"]}
               onClick={() => handleLogout}>
