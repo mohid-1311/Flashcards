@@ -16,6 +16,7 @@
   text-align: center;
   flex: 1;
   height: 100%;
+  width: 50%;
   margin: 0 3rem;
   border-radius: 1rem;
   /* padding: 2rem; */
@@ -48,7 +49,7 @@
 .export-deck-list {
   box-sizing: border-box;
   width: fit-content;
-  width: 100%;
+  max-width: 100%;
   position: relative;
   align-self: center;
   display: flex;
@@ -64,8 +65,9 @@
 .export-deck-list-element {
   box-sizing: border-box;
   width: 100%;
-  min-width: 10rem;
   list-style-type: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 1.5rem;
   margin: 2px 0px;
   border: 0px solid rgb(64, 64, 64);
