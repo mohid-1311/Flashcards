@@ -1,7 +1,6 @@
 import { User, Deck } from "./types";
 
-// const url = "https://flashcards-3swd.onrender.com";
-const url = "http://localhost:4000"
+const url = "https://flashcards-3swd.onrender.com";
 
 export function setData(dataParam: User[]) {
   localStorage.setItem("loginData", JSON.stringify(dataParam));
