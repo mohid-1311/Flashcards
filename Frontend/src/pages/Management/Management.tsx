@@ -218,7 +218,7 @@ function Management(): JSX.Element {
             <input
               className={styles["decks-searchbar"]} 
               type="text" 
-              placeholder="Decks durchsuchen..." 
+              placeholder={tl("search", [ tl("decks") ])} 
               onChange={(e) => {
                 setCurrentDeck("")
                 setRenameDeckForm(false)
@@ -401,7 +401,7 @@ function Management(): JSX.Element {
                   : 
                     <>
                       <FontAwesomeIcon icon={faSquareCaretLeft} /> 
-                      {` Deck wählen`}
+                      {` ${tl("select", [ tl("deck") ])}`}
                     </>
                 }
               </div>
@@ -409,7 +409,7 @@ function Management(): JSX.Element {
               <input 
                 className={styles["cards-searchbar"]} 
                 type="text" 
-                placeholder="Karteikarten durchsuchen..." 
+                placeholder={tl("search", [ tl("cards") ])} 
                 onChange={(e) => {
                   setRenameDeckForm(false)
                   setCardIndex(-1)
@@ -478,10 +478,9 @@ function Management(): JSX.Element {
                           key={index} 
                           className={index === cardIndex ? styles["current-card"] : undefined}
                         >
-                          {Object.keys(card).map((attributName) => (
-                            <td>{card[attributName as keyof Card] || "<Kein Wert>"}</td>
+                          {(Object.keys({term:"", definition:""})).map((attributName) => (
+                            <td>{card[attributName as keyof Card] || tl("no_value")}</td>
                           ))}
-
                           <td>
                             <button 
                               onClick={(e) => {
@@ -516,20 +515,20 @@ function Management(): JSX.Element {
           </div>
           <div className={`${styles["card-edit-container"]}`}>
             <div className={`${styles["card-edit-header"]}`}>
-              <h3>Karteikarte bearbeiten:</h3>
+              <h3>{tl("edit", [ tl("card") ])}</h3>
             </div>
             <div className={`${styles["card-edit-flexbox"]}`}>
               {/* Für jedes Karteikarten-Attribut wird eine Eingabe hinzugefügt */
                 (currentDeck && decks.find((deck: Deck) => (deck.name === currentDeck)).cards[cardIndex]) ? 
                   Object.keys(decks.find((deck: Deck) => (deck.name === currentDeck))?.cards[cardIndex] || {}).map((attributName, index) => (
                     <>
-                      <h4 key={`${attributName}-header-${index}`}>{attributName.charAt(0).toUpperCase() + attributName.slice(1)}</h4>
+                      <h4 key={`${attributName}-header-${index}`}>{tl(`${attributName}_up`)}</h4>
                       <textarea 
                         className={styles["card-edit-input"]}
                         key={`${attributName}-text`}
                         name={attributName}
                         value={decks.find((deck: Deck) => (deck.name === currentDeck))?.cards[cardIndex][attributName as keyof Card]}
-                        placeholder={`${attributName.charAt(0).toUpperCase() + attributName.slice(1)} eingeben...`}
+                        placeholder={tl("insert_value", [ tl(attributName) ])}
                         required
                         onChange={(e) => {
                           e.stopPropagation()
