@@ -1,5 +1,3 @@
-// translation.ts
-
 export const translations: { [key: string]: { [lang: string]: string } } = {
     page_homepage: {
         en: "Homepage",

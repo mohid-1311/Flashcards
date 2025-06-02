@@ -519,9 +519,9 @@ function Management(): JSX.Element {
               <h3>{tl("edit", [ tl("card") ])}</h3>
             </div>
             <div className={`${styles["card-edit-flexbox"]}`}>
-              {/* Für jedes Karteikarten-Attribut wird eine Eingabe hinzugefügt */
+                {/* Für jedes Karteikarten-Attribut wird eine Eingabe hinzugefügt */
                 (currentDeck && decks.find((deck: Deck) => (deck.name === currentDeck)).cards[cardIndex]) ? 
-                  Object.keys(decks.find((deck: Deck) => (deck.name === currentDeck))?.cards[cardIndex] || {}).map((attributName, index) => (
+                  Object.keys({term:"", definition:""}).map((attributName, index) => (
                     <>
                       <h4 key={`${attributName}-header-${index}`}>{tl(`${attributName}_up`)}</h4>
                       <textarea 

@@ -16,7 +16,7 @@
   text-align: center;
   flex: 1;
   height: 100%;
-  margin: 0 2rem;
+  margin: 0 3rem;
   border-radius: 1rem;
   /* padding: 2rem; */
   box-shadow: 0px 0px 20px gainsboro;
@@ -26,45 +26,81 @@
   padding: 1rem;
 }
 
-.export-header {
+.export-header, .import-header {
   background-color: #3d8d36;
-  text-align: start;
+  text-align: center;
   border: 20px;
   border-radius: 1rem 1rem 0 0;
   border-color: #3d8d36;
   color: white;
 }
 
-.export-liste {
+.export-body {
+  position: relative;
   display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  height: min-content;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.export-deck-list {
+  box-sizing: border-box;
+  width: fit-content;
+  width: 100%;
+  position: relative;
+  align-self: center;
+  display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   list-style-type: none;
   overflow-y: auto;
+  scrollbar-gutter: 5px;
 }
 
-.export-liste-element {
+.export-deck-list-element {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 10rem;
   list-style-type: none;
   font-size: 1.5rem;
-  margin: 2px;
+  margin: 2px 0px;
   border: 0px solid rgb(64, 64, 64);
-  padding: 1.2rem;
+  padding: 0.8rem;
   border-radius: 1rem;
   background-color: #dcdcdc;
 }
 
-.export-liste-element:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.2);
-  text-decoration: underline;
+.export-deck-list-element:hover {
+  cursor: pointer;
+
+  background-color: lightblue;
+
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.2);
 }
 
-.import-header {
-  background-color: #3d8d36;
-  text-align: start;
-  border: 20px;
-  border-radius: 1rem 1rem 0 0;
-  border-color: #3d8d36;
-  color: white;
+.element-chosen {
+  background-color: lightblue;
+}
+
+.export-buttons {
+  justify-self: flex-end;
+}
+
+.export-button-json {
+  margin: 16px;
+  padding: 8px 24px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.export-button-json:disabled {
+  background-color: #80c0ff;
 }
