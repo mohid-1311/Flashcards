@@ -1,4 +1,4 @@
-import { User, Deck } from "./types";
+import { User, Deck, Card } from "./types";
 
 const url = "https://flashcards-3swd.onrender.com";
 
@@ -61,12 +61,12 @@ export function addUser(user: User): void {
   }
 }
 
-export async function getDeck(deckname: string): Promise<Deck | undefined> {
+export async function getDeck(deckname: string, username: string): Promise<{id: number, name: string, user: string} | undefined> {
   try{
     const headers: Headers = new Headers()
     headers.set("Accept", "application/json")
     
-    const username = localStorage.getItem("user") || ""
+    username = username || localStorage.getItem("user") || "default"
     
     const request: RequestInfo = new Request(`${url}/deck?user_name=${encodeURIComponent(username)}&deck_name=${encodeURIComponent(deckname)}`, {
       method: 'GET',
@@ -81,7 +81,7 @@ export async function getDeck(deckname: string): Promise<Deck | undefined> {
       }
       result = await response.json()
     } catch(error) {
-      console.error("Fehler beim Abfragen der Decknamen:", error);
+      console.error("Fehler beim Abfragen des Decks:", error);
     }
     return result
 
@@ -91,7 +91,7 @@ export async function getDeck(deckname: string): Promise<Deck | undefined> {
   }
 }
 
-export function addDeck(deck: Deck): void {
+export function addDeck(deck: {name: string, user: string}): void {
   try {
     const headers: Headers = new Headers();
 
@@ -113,6 +113,23 @@ export function addDeck(deck: Deck): void {
   } catch(error) {
     console.error("Fehler bei der Abfrage:", error);
   }
+}
+
+export function addDeckWithCards(deck: Deck): void {
+  const {cards, ...deckWithoutCards} = deck
+  addDeck(deckWithoutCards)
+  getDeck(deck.name, deck.user).then(dbDeck => {
+    if (!dbDeck) {
+      console.error("neu angelegtes Deck nicht gefunden")
+      return
+    }
+    console.log("neu angelegtes deck gefunden, füge karten hinzu")
+    const deckId: number = dbDeck.id
+
+    for (let card of cards) {
+      addCard(card, deckId)
+    }
+  })
 }
 
 export async function getDeckNames(): Promise<string[]> {
@@ -142,5 +159,29 @@ export async function getDeckNames(): Promise<string[]> {
   } catch(error) {
     console.error("Fehler bei der Abfrage:", error);
     return [];
+  }
+}
+
+export function addCard(card: Card, deck_id: number) {
+  try {
+    const headers: Headers = new Headers();
+
+    const request: RequestInfo = new Request(`${url}/card?term=${encodeURIComponent(card.term)}&definition=${encodeURIComponent(card.definition)}&weight=${encodeURIComponent(card.weight)}&deck_id=${encodeURIComponent(deck_id)}`, {
+      method: 'POST',
+      headers: headers
+    })
+
+    fetch(request)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .catch(error => {
+        console.error("Fehler beim Hinzufügen der Karte:", error);
+      });
+  } catch(error) {
+    console.error("Fehler bei der Abfrage:", error);
   }
 }
