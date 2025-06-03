@@ -91,7 +91,7 @@ export async function getDeck(deckname: string, username: string): Promise<{id: 
   }
 }
 
-export function addDeck(deck: {name: string, user: string}): void {
+export async function addDeck(deck: {name: string, user: string}): Promise<{id: number, name: string, user: string} | undefined> {
   try {
     const headers: Headers = new Headers();
 
@@ -100,16 +100,18 @@ export function addDeck(deck: {name: string, user: string}): void {
       headers: headers
     })
 
-    fetch(request)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .catch(error => {
-        console.error("Fehler beim Hinzufügen des Decks:", error);
-      });
+    let result = undefined
+    const response = await fetch(request)
+    try {
+      if (!response.ok) {
+        throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
+      }
+      result = await response.json();
+    } catch (error) {
+      console.error("Fehler beim Hinzufügen des Decks:", error);
+    }
+    return result
+
   } catch(error) {
     console.error("Fehler bei der Abfrage:", error);
   }
@@ -162,7 +164,7 @@ export async function getDeckNames(): Promise<string[]> {
   }
 }
 
-export function addCard(card: Card, deck_id: number) {
+export async function addCard(card: Card, deck_id: number): Promise<{id: number, term: string, definition: string, weight: number, deck_id: number} | undefined> {
   try {
     const headers: Headers = new Headers();
 
@@ -171,16 +173,17 @@ export function addCard(card: Card, deck_id: number) {
       headers: headers
     })
 
-    fetch(request)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .catch(error => {
-        console.error("Fehler beim Hinzufügen der Karte:", error);
-      });
+    let result = undefined
+    const response = await fetch(request)
+    try {
+      if (!response.ok) {
+        throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
+      }
+      return response.json();
+    } catch (error) {
+      console.error("Fehler beim Hinzufügen der Karte:", error);
+    }
+    return result
   } catch(error) {
     console.error("Fehler bei der Abfrage:", error);
   }
