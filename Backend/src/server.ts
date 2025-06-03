@@ -133,7 +133,7 @@ app.post("/deck", async (request, response) => {
       eq(decks.user_name, userNameParam), 
       eq(decks.name, deckNameParam)
     )
-  );
+  )
 
   if (decksList.length > 0) {
     response.status(409).json("Deck existiert für diesen User bereits, nicht hinzugefügt")
@@ -141,12 +141,18 @@ app.post("/deck", async (request, response) => {
   }
   
   await db.insert(decks).values({user_name: userNameParam, name: deckNameParam});
+  const newEntry = await db.select().from(decks).where(
+    and(
+      eq(decks.user_name, userNameParam), 
+      eq(decks.name, deckNameParam)
+    )
+  )
 
   response.setHeader("Access-Control-Allow-Origin", "*");
   response.setHeader("Access-Control-Allow-Methods", "POST");
   response.setHeader("Access-Control-Allow-Headers", "Content-Type");
   response.setHeader("Content-Type", "application/json; charset=utf-8");
-  response.status(204).json(`Deck ${deckNameParam} für user ${userNameParam} hinzugefügt`);
+  response.status(200).json(newEntry);
 })
 
 app.get("/cards", async (request, response) => {
@@ -198,12 +204,20 @@ app.post("/card", async (request, response) => {
   }
   
   await db.insert(cards).values({term: termParam, definition: definitionParam, weight: weightParam, deck_id: deck_idParam});
+  const newEntry = await db.select().from(cards).where(
+    and(
+      eq(cards.term, termParam), 
+      eq(cards.definition, definitionParam), 
+      eq(cards.weight, weightParam), 
+      eq(cards.deck_id, deck_idParam)
+    )
+  )
 
   response.setHeader("Access-Control-Allow-Origin", "*");
   response.setHeader("Access-Control-Allow-Methods", "POST");
   response.setHeader("Access-Control-Allow-Headers", "Content-Type");
   response.setHeader("Content-Type", "application/json; charset=utf-8");
-  response.status(200).json(`Karte ${termParam}: ${definitionParam} mit Gewicht ${weightParam} in Deck ${deck_idParam} zur DB hinzugefügt`);
+  response.status(200).json(newEntry);
 })
 
 app.listen(port, () => {
