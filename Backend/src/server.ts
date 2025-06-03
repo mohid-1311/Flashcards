@@ -160,6 +160,52 @@ app.get("/cards", async (request, response) => {
   }
 });
 
+app.post("/card", async (request, response) => {
+  const termParam = request.query.term as string | undefined
+  const definitionParam = request.query.definition as string | undefined
+  const weightParam = request.query.weight as number | undefined  
+  const deck_idParam = request.query.deck_id as number | undefined
+
+  if(!termParam) {
+    response.status(400).json("Keinen Term übergeben!");
+    return;
+  }
+  if(!definitionParam) {
+    response.status(400).json("Keine Definition übergeben!");
+    return;
+  }
+  if(!weightParam) {
+    response.status(400).json("Kein Gewicht übergeben!");
+    return;
+  }
+  if(!deck_idParam) {
+    response.status(400).json("Keinen Deck-ID übergeben!");
+    return;
+  }
+
+  const decksList = await db.select().from(cards).where(
+    and(
+      eq(cards.term, termParam), 
+      eq(cards.definition, definitionParam), 
+      eq(cards.weight, weightParam), 
+      eq(cards.deck_id, deck_idParam)
+    )
+  )
+
+  if (decksList.length > 0) {
+    response.status(409).json("Karte existiert in diesem Deck für diesen User bereits, nicht hinzugefügt")
+    return
+  }
+  
+  await db.insert(cards).values({term: termParam, definition: definitionParam, weight: weightParam, deck_id: deck_idParam});
+
+  response.setHeader("Access-Control-Allow-Origin", "*");
+  response.setHeader("Access-Control-Allow-Methods", "POST");
+  response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  response.setHeader("Content-Type", "application/json; charset=utf-8");
+  response.status(200).json(`Karte ${termParam}: ${definitionParam} mit Gewicht ${weightParam} in Deck ${deck_idParam} zur DB hinzugefügt`);
+})
+
 app.listen(port, () => {
   console.log("Server gestartet");
 });
