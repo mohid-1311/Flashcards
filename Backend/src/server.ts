@@ -144,7 +144,7 @@ app.post("/deck", async (request, response) => {
   }
   
   await db.insert(decks).values({user_name: userNameParam, name: deckNameParam});
-  const newEntry = await db.select().from(decks).where(
+  const newEntries = await db.select().from(decks).where(
     and(
       eq(decks.user_name, userNameParam), 
       eq(decks.name, deckNameParam)
@@ -155,7 +155,7 @@ app.post("/deck", async (request, response) => {
   response.setHeader("Access-Control-Allow-Methods", "POST");
   response.setHeader("Access-Control-Allow-Headers", "Content-Type");
   response.setHeader("Content-Type", "application/json; charset=utf-8");
-  response.status(200).json(newEntry);
+  response.status(200).json(newEntries[0]);
 })
 
 app.get("/cards", async (request, response) => {
@@ -207,7 +207,7 @@ app.post("/card", async (request, response) => {
   }
   
   await db.insert(cards).values({term: termParam, definition: definitionParam, weight: weightParam, deck_id: deck_idParam});
-  const newEntry = await db.select().from(cards).where(
+  const newEntries = await db.select().from(cards).where(
     and(
       eq(cards.term, termParam), 
       eq(cards.definition, definitionParam), 
@@ -220,7 +220,7 @@ app.post("/card", async (request, response) => {
   response.setHeader("Access-Control-Allow-Methods", "POST");
   response.setHeader("Access-Control-Allow-Headers", "Content-Type");
   response.setHeader("Content-Type", "application/json; charset=utf-8");
-  response.status(200).json(newEntry);
+  response.status(200).json(newEntries[0]);
 })
 
 app.listen(port, () => {
