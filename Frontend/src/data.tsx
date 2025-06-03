@@ -117,21 +117,20 @@ export async function addDeck(deck: {name: string, user: string}): Promise<{id: 
   }
 }
 
-export function addDeckWithCards(deck: Deck): void {
+export async function addDeckWithCards(deck: Deck): Promise<void> {
   const {cards, ...deckWithoutCards} = deck
-  addDeck(deckWithoutCards)
-  getDeck(deck.name, deck.user).then(dbDeck => {
-    if (!dbDeck) {
-      console.error("neu angelegtes Deck nicht gefunden")
-      return
-    }
-    console.log("neu angelegtes deck gefunden, füge karten hinzu")
-    const deckId: number = dbDeck.id
+  const addedDeck = await addDeck(deckWithoutCards)
+  if (!addedDeck) {
+    console.error("neu angelegtes Deck nicht gefunden")
+    return
+  }
+  console.log("neu angelegtes deck gefunden, füge karten hinzu")
+  console.log(addedDeck)
+  const deckId: number = addedDeck.id
 
-    for (let card of cards) {
-      addCard(card, deckId)
-    }
-  })
+  for (let card of cards) {
+    addCard(card, deckId)
+  }
 }
 
 export async function getDeckNames(): Promise<string[]> {
