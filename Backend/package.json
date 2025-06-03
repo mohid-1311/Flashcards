@@ -10,6 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.43.1",
     "express": "^5.1.0",
@@ -19,6 +20,7 @@
   "esModuleInterop": true,
   "keywords": [],
   "devDependencies": {
+    "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
     "drizzle-kit": "^0.31.1",
     "ts-node-dev": "^2.0.0",

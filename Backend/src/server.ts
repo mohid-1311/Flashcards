@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
 import { eq, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { users } from "./db/schema/users";
@@ -14,6 +15,8 @@ if (!databaseUrl) {
 const app = express();
 const port = process.env.PORT || 4000 
 const db = drizzle(databaseUrl);
+
+app.use(cors())
 
 app.get("/user", async (request, response) => {
   const nameParam = request.query.name as string | undefined;
@@ -133,7 +136,7 @@ app.post("/deck", async (request, response) => {
       eq(decks.user_name, userNameParam), 
       eq(decks.name, deckNameParam)
     )
-  );
+  )
 
   if (decksList.length > 0) {
     response.status(409).json("Deck existiert für diesen User bereits, nicht hinzugefügt")
@@ -141,12 +144,18 @@ app.post("/deck", async (request, response) => {
   }
   
   await db.insert(decks).values({user_name: userNameParam, name: deckNameParam});
+  const newEntries = await db.select().from(decks).where(
+    and(
+      eq(decks.user_name, userNameParam), 
+      eq(decks.name, deckNameParam)
+    )
+  )
 
   response.setHeader("Access-Control-Allow-Origin", "*");
   response.setHeader("Access-Control-Allow-Methods", "POST");
   response.setHeader("Access-Control-Allow-Headers", "Content-Type");
   response.setHeader("Content-Type", "application/json; charset=utf-8");
-  response.status(204).json(`Deck ${deckNameParam} für user ${userNameParam} hinzugefügt`);
+  response.status(200).json(newEntries[0]);
 })
 
 app.get("/cards", async (request, response) => {
@@ -159,6 +168,60 @@ app.get("/cards", async (request, response) => {
     response.status(400).json("Keine Deck-ID übergeben!");
   }
 });
+
+app.post("/card", async (request, response) => {
+  const termParam = request.query.term as string | undefined
+  const definitionParam = request.query.definition as string | undefined
+  const weightParam = request.query.weight as number | undefined  
+  const deck_idParam = request.query.deck_id as number | undefined
+
+  if(!termParam) {
+    response.status(400).json("Keinen Term übergeben!");
+    return;
+  }
+  if(!definitionParam) {
+    response.status(400).json("Keine Definition übergeben!");
+    return;
+  }
+  if(!weightParam) {
+    response.status(400).json("Kein Gewicht übergeben!");
+    return;
+  }
+  if(!deck_idParam) {
+    response.status(400).json("Keinen Deck-ID übergeben!");
+    return;
+  }
+
+  const decksList = await db.select().from(cards).where(
+    and(
+      eq(cards.term, termParam), 
+      eq(cards.definition, definitionParam), 
+      eq(cards.weight, weightParam), 
+      eq(cards.deck_id, deck_idParam)
+    )
+  )
+
+  if (decksList.length > 0) {
+    response.status(409).json("Karte existiert in diesem Deck für diesen User bereits, nicht hinzugefügt")
+    return
+  }
+  
+  await db.insert(cards).values({term: termParam, definition: definitionParam, weight: weightParam, deck_id: deck_idParam});
+  const newEntries = await db.select().from(cards).where(
+    and(
+      eq(cards.term, termParam), 
+      eq(cards.definition, definitionParam), 
+      eq(cards.weight, weightParam), 
+      eq(cards.deck_id, deck_idParam)
+    )
+  )
+
+  response.setHeader("Access-Control-Allow-Origin", "*");
+  response.setHeader("Access-Control-Allow-Methods", "POST");
+  response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  response.setHeader("Content-Type", "application/json; charset=utf-8");
+  response.status(200).json(newEntries[0]);
+})
 
 app.listen(port, () => {
   console.log("Server gestartet");
