@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
 import { eq, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { users } from "./db/schema/users";
@@ -14,6 +15,8 @@ if (!databaseUrl) {
 const app = express();
 const port = process.env.PORT || 4000 
 const db = drizzle(databaseUrl);
+
+app.use(cors())
 
 app.get("/user", async (request, response) => {
   const nameParam = request.query.name as string | undefined;
