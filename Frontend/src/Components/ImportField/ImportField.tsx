@@ -2,10 +2,16 @@ import { useState } from "react";
 import styles from "./ImportField.module.css"
 import { setDecks } from "../../deckState"
 import { Card, Deck } from "../../types"
+import { addDeckWithCards } from "../../data";
 
 function ImportField({ decks, setLocalDecks }: { decks: any, setLocalDecks: any }) {
 
-  function isDeck(o: Deck) {
+  /**
+   * checks if an Object is enough Deck to be imported (card.weight and user not required)
+   * @param {Object} o
+   * @returns {boolean}
+   */
+  function isDeck(o: Deck): boolean {
     if (typeof o.name !== "string") return false;
     if (typeof o.cards !== "object") return false;
     for (let card of o.cards) {
@@ -76,6 +82,9 @@ function ImportField({ decks, setLocalDecks }: { decks: any, setLocalDecks: any 
         continue
       }
 
+      // user wird gesetzt
+      newDeck["user"] = localStorage.getItem("user")?.toLowerCase() || "default"
+
       // weight wird falls nicht vorhanden auf standard wert 10 gesetzt
       for (let card of newDeck.cards) {
         if (!card.weight) {
@@ -83,13 +92,17 @@ function ImportField({ decks, setLocalDecks }: { decks: any, setLocalDecks: any 
         }
       }
       
+      console.log(`füge ${newDeck.name} zur DB hinzu`)
+      addDeckWithCards(newDeck)
+
+      // Zum localstorage hinzufügen, kann später gelöscht werden
+
       // nach Deck mit gleichem Namen suchen
       let deckToUpdate = tempDecks.find((deck: Deck) => deck.name === newDeck.name)
       
       // falls noch kein Deck mit dem Namen existiert, wird ein neues erstellt
       if(!deckToUpdate) {
         console.log(`deck ${newDeck.name} existiert noch nicht`)
-        newDeck["user"] = localStorage.getItem("user")?.toLowerCase() || "default"
         tempDecks.push(newDeck)
         console.log(`deck ${newDeck.name} wurde hinzugefügt`)
         continue
@@ -101,7 +114,6 @@ function ImportField({ decks, setLocalDecks }: { decks: any, setLocalDecks: any 
           deckToUpdate?.cards.push(newCard)
         }
       })
-      
     }
     console.log(tempDecks)
     setLocalDecks([...tempDecks])
