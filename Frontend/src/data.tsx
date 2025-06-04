@@ -61,7 +61,7 @@ export function addUser(user: User): void {
   }
 }
 
-export async function getDeck(deckname: string, username: string): Promise<{id: number, name: string, user: string} | undefined> {
+export async function getDeck(deckname: string, username?: string): Promise<Deck & {id: number} | undefined> {
   try{
     const headers: Headers = new Headers()
     headers.set("Accept", "application/json")
