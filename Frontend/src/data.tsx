@@ -104,6 +104,9 @@ export async function addDeck(deck: {name: string, user: string}): Promise<{id: 
     const response = await fetch(request)
     try {
       if (!response.ok) {
+        if (response.status === 409) {
+          return result
+        }
         throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
       }
       result = await response.json();
@@ -206,13 +209,17 @@ export async function addCard(card: Card, deck_id: number): Promise<{id: number,
     const response = await fetch(request)
     try {
       if (!response.ok) {
+        if (response.status === 409) {
+          return result
+        }
         throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
       }
-      return response.json();
+      result = await response.json();
     } catch (error) {
       console.error("Fehler beim Hinzufügen der Karte:", error);
     }
     return result
+
   } catch(error) {
     console.error("Fehler bei der Abfrage:", error);
   }
