@@ -163,6 +163,34 @@ export async function getDeckNames(): Promise<string[]> {
   }
 }
 
+export async function getCards(deck_id: number): Promise<(Card & {id: number, deck_id: number})[] | undefined> {
+  try{
+    const headers: Headers = new Headers()
+    headers.set("Accept", "application/json")
+    
+    const request: RequestInfo = new Request(`${url}/cards?deck_id=${encodeURIComponent(deck_id)}`, {
+      method: 'GET',
+      headers: headers
+    })
+    
+    let result = []
+    const response = await fetch(request)
+    try {
+      if (!response.ok) {
+        throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
+      }
+      result = await response.json()
+    } catch(error) {
+      console.error("Fehler beim Abfragen der Karten:", error);
+    }
+    return result 
+
+  } catch(error) {
+    console.error("Fehler bei der Abfrage:", error);
+    return [];
+  }
+}
+
 export async function addCard(card: Card, deck_id: number): Promise<{id: number, term: string, definition: string, weight: number, deck_id: number} | undefined> {
   try {
     const headers: Headers = new Headers();
