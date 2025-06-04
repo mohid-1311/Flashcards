@@ -119,13 +119,15 @@ export async function addDeck(deck: {name: string, user: string}): Promise<{id: 
 
 export async function addDeckWithCards(deck: Deck): Promise<void> {
   const {cards, ...deckWithoutCards} = deck
-  const addedDeck = await addDeck(deckWithoutCards)
+  let addedDeck = await addDeck(deckWithoutCards)
+  if (!addedDeck) {
+    addedDeck = await getDeck(deck.name, deck.user)
   if (!addedDeck) {
     console.error("neu angelegtes Deck nicht gefunden")
     return
+    }
   }
   console.log("neu angelegtes deck gefunden, füge karten hinzu")
-  console.log(addedDeck)
   const deckId: number = addedDeck.id
 
   for (let card of cards) {
