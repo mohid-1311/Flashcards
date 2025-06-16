@@ -2,7 +2,7 @@ import styles from "./Motivation.module.css"
 
 function Motivation() {
 
-  const motivationsZitate = [
+  const motivationsQuotes = [
     "„Alles was du willst, ist auf der anderen Seite der Angst.” – George Addair",
     "„Ob du denkst, du kannst es, oder du kannst es nicht – du wirst auf jeden Fall Recht behalten.” – Henry Ford",
     "„Positiv zu bleiben bedeutet nicht, dass die Dinge immer funktionieren werden. Vielmehr ist es das Wissen, dass es dir gut gehen wird, egal wie es ausgeht.” – Garth Ennis",
@@ -36,21 +36,21 @@ function Motivation() {
     "„Unsere Tugenden und unsere Fehler sind untrennbar miteinander verbunden, wie Kraft und Materie. Wenn sie sich trennen, ist der Mensch nicht mehr da.” – Nikola Tesla",
   ]
 
-  let randomZitat: string = motivationsZitate[Math.floor(Math.random() * motivationsZitate.length)]
-  let strichIndex: number = randomZitat.lastIndexOf("–")
+  let randomQuote: string = motivationsQuotes[Math.floor(Math.random() * motivationsQuotes.length)]
+  let dashIndex: number = randomQuote.lastIndexOf("–")
 
   let fontsize = 5
-  if (randomZitat.length > 80) fontsize += -1
-  if (randomZitat.length > 400) fontsize += -1
-  if (randomZitat.length > 500) fontsize += -1
+  if (randomQuote.length > 80) fontsize += -1
+  if (randomQuote.length > 400) fontsize += -1
+  if (randomQuote.length > 500) fontsize += -1
   if (document.documentElement.clientWidth < 1000) fontsize += -1
   if (document.documentElement.clientWidth < 800) fontsize += 1
 
   return (
     <div className={styles[`motivation-${fontsize}`]}>
-      {randomZitat.substring(0, strichIndex)}
+      {randomQuote.substring(0, dashIndex)}
       <br />
-      {randomZitat.substring(strichIndex, randomZitat.length)}
+      {randomQuote.substring(dashIndex, randomQuote.length)}
     </div>
   )
 }

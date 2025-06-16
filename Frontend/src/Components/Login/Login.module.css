@@ -1,0 +1,105 @@
+.login-container,
+.signup-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f4f4f4;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.login-display,
+.signup-display {
+  width: min(90%, 400px);
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-display h1,
+.signup-display h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.login-username,
+.login-password,
+.signup-username,
+.signup-password {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.login-username label,
+.login-password label,
+.signup-username label,
+.signup-password label {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.login-username input,
+.login-password input,
+.signup-username input,
+.signup-password input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border 0.3s ease-in-out;
+  box-sizing: border-box;
+}
+
+.login-username input:focus,
+.login-password input:focus,
+.signup-username input:focus,
+.signup-password input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+}
+
+.button-submit {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  margin-top: 0.5rem;
+}
+
+.button-submit:hover {
+  background-color: #0056b3;
+}
+
+span {
+  display: inline-block;
+  margin-top: 1rem;
+  text-align: center;
+  cursor: pointer;
+  color: #007bff;
+  font-weight: bold;
+  transition: color 0.3s ease-in-out;
+}
+
+span:hover {
+  color: #0056b3;
+}

@@ -1,4 +1,4 @@
-import { User } from "./types";
+import { User, Deck, Card } from "./types";
 
 const url = "https://flashcards-3swd.onrender.com";
 
@@ -6,12 +6,12 @@ export function setData(dataParam: User[]) {
   localStorage.setItem("loginData", JSON.stringify(dataParam));
 }
 
-export async function getBenutzer(benutzerName: string): Promise<User | undefined> {
+export async function getUser(username: string): Promise<User | undefined> {
   try {
     const headers: Headers = new Headers()
     headers.set("Accept", "application/json");
-
-    const request: RequestInfo = new Request(`${url}/benutzer?name=${encodeURIComponent(benutzerName)}`, {
+    
+    const request: RequestInfo = new Request(`${url}/user?name=${encodeURIComponent(username)}`, {
       method: 'GET',
       headers: headers
     })
@@ -22,8 +22,8 @@ export async function getBenutzer(benutzerName: string): Promise<User | undefine
           throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
         }
         
-        const benutzer = await response.json();
-        return benutzer[0];
+        const user = await response.json();
+        return user[0];
       })
       .catch(error => {
         console.error("Fehler beim Abfragen des Benutzers:", error);
@@ -37,11 +37,11 @@ export async function getBenutzer(benutzerName: string): Promise<User | undefine
   }
 }
 
-export function addBenutzer(benutzer: User): void {
+export function addUser(user: User): void {
   try {
     const headers: Headers = new Headers();
 
-    const request: RequestInfo = new Request(`${url}/benutzer?name=${encodeURIComponent(benutzer.name)}&passwort=${encodeURIComponent(benutzer.passwort)}`, {
+    const request: RequestInfo = new Request(`${url}/user?name=${encodeURIComponent(user.name)}&password=${encodeURIComponent(user.password)}`, {
       method: 'POST',
       headers: headers
     })
@@ -56,6 +56,170 @@ export function addBenutzer(benutzer: User): void {
       .catch(error => {
         console.error("Fehler beim Hinzufügen des Benutzers:", error);
       });
+  } catch(error) {
+    console.error("Fehler bei der Abfrage:", error);
+  }
+}
+
+export async function getDeck(deckname: string, username?: string): Promise<Deck & {id: number} | undefined> {
+  try{
+    const headers: Headers = new Headers()
+    headers.set("Accept", "application/json")
+    
+    username = username || localStorage.getItem("user") || "default"
+    
+    const request: RequestInfo = new Request(`${url}/deck?user_name=${encodeURIComponent(username)}&deck_name=${encodeURIComponent(deckname)}`, {
+      method: 'GET',
+      headers: headers
+    })
+    
+    let result = undefined
+    const response = await fetch(request)
+    try {
+      if (!response.ok) {
+        throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
+      }
+      result = await response.json()
+    } catch(error) {
+      console.error("Fehler beim Abfragen des Decks:", error);
+    }
+    return result
+
+  } catch(error) {
+    console.error("Fehler bei der Abfrage:", error);
+    return undefined;
+  }
+}
+
+export async function addDeck(deck: {name: string, user: string}): Promise<{id: number, name: string, user: string} | undefined> {
+  try {
+    const headers: Headers = new Headers();
+
+    const request: RequestInfo = new Request(`${url}/deck?user_name=${encodeURIComponent(deck.user)}&deck_name=${encodeURIComponent(deck.name)}`, {
+      method: 'POST',
+      headers: headers
+    })
+
+    let result = undefined
+    const response = await fetch(request)
+    try {
+      if (!response.ok) {
+        if (response.status === 409) {
+          return result
+        }
+        throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
+      }
+      result = await response.json();
+    } catch (error) {
+      console.error("Fehler beim Hinzufügen des Decks:", error);
+    }
+    return result
+
+  } catch(error) {
+    console.error("Fehler bei der Abfrage:", error);
+  }
+}
+
+export async function addDeckWithCards(deck: Deck): Promise<void> {
+  const {cards, ...deckWithoutCards} = deck
+  let addedDeck = await addDeck(deckWithoutCards)
+  if (!addedDeck) {
+    addedDeck = await getDeck(deck.name, deck.user)
+  if (!addedDeck) {
+    console.error("neu angelegtes Deck nicht gefunden")
+    return
+    }
+  }
+  console.log("neu angelegtes deck gefunden, füge karten hinzu")
+  const deckId: number = addedDeck.id
+
+  for (let card of cards) {
+    addCard(card, deckId)
+  }
+}
+
+export async function getDeckNames(): Promise<string[]> {
+  try{
+    const headers: Headers = new Headers()
+    headers.set("Accept", "application/json")
+    
+    const username = localStorage.getItem("user") || ""
+    
+    const request: RequestInfo = new Request(`${url}/decks/names?user=${encodeURIComponent(username)}`, {
+      method: 'GET',
+      headers: headers
+    })
+    
+    let result = []
+    const response = await fetch(request)
+    try {
+      if (!response.ok) {
+        throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
+      }
+      result = await response.json()
+    } catch(error) {
+      console.error("Fehler beim Abfragen der Decknamen:", error);
+    }
+    return result 
+
+  } catch(error) {
+    console.error("Fehler bei der Abfrage:", error);
+    return [];
+  }
+}
+
+export async function getCards(deck_id: number): Promise<(Card & {id: number, deck_id: number})[] | undefined> {
+  try{
+    const headers: Headers = new Headers()
+    headers.set("Accept", "application/json")
+    
+    const request: RequestInfo = new Request(`${url}/cards?deck_id=${encodeURIComponent(deck_id)}`, {
+      method: 'GET',
+      headers: headers
+    })
+    
+    let result = []
+    const response = await fetch(request)
+    try {
+      if (!response.ok) {
+        throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
+      }
+      result = await response.json()
+    } catch(error) {
+      console.error("Fehler beim Abfragen der Karten:", error);
+    }
+    return result 
+
+  } catch(error) {
+    console.error("Fehler bei der Abfrage:", error);
+    return [];
+  }
+}
+
+export async function addCard(card: Card, deck_id: number): Promise<{id: number, term: string, definition: string, weight: number, deck_id: number} | undefined> {
+  try {
+    const headers: Headers = new Headers();
+
+    const request: RequestInfo = new Request(`${url}/card?term=${encodeURIComponent(card.term)}&definition=${encodeURIComponent(card.definition)}&weight=${encodeURIComponent(card.weight)}&deck_id=${encodeURIComponent(deck_id)}`, {
+      method: 'POST',
+      headers: headers
+    })
+
+    let result = undefined
+    const response = await fetch(request)
+    try {
+      if (!response.ok) {
+        if (response.status === 409) {
+          return result
+        }
+        throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
+      }
+      result = await response.json();
+    } catch (error) {
+      console.error("Fehler beim Hinzufügen der Karte:", error);
+    }
+    return result
+
   } catch(error) {
     console.error("Fehler bei der Abfrage:", error);
   }

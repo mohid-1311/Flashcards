@@ -1,19 +1,18 @@
 import NavBar from "./Components/NavBar/NavBar"
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom"
 import React, { useEffect, useState } from "react"
-import Startseite from "./pages/Startseite/Startseite"
-import Hinzufuegen from "./pages/Hinzufuegen/Hinzufuegen"
-import Verwaltung from "./pages/Verwaltung/Verwaltung"
-import Fortschritt from "./pages/Fortschritt/Fortschritt"
-import Importieren from "./pages/Importieren/Importieren"
-import Anmeldung from "./pages/Anmeldung/Anmeldung"
-import Lernmodi from "./pages/Lernmodi/Lernmodi"
-import FreierModus from "./pages/Lernmodi/FreierModus"
-import KlassischerModus from "./pages/Lernmodi/KlassischerModus"
-import SchreibModus from "./pages/Lernmodi/SchreibModus"
+import Homepage from "./pages/Homepage/Homepage"
+import Add from "./pages/Add/Add"
+import Management from "./pages/Management/Management"
+import Import from "./pages/Import/Import"
+import Login from "./pages/Login/Login"
+import LearningModes from "./pages/LearningModes/LearningModes"
+import FreeMode from "./pages/LearningModes/FreeMode"
+import ClassicMode from "./pages/LearningModes/ClassicMode"
+import WritingMode from "./pages/LearningModes/WritingMode"
 
 
-import { ProtectedRoute } from "./Authentifiziert"
+import { ProtectedRoute } from "./Authentication"
 import "./General.module.css"
 
 function App() {
@@ -44,16 +43,15 @@ function App() {
       <div>
         {!showNav && (<NavBar/>)}
         <Routes>
-          <Route path="/Anmeldung" element={<Anmeldung setShowNav={setShowNav} setIsAuthentificated={setIsAuthenticated}/>} />
-          <Route path="/Startseite" element={ProtectedRoute(<Startseite/>)}></Route>
-          <Route path="/Hinzufuegen" element={ProtectedRoute(<Hinzufuegen/>)}></Route>
-          <Route path="/Verwaltung" element={ProtectedRoute(<Verwaltung/>)}></Route>
-          <Route path="/Fortschritt" element={ProtectedRoute(<Fortschritt/>)}></Route>
-          <Route path="/Importieren" element={ProtectedRoute(<Importieren/>)}></Route>
-          <Route path="/Lernmodi" element={ProtectedRoute(<Lernmodi/>)}></Route>
-          <Route path="/FreierModus" element={ProtectedRoute(<FreierModus/>)}></Route>
-          <Route path="/KlassischerModus" element={ProtectedRoute(<KlassischerModus/>)}></Route>
-          <Route path="/SchreibModus" element={ProtectedRoute(<SchreibModus/>)}></Route>
+          <Route path="/Anmeldung" element={<Login setShowNav={setShowNav} setIsAuthentificated={setIsAuthenticated}/>} />
+          <Route path="/Startseite" element={ProtectedRoute(<Homepage/>)}></Route>
+          <Route path="/Hinzufuegen" element={ProtectedRoute(<Add/>)}></Route>
+          <Route path="/Verwaltung" element={ProtectedRoute(<Management/>)}></Route>
+          <Route path="/Importieren" element={ProtectedRoute(<Import/>)}></Route>
+          <Route path="/Lernmodi" element={ProtectedRoute(<LearningModes/>)}></Route>
+          <Route path="/FreierModus" element={ProtectedRoute(<FreeMode/>)}></Route>
+          <Route path="/KlassischerModus" element={ProtectedRoute(<ClassicMode/>)}></Route>
+          <Route path="/SchreibModus" element={ProtectedRoute(<WritingMode/>)}></Route>
         </Routes>
       </div>
    </>

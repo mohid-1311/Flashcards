@@ -1,0 +1,394 @@
+/* Scrollbar */
+.decks-list-flexbox::-webkit-scrollbar, .deck-cards-flexbox::-webkit-scrollbar, .card-edit-input::-webkit-scrollbar, 
+.decks-list-flexbox::-webkit-scrollbar-corner, .deck-cards-flexbox::-webkit-scrollbar-corner, .card-edit-input::-webkit-scrollbar-corner
+{
+    width: 10px;
+}
+
+.decks-list-flexbox::-webkit-scrollbar-thumb, .deck-cards-flexbox::-webkit-scrollbar-thumb, .card-edit-input::-webkit-scrollbar-thumb
+{
+    border-radius: 5px;
+    
+    background: #808080;
+}
+
+.decks-list-flexbox::-webkit-scrollbar-thumb:hover, .deck-cards-flexbox::-webkit-scrollbar-thumb:hover, .card-edit-input::-webkit-scrollbar-thumb:hover
+{
+    cursor: pointer;
+
+    background: #5f5f5f;
+}
+
+div.management-container {
+    display: flex;
+    justify-content: space-between;
+
+    height: 90vh;
+
+    padding: 25px;
+}
+
+/* Header für Deck-&Karteikartenliste */
+div.deck-cards-header {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 20px;
+
+    border-radius: 8px 8px 0 0;
+
+    color: white;
+    background-color: #3d8d36;
+}
+
+div.decks-list-header {
+    padding: 20px;
+
+    border-radius: 8px 8px 0 0;
+
+    background-color: #3d8d36;
+}
+
+/* Suchleisten */
+input.decks-searchbar {
+    width: 100%;
+    height: 25px;
+
+    padding: 0.3em;
+
+    border: 0;
+    border-radius: 5px;
+}
+
+input.cards-searchbar {
+    width: 40%;
+    height: 25px;
+
+    padding: 0.3em;
+
+    border: 0;
+    border-radius: 5px;
+}
+
+/* Übergeordneter Container für die Karteikartendecks */
+div.decks-list-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    width: 15%;
+
+    border-radius: 10px;
+
+    box-shadow: 0px 0px 20px gainsboro;
+}
+
+/* Karteikartendecks-Liste (flexbox) */
+div.decks-list-flexbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    overflow: hidden scroll;
+
+    padding: 5px 0 5px 10px;
+}
+
+/* Elemente der Karteikartendecks-Liste */
+div.current-deck {
+    background-color: lightblue !important;
+}
+
+div.decks-list-flexbox > div {
+    display: flex;
+    justify-content: space-between;
+
+    margin-block: 5px;
+    padding-inline: 15px;
+    padding-block: 25px;
+
+    background-color: #dcdcdc;
+
+    border-radius: 5px;
+
+    font-size: larger;
+}
+
+div.decks-list-flexbox > div:hover {
+    cursor: pointer;
+
+    background-color: lightblue;
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Text in den Elementen der Karteikartendecks-Liste */
+div.decks-list-flexbox > div > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Erstes Element der Karteikartendeck-Liste (Immer das Hinzufügen-Element) */
+div.decks-list-flexbox > div:first-of-type {
+    justify-content: center;
+    background-color: #e2ffcf;
+}
+
+div.decks-list-flexbox > div:first-of-type:hover {
+    background-color: #bed8ad;
+}
+
+form.deck-add {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    width: 100%;
+}
+
+input.deck-add {
+    border: 0;
+    border-radius: 5px;
+
+    width: inherit;
+
+    margin-right: 5px;
+    padding: 5px;
+    
+    color: black;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Übergeordneter Container für die Karteikarten + Bearbeitungsfeld */
+div.deck-cards-rahmen-container {
+    display: flex;
+    justify-content: space-between;
+
+    width: 80%;
+}
+
+/* Übergeordneter Container für die Karteikarten */
+div.deck-cards-list-container {
+    display: flex;
+    flex-direction: column;
+
+    box-sizing: border-box;
+    
+    width: 70%;
+
+    border-radius: 10px 10px 0 10px;
+    box-shadow: 0px 0px 20px gainsboro;
+}
+
+/* Karteikartenliste (flexbox) */
+div.deck-cards-flexbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    overflow: hidden scroll;
+
+    height: 100%;
+    
+    padding-inline: 20px 10px;
+}
+
+/* Zeile in der Karteikartentabelle */ 
+tr.current-card {
+    background-color: #0049c1 !important;
+}
+
+div.deck-cards-flexbox > table > tbody > tr {
+    display: inline-table;
+
+    margin-block: 2px;
+    padding: 5px;
+
+    color: white;
+    background-color: #007bff;
+
+    border: 0;
+    border-radius: 10px;
+}
+
+div.deck-cards-flexbox > table > tbody > tr:hover {
+    cursor: pointer;
+    
+    background-color: #0049c1;
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Erstes Element der Karteikartentabelle (Immer das Hinzufügen-Element) */
+div.deck-cards-flexbox > table > tbody > tr:first-of-type {
+    display: flex;
+    justify-content: center;
+
+    color: black;
+    background-color: #e2ffcf;
+}
+
+div.deck-cards-flexbox > table > tbody > tr:first-of-type:hover {
+    background-color: #bed8ad;
+}
+
+div.deck-cards-flexbox > table > tbody > tr:first-of-type > td {
+    width: auto;
+}
+
+/* Spalten in der Karteikartentabelle mit Attributen der Karteikarte */
+div.deck-cards-flexbox > table > tbody > tr > td {
+    width: 50%;
+
+    padding: 8px;
+
+    overflow: hidden;
+    overflow-wrap: anywhere;
+}
+
+/* Buttons fürs Entfernen/Hinzufügen/Umbenennen eines Decks/einer Karte */
+button.deck-remove {
+    position: sticky;
+    right: 15px;
+
+    margin-left: 5px;
+}
+
+button.deck-add, button.deck-remove, button.deck-rename, button.card-remove, button.card-add-form-close {
+    aspect-ratio: 1 / 1;
+
+    height: 22px;
+    width: 22px;
+
+    border: 0;
+    border-radius: 2px;
+
+    color: white;
+    background-color: #007bff;
+}
+
+button.deck-remove:hover, button.card-remove:hover, button.card-add-form-close:hover {
+    cursor: pointer;
+    background-color: red;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button.deck-add:enabled:hover {
+    cursor: pointer;
+    background-color: green;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button.deck-rename:enabled:hover {
+    cursor: pointer;
+    background-color: #0049c1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button.deck-add:disabled, button.deck-rename:disabled {
+    background-color: gainsboro;
+}
+
+/* Schaltfläche zum Bearbeiten des Karteikartendeck-Namens */
+div.deck-rename-container {
+    align-content: center;
+
+    width: 40%;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+svg.deck-rename:hover {
+    cursor: pointer;
+}
+
+form.deck-rename {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+}
+
+input.deck-rename {
+    border: 0;
+    border-radius: 5px;
+
+    width: 100%;
+
+    margin-right: 5px;
+    padding: 5px;
+    
+    color: white;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+input.deck-rename::placeholder {
+    color: #cecece;
+}
+
+button.deck-rename > svg {
+    display: block;
+    margin: auto;
+}
+
+/* Übergeordneter Container fürs Bearbeitungsfeld einer Karteikarte */
+div.card-edit-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    width: 29%;
+
+    margin-top: 27px;
+
+    box-sizing: border-box;
+
+    border-radius: 0 10px 10px 0;
+
+    box-shadow: 0px 0px 20px gainsboro;
+}
+
+/* Header für Karteikarte-Bearbeiten */
+div.card-edit-header {
+    padding: 8px;
+
+    border-radius: 0 8px 0 0;
+
+    color: white;
+    background-color: #3d8d36;
+}
+
+/* Karteikartenattribute-Liste (flexbox) */
+div.card-edit-flexbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    padding-left : 10px;
+    padding-bottom: 10px;
+
+    overflow: hidden hidden;
+}
+
+/* Attribut-Element für eine Karteikarte */
+div.card-edit-flexbox > h4 {
+    margin-block-start: 1em;
+    margin-block-end: 0.5em;
+}
+
+textarea.card-edit-input {
+    margin-inline: 5px;
+    padding: 5px;
+
+    height: 6.4em;
+    min-height: 1.8em;
+    resize: vertical;
+
+    border: 0;
+    border-radius: 5px;
+    
+    background-color: gainsboro;
+}

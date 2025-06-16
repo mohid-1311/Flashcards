@@ -1,10 +1,10 @@
 export type User = {
   name: string;
-  passwort: string
+  password: string
 }
 
 export type Card = {
-  ausdruck: string,
+  term: string,
   definition: string,
   weight: number
 }
@@ -16,13 +16,13 @@ export type Deck = {
 }
 
 export type AddCardFormProps = {
-  onAddCard: (card: { ausdruck: string; definition: string; weight: number}, deckIndex: number) => void;
+  onAddCard: (card: { term: string; definition: string; weight: number}, deckIndex: number) => void;
   deckIndex: number;
   decks: Deck[]
 }
 
-export type AnmeldungCompProps = {
-  setAnmeldung: React.Dispatch<React.SetStateAction<boolean>>;
+export type LoginCompProps = {
+  setLogin: React.Dispatch<React.SetStateAction<boolean>>;
   setShowNav: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAuthentificated: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -34,8 +34,8 @@ export type DeckModalProps = {
   closeModal: () => void;
 };
 
-export type SetAnmeldung = {
-  setAnmeldung: React.Dispatch<React.SetStateAction<boolean>>;
+export type SetLogin = {
+  setLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export type SetShowNav = {
@@ -46,7 +46,7 @@ export type SetIsAuthentificated = {
   setIsAuthentificated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export type AnmeldungProps = SetShowNav & SetIsAuthentificated
+export type LoginProps = SetShowNav & SetIsAuthentificated
 
 
 export {};
