@@ -6,6 +6,8 @@ import { drizzle } from "drizzle-orm/mysql2";
 import { users } from "./db/schema/users";
 import { decks } from "./db/schema/decks";
 import { cards } from "./db/schema/cards";
+import { z } from "zod/v4";
+
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
@@ -18,6 +20,7 @@ const db = drizzle(databaseUrl);
 
 app.use(cors())
 
+// USER
 app.get("/user", async (request, response) => {
   const nameParam = request.query.name as string | undefined;
   
@@ -57,7 +60,38 @@ app.post("/user", async (request, response) => {
   response.status(204);
 });
 
+app.put("/user", async(request, response) => {
+  const nameParam = request.query.name as string;
+  const passwortParam = request.query.passwort as string | undefined;
+
+  if(!passwortParam)
+  {
+    response.status(400).json("Kein Passwort übergeben");
+    return;
+  }
+
+  try{
+    await db
+    .update(users)
+    .set({password: passwortParam})
+    .where(eq(users.name, nameParam));
+
+    response.status(200).json("Passwort aktualisiert");
+  }
+  catch(error)
+  {
+    response.status(500).json("Fehler beim aktualisieren")
+  }
+});
+
+// DECK
+
+const deckSchema = z.object({
+  userName: z.string()
+})
+
 app.get("/decks", async (request, response) => {
+  console.log(request.body)
   const userParam = request.query.user_name as string | undefined;
   
   if(userParam) {
@@ -102,12 +136,7 @@ app.get("/deck", async (request, response) => {
     return
   }
 
-  const decksList = await db.select().from(decks).where(
-    and(
-      eq(decks.user_name, userNameParam), 
-      eq(decks.name, deckNameParam)
-    )
-  )
+  const decksList = await getDecksOfUser(userNameParam, deckNameParam)
 
   if (decksList.length === 0) {
     response.status(404).json("Deck nicht gefunden")
@@ -131,12 +160,7 @@ app.post("/deck", async (request, response) => {
     return;
   }
 
-  const decksList = await db.select().from(decks).where(
-    and(
-      eq(decks.user_name, userNameParam), 
-      eq(decks.name, deckNameParam)
-    )
-  )
+  const decksList = await getDecksOfUser(userNameParam, deckNameParam)
 
   if (decksList.length > 0) {
     response.status(409).json("Deck existiert für diesen User bereits, nicht hinzugefügt")
@@ -158,6 +182,7 @@ app.post("/deck", async (request, response) => {
   response.status(200).json(newEntries[0]);
 })
 
+// CARD
 app.get("/cards", async (request, response) => {
   const deckParam = request.query.deck_id as number | undefined;
   
@@ -226,3 +251,13 @@ app.post("/card", async (request, response) => {
 app.listen(port, () => {
   console.log("Server gestartet");
 });
+
+
+async function getDecksOfUser(userName: string, deckName: string) {
+  return await db.select().from(decks).where(
+    and(
+      eq(decks.user_name, userName), 
+      eq(decks.name, deckName)
+    )
+  )
+}

@@ -1,24 +1,30 @@
-export type User = {
-  name: string;
-  password: string
-}
+import { z } from "zod/v4";
 
-export type Card = {
-  term: string,
-  definition: string,
-  weight: number
-}
+export const userSchema = z.object({
+  name: z.string().min(4).max(16),
+  password: z.string().length(64)
+})
+export type User = z.infer<typeof userSchema>
 
-export type Deck = {
-  name: string,
-  user: string,
-  cards: Card[]
-}
+export const cardSchema = z.object({
+  term: z.string(),
+  definition: z.string(),
+  weight: z.uint32().min(1)
+})
+export type Card = z.infer<typeof cardSchema>
+
+export const deckSchema = z.object({
+  name: z.string().min(1).max(32),
+  user: userSchema.shape.name,
+  cards: z.array(cardSchema)
+})
+
+export type Deck = z.infer<typeof deckSchema>
 
 export type AddCardFormProps = {
   onAddCard: (card: { term: string; definition: string; weight: number}, deckIndex: number) => void;
   deckIndex: number;
-  decks: Deck[]
+  decks: Deck[];
 }
 
 export type LoginCompProps = {

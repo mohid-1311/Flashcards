@@ -50,8 +50,8 @@ function Management(): JSX.Element {
     /**
      * Funktion, die überprüft, ob Eingabe folgende Kriterien erfüllt:
      * - Keine Eingabe nur aus Leerzeichen
-     * - Keine Eingabe mit unsichtbarem Zeichen am Anfang
-     * - Keine Eingabe mit unsichtbarem Zeichen am Ende
+     * - Keine Eingabe mit unsichtbarem Zeichen
+     * - Keine Eingabe mit unsichtbarem Zeichen
      *
      * @param {string} input - Die zu überprüfende Eingabe
      * @return {boolean}
@@ -59,22 +59,21 @@ function Management(): JSX.Element {
     function invalidInput(input: string): boolean {
       return (
         input.trim() === "" || // Keine Eingabe nur aus Leerzeichen
-        input.trim().startsWith("‎") || // Keine Eingabe mit unsichtbarem Zeichen am Anfang
-        input.trim().endsWith("‎") // Keine Eingabe mit unsichtbarem Zeichen am Ende
+        input.includes("‎") || // Keine Eingabe mit unsichtbarem Zeichen
+        input.includes("‎") // Keine Eingabe mit unsichtbarem Zeichen
       )
     }
-
 
   /** 
    * Funktion, die beim Klicken auf den Hinzufügen-Button der Decks 
    * aufgerufen wird, um ein neues Deck zur Liste der Decks hinzuzufügen.
-   * Bearbeitetes Decks wird synchronisiert.
+   * Bearbeitete Decks werden synchronisiert.
    *
    * @param {string} deckName - Name des Decks 
    * @return {void}
    */
   function addDeck(deckName: string): void {
-    deckName = deckName.trim() // Leerzeichen vor und nach dem Namen remove
+    deckName = deckName.trim() // Leerzeichen vor und nach dem Namen entfernen
 
     const newDecks = [...decks, {name: deckName, user: currentUser, cards: []}]
     
@@ -85,7 +84,7 @@ function Management(): JSX.Element {
   /**
    * Funktion, die beim Klicken auf den Entfernen-Button der Decks 
    * aufgerufen wird, um diese nach einem Dialogfenster zu löschen.
-   * Bearbeitetes Decks wird synchronisiert.
+   * Bearbeitete Decks werden synchronisiert.
    *
    * @param {string} deckName - Name des Decks 
    * @return {void}
