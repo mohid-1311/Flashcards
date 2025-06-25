@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import {getDeck, getDeckNames, addCard } from "../../data"
+import {getDeck, getDeckNames, addCard, getCards } from "../../data"
 import { Card, Deck } from "../../types"; 
 import DeckModal from "../../Components/DeckModal/DeckModal";
 import styles from "./Add.module.css"
@@ -19,17 +19,27 @@ function Add(){
     Diese Funktion wird im Komponent AddCardForm benutzt, 
     um eine Karte im aktuell ausgewählten Deck hinzuzufügen 
   */
+
   async function loadDecks(): Promise<void> {
     try {
       const names = await getDeckNames();
       const deckObjects = await Promise.all(
-        names.map(name => getDeck(name, currentUser))
+        names.map(async name => {
+          const deck = await getDeck(name, currentUser);
+          if (deck && "id" in deck) {
+            const cards = await getCards(deck.id);
+            return { ...deck, cards: cards || [] };
+          }
+          return null;
+        })
       );
       setDecks(deckObjects.filter(Boolean) as (Deck & { id: number })[]);
+
     } catch (err) {
       console.log("Noch keine Decks angelegt");
     }
   }
+
 
   useEffect(() => {
     loadDecks();
