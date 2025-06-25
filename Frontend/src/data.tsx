@@ -237,3 +237,48 @@ export async function getDecksFromBackend(user: string): Promise<Deck[]> {
     return [];
   }
 }
+
+export async function updateDeckName(user: string, oldName: string, newName: string): Promise<boolean>
+{
+  try
+  {
+    const response = await fetch(`${url}/deck?user_Name=${encodeURIComponent(user)}&old_name=${encodeURIComponent(oldName)}&new_name=${encodeURIComponent(newName)}`{
+      method: 'PUT'
+    });
+
+    if(!response.ok)
+    {
+      throw new Error(`Fehler beim Aktualisieren: ${response.statusText}`);
+    }
+
+    return true; 
+  }
+
+  catch(error)
+  {
+    console.error("Fehler beim Aktualisieren des Decknamens:", error);
+    return false;
+  }
+}
+
+export async function deleteDeck(user: string, deckName: string): Promise<boolean>
+{
+  try
+  {
+    const response = await fetch(`${url}/deck?user_name=${encodeURIComponent(user)}&deck_name=${encodeURIComponent(deckName)}`, {
+      method: 'DELETE'
+    });
+
+    if(!response.ok)
+    {
+      throw new Error(`Fehler beim Löschen: ${response.statusText}`)
+    }
+
+    return true; 
+  }
+  catch(error)
+  {
+    console.error("Fehler beim Löschen des Decks", error);
+    return false;
+  }
+}

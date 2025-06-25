@@ -58,6 +58,57 @@
     response.status(204);
   });
 
+  app.put("/deck", async (request, response) => {
+    const userName = request.query.user_name as string | undefined;
+    const oldName = request.query.old_name as string | undefined;
+    const newName = request.query.new_name as string | undefined;
+
+    if(!userName || !oldName || !newName)
+    {
+      response.status(400).json("Benutzername oder Deckname fehlen"); 
+      return;
+    }
+    try
+    {
+      const updated = await db
+        .update(decks)
+        .set({name: newName})
+        .where(and(eq(decks.name, oldName), eq(decks.user_name, userName)));
+      
+      response.status(200).json("Deckname aktualisiert");
+    }
+    catch(error)
+    {
+      console.log(error);
+      response.status(500).json("Fehler beim aktualisieren");
+    }
+  });
+
+  app.delete("/deck", async (request, response) => {
+    const userName = request.query.user_name as string | undefined;
+    const deckName = request.query.deck_name as string | undefined;
+
+    if(!userName || !deckName)
+    {
+      response.status(400).json("Benutzername oder Deckname fehlen");
+      return;
+    }
+
+    try
+    {
+      await db.delete(decks)
+        .where(and(eq(decks.name, deckName), eq(decks.user_name, userName)));
+      response.status(200).json("Deck gelöscht");
+      return;
+    }
+    
+    catch(error)
+    {
+      console.log(error);
+      response.status(500).json("Fehler beim löschen");
+    }
+  });
+
   app.put("/benutzer", async(request, response) => {
     const nameParam = request.query.name as string;
     const passwortParam = request.query.passwort as string | undefined;
@@ -246,7 +297,9 @@
     response.setHeader("Access-Control-Allow-Headers", "Content-Type");
     response.setHeader("Content-Type", "application/json; charset=utf-8");
     response.status(200).json(newEntries[0]);
-  })
+  });
+
+
 
   app.listen(port, () => {
     console.log("Server gestartet");
