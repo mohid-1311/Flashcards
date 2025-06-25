@@ -40,9 +40,11 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks}: AddCardFormProps){
     <>
       <form onSubmit={submitCard} className={styles["form-container"]}>
         <h2>Deck</h2>
+        {decks[deckIndex]  &&(
         <h2 title={decks[deckIndex].name} className={styles["form-header"]}>
           {decks[deckIndex].name}
         </h2>
+        )}
         <div className={styles["form-group"]}>
           {/*Ausdruck Eingabe*/}
           <label htmlFor="term" className={styles["form-label"]}>Ausdruck</label>

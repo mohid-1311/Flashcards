@@ -1,6 +1,7 @@
 import { User, Deck, Card } from "./types";
 
-const url = "https://flashcards-3swd.onrender.com";
+//const url = "https://flashcards-3swd.onrender.com";
+const url = "http://localhost:4000";
 
 export function setData(dataParam: User[]) {
   localStorage.setItem("loginData", JSON.stringify(dataParam));
@@ -121,6 +122,7 @@ export async function addDeck(deck: {name: string, user: string}): Promise<{id: 
 }
 
 export async function addDeckWithCards(deck: Deck): Promise<void> {
+  console.log("addDeckWithCards aufgerufen für:", deck);
   const {cards, ...deckWithoutCards} = deck
   let addedDeck = await addDeck(deckWithoutCards)
   if (!addedDeck) {
@@ -145,7 +147,7 @@ export async function getDeckNames(): Promise<string[]> {
     
     const username = localStorage.getItem("user") || ""
     
-    const request: RequestInfo = new Request(`${url}/decks/names?user=${encodeURIComponent(username)}`, {
+    const request: RequestInfo = new Request(`${url}/decks/names?user_name=${encodeURIComponent(username)}`, {
       method: 'GET',
       headers: headers
     })
@@ -222,5 +224,16 @@ export async function addCard(card: Card, deck_id: number): Promise<{id: number,
 
   } catch(error) {
     console.error("Fehler bei der Abfrage:", error);
+  }
+}
+
+export async function getDecksFromBackend(user: string): Promise<Deck[]> {
+  try {
+    const response = await fetch(`${url}/decks?user_name=${encodeURIComponent(user)}`);
+    if (!response.ok) throw new Error("Fehler beim Abrufen der Decks");
+    return await response.json();
+  } catch (err) {
+    console.error("Fehler bei getDecksFromBackend:", err);
+    return [];
   }
 }
