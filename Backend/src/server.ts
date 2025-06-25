@@ -1,23 +1,34 @@
-import "dotenv/config";
-import express from "express";
-import cors from "cors";
-import { eq, and } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/mysql2";
-import { users } from "./db/schema/users";
-import { decks } from "./db/schema/decks";
-import { cards } from "./db/schema/cards";
+import "dotenv/config"
+import express from "express"
+import cors from "cors"
+import { eq, and } from "drizzle-orm"
+import { decks } from "./db/schema/decks-schema"
+import { cards } from "./db/schema/cards-schema"
+import { router as userRouter } from "./router/user-router"
+import { router as deckRouter } from "./router/deck-router"
+import { router as cardRouter } from "./router/card-router"
 
-const databaseUrl = process.env.DATABASE_URL;
-if (!databaseUrl) {
-  throw new Error("DATABASE_URL Umgebungsvariable ist nicht gesetzt!");
+const databaseFile = process.env.DATABASE_FILE
+if (!databaseFile) {
+  throw new Error("DATABASE_FILE Umgebungsvariable ist nicht gesetzt!")
 }
 
 const app = express();
 const port = process.env.PORT || 4000 
-const db = drizzle(databaseUrl);
 
+app.use(express.json())
 app.use(cors())
 
+
+app.use("/users", userRouter)
+app.use("/decks", deckRouter)
+app.use("/cards", cardRouter)
+
+app.listen(port, () => {
+  console.log("Server gestartet")
+});
+
+/*
 app.get("/user", async (request, response) => {
   const nameParam = request.query.name as string | undefined;
   
@@ -246,7 +257,4 @@ app.post("/card", async (request, response) => {
   response.setHeader("Content-Type", "application/json; charset=utf-8");
   response.status(200).json(newEntries[0]);
 })
-
-app.listen(port, () => {
-  console.log("Server gestartet");
-});
+*/
