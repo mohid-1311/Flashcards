@@ -1,24 +1,16 @@
 import React, { useState } from 'react';
 import styles from './WritingMode.module.css';
 import { getDecks } from '../../deckState';
+import { Deck } from "../../types";
+import { useLocation } from 'react-router';
 
-const deckName = "Mathe"; // Deck muss übergeben werden!
-
-interface Card {
-    ausdruck: string;
-    definition: string;
-}
-
-interface Deck {
-    name: string;
-    cards: Card[];
-}
-
-//TO-DO: Auslagerung von Codedopplungen
 function WritingMode() {
-    const decks: Deck[] = getDecks();
-    const selectedDeck: Deck = decks.find((deck: Deck) => deck.name === deckName) || { name: deckName, cards: [] };
-
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const deckName = queryParams.get('deckName');
+    const username = localStorage.getItem("user");
+    const selectedDeck: Deck = getDecks().filter((deck:Deck) => deck.user === username).find((deck: Deck) => deck.name === deckName);
+  
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [showDefinition, setShowDefinition] = useState<boolean>(false);
     const [submitted, setSubmitted] = useState<boolean>(false);
@@ -53,7 +45,7 @@ function WritingMode() {
             <h2 className={styles.deckName}>Schreib Modus - {deckName}</h2>
             <input
                 type="text"
-                value={selectedDeck.cards[currentIndex].ausdruck}
+                value={selectedDeck.cards[currentIndex].term}
                 readOnly
                 placeholder="Ausdruck"
             />
