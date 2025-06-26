@@ -55,6 +55,14 @@
     overflow: auto;
 }
 
+.correctInput{
+    background-color: green;
+}
+
+.incorrectInput {
+    background-color: red;
+}
+
 .card:hover {
     background-color: grey;
 }

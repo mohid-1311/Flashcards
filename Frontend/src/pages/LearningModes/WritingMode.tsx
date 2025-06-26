@@ -3,6 +3,7 @@ import styles from './WritingMode.module.css';
 import { getDecks } from '../../deckState';
 import { Deck } from "../../types";
 import { useLocation } from 'react-router';
+import { Console } from 'console';
 
 function WritingMode() {
     const location = useLocation();
@@ -14,10 +15,13 @@ function WritingMode() {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [showDefinition, setShowDefinition] = useState<boolean>(false);
     const [text, setText] = useState<string>('');
+    const [correct, setCorrect] = useState<boolean>(false);
+    const [submitted, setSubmitted] = useState<boolean>(false);
     
     const handleNextCard = () => {
         setShowDefinition(false);
         setText("");
+        setSubmitted(false);
         if (currentIndex < selectedDeck.cards.length - 1) {
             setCurrentIndex(currentIndex + 1);
         } else {
@@ -31,6 +35,8 @@ function WritingMode() {
 
     const handleSubmit = () => {
         setShowDefinition(true);
+        setSubmitted(true);
+        setCorrect(text.toLowerCase() === selectedDeck.cards[currentIndex].definition.toLowerCase());
     };
 
 return (
@@ -48,7 +54,7 @@ return (
                 ? selectedDeck.cards[currentIndex].definition
                 : selectedDeck.cards[currentIndex].term}
             </button>
-            <button className={styles.inputField}>
+            <button className={`${styles.inputField} ${submitted ? correct ? styles.correctInput : styles.incorrectInput : ""}`}>
                 <input
                 type="text"
                 value={text}
