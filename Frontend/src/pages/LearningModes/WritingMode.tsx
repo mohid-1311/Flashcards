@@ -15,31 +15,30 @@ function WritingMode() {
     const [showDefinition, setShowDefinition] = useState<boolean>(false);
     const [submitted, setSubmitted] = useState<boolean>(false);
     const [text, setText] = useState<string>('');
-    //const [submittedText, setSubmittedText] = useState<string>('');
-
+    
     const handleNextCard = () => {
         setShowDefinition(false);
         setSubmitted(false);
         if (currentIndex < selectedDeck.cards.length - 1) {
             setCurrentIndex(currentIndex + 1);
         } else {
-            setCurrentIndex(0); // Loop zum Anfang zurück
+            setCurrentIndex(0);
         }
     };
-    /*
+
     const handleToggleDefinition = () => {
         setShowDefinition(!showDefinition);
     };
-    */
+    
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setText(event.target.value);
     };
 
     const handleSubmit = () => {
         setSubmitted(true);
-        //setSubmittedText(text);
     };
 
+    /*
     return (
         <div className={styles.container}>
             <h2 className={styles.deckName}>Schreib Modus - {deckName}</h2>
@@ -69,6 +68,35 @@ function WritingMode() {
             )}
         </div>
     );
+}
+*/
+return (
+    <>
+      <div className={styles.container}>
+        <h1 className={styles.deckName}>{deckName}</h1>
+        <h2>Schreib Modus</h2>
+        <div className={styles.buttonContainer}>
+          {selectedDeck.cards.length === 0 ? (
+            <h1 className={styles.fehlerMeldung}>Es sind keine Karten im Deck. Füge Karten hinzu, um zu lernen!</h1>) : (
+            <>
+              <h3>{currentIndex+1}/{selectedDeck.cards.length}</h3>
+              <button className={styles.card}>
+              {showDefinition
+                ? selectedDeck.cards[currentIndex].definition
+                : selectedDeck.cards[currentIndex].term}
+               </button>
+            </>
+          )}
+        </div>
+        {selectedDeck.cards.length > 0 && (
+            <div>
+                <button className={styles.button} onClick={handleSubmit}>Überprüfen</button>
+                <button className={styles.button} onClick={handleNextCard}>Nächste</button>
+            </div>
+        )}
+      </div>
+    </>
+  );
 }
 
 export default WritingMode;
