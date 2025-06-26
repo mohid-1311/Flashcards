@@ -13,12 +13,11 @@ function WritingMode() {
   
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [showDefinition, setShowDefinition] = useState<boolean>(false);
-    const [submitted, setSubmitted] = useState<boolean>(false);
     const [text, setText] = useState<string>('');
     
     const handleNextCard = () => {
         setShowDefinition(false);
-        setSubmitted(false);
+        setText("");
         if (currentIndex < selectedDeck.cards.length - 1) {
             setCurrentIndex(currentIndex + 1);
         } else {
@@ -26,55 +25,19 @@ function WritingMode() {
         }
     };
 
-    const handleToggleDefinition = () => {
-        setShowDefinition(!showDefinition);
-    };
-    
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setText(event.target.value);
     };
 
     const handleSubmit = () => {
-        setSubmitted(true);
+        setShowDefinition(true);
     };
 
-    /*
-    return (
-        <div className={styles.container}>
-            <h2 className={styles.deckName}>Schreib Modus - {deckName}</h2>
-            <input
-                type="text"
-                value={selectedDeck.cards[currentIndex].term}
-                readOnly
-                placeholder="Ausdruck"
-            />
-            <input
-                type="text"
-                value={text}
-                onChange={handleChange}
-                placeholder="..."
-            />
-            <button onClick={handleSubmit}>Überprüfen</button>
-            {submitted && (
-                <button onClick={handleNextCard}>
-                    Nächste Karte
-                </button>
-            )}
-            {showDefinition && (
-                <div>
-                    <h3>Definition:</h3>
-                    <p>{selectedDeck.cards[currentIndex].definition}</p>
-                </div>
-            )}
-        </div>
-    );
-}
-*/
 return (
     <>
       <div className={styles.container}>
         <h1 className={styles.deckName}>{deckName}</h1>
-        <h2>Schreib Modus</h2>
+        <h2>Schriftlicher Lernmodus</h2>
         <div className={styles.buttonContainer}>
           {selectedDeck.cards.length === 0 ? (
             <h1 className={styles.fehlerMeldung}>Es sind keine Karten im Deck. Füge Karten hinzu, um zu lernen!</h1>) : (
@@ -84,7 +47,15 @@ return (
               {showDefinition
                 ? selectedDeck.cards[currentIndex].definition
                 : selectedDeck.cards[currentIndex].term}
-               </button>
+            </button>
+            <button className={styles.inputField}>
+                <input
+                type="text"
+                value={text}
+                onChange={handleChange}
+                placeholder="Tippe..."
+               />
+            </button>
             </>
           )}
         </div>

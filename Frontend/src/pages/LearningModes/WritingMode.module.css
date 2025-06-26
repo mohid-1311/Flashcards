@@ -8,7 +8,7 @@
 
 .buttonContainer {
   margin: 3% 2% 2% 2%;
-  text-align: right;
+  text-align: center;
 }
 
 .button {
@@ -36,6 +36,21 @@
     cursor: pointer;
     border-radius: 10px;
     margin: 2%;
+    word-wrap: break-word;
+    overflow: auto;
+}
+
+.inputField {
+    background-color: lightgrey;
+    padding: 10px 20px 10px 20px;
+    width: 30vw;
+    height: 10vw;
+    color: black;
+    font-size: 125%;
+    border: 2px solid black; 
+    cursor: pointer;
+    border-radius: 10px;
+    
     word-wrap: break-word;
     overflow: auto;
 }
