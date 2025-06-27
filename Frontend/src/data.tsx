@@ -62,33 +62,31 @@ export function addUser(user: User): void {
   }
 }
 
-export async function getDeck(deckname: string, username?: string): Promise<Deck & {id: number} | undefined> {
-  try{
-    const headers: Headers = new Headers()
-    headers.set("Accept", "application/json")
-    
-    username = username || localStorage.getItem("user") || "default"
-    
-    const request: RequestInfo = new Request(`${url}/deck?user_name=${encodeURIComponent(username)}&deck_name=${encodeURIComponent(deckname)}`, {
+export async function getDeck(deckname: string, username?: string): Promise<(Deck & { id: number }) | undefined> {
+  try {
+    const headers: Headers = new Headers();
+    headers.set("Accept", "application/json");
+
+    username = username || localStorage.getItem("user") || "default";
+
+    const request: RequestInfo = new Request(`${url}/decks/${encodeURIComponent(username)}`, {
       method: 'GET',
       headers: headers
-    })
-    
-    let result = undefined
-    const response = await fetch(request)
-    try {
-      if (!response.ok) {
-        throw new Error(`Server responded with status: ${response.status} ${response.statusText}`)
-      }
-      result = await response.json()
-    } catch(error) {
-      console.error("Fehler beim Abfragen des Decks:", error)
-    }
-    return result
+    });
 
-  } catch(error) {
-    console.error("Fehler bei der Abfrage:", error)
-    return undefined
+    const response = await fetch(request);
+    if (!response.ok) {
+      throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
+    }
+
+    const decks = await response.json();
+
+    const deck = decks.find((d: Deck & { id: number }) => d.name === deckname);
+
+    return deck;
+  } catch (error) {
+    console.error("Fehler beim Abfragen des Decks:", error);
+    return undefined;
   }
 }
 
