@@ -27,7 +27,12 @@ function Add(){
         names.map(async name => {
           const deck = await getDeck(name, currentUser);
           if (deck && "id" in deck) {
-            const cards = await getCards(deck.id);
+            if (!currentUser) 
+            {
+              console.error("Kein Benutzer eingeloggt.");
+              return;
+            } 
+            const cards = await getCards(currentUser, name);
             return { ...deck, cards: cards || [] };
           }
           return null;
