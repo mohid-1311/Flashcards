@@ -199,32 +199,29 @@ export async function getCards(username: string, deckname: string): Promise<(Car
   }
 }
 
-export async function addCard(card: Card, deck_id: number): Promise<{id: number, term: string, definition: string, weight: number, deck_id: number} | undefined> {
+export async function addCard(card: Card, deck_id: number): Promise<any> {
   try {
-    const headers: Headers = new Headers()
+    const response = await fetch("http://localhost:4000/cards", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        term: card.term,
+        definition: card.definition,
+        weight: card.weight,
+        deck_id: deck_id
+      })
+    });
 
-    const request: RequestInfo = new Request(`${url}/card?term=${encodeURIComponent(card.term)}&definition=${encodeURIComponent(card.definition)}&weight=${encodeURIComponent(card.weight)}&deck_id=${encodeURIComponent(deck_id)}`, {
-      method: 'POST',
-      headers: headers
-    })
-
-    let result = undefined
-    const response = await fetch(request)
-    try {
-      if (!response.ok) {
-        if (response.status === 409) {
-          return result
-        }
-        throw new Error(`Server responded with status: ${response.status} ${response.statusText}`)
-      }
-      result = await response.json()
-    } catch (error) {
-      console.error("Fehler beim Hinzufügen der Karte:", error)
+    if (!response.ok) {
+      throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
     }
-    return result
 
-  } catch(error) {
-    console.error("Fehler bei der Abfrage:", error)
+    return await response.json();
+  } catch (error) {
+    console.error("Fehler beim Hinzufügen der Karte:", error);
+    return undefined;
   }
 }
 

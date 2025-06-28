@@ -29,3 +29,23 @@ router.get("/:username/:deckname", async (request, response) => {
   response.setHeader("Content-Type", "application/json")
   response.status(200).json(cardsOnly)
 })
+
+router.post("/", async (req, res) => {
+  const { term, definition, weight, deck_id } = req.body;
+
+  if (!term || !definition || weight == null || !deck_id) {
+    res.status(400).json({ error: "Ungültige Kartendaten" });
+    return;
+  }
+
+  try {
+    const inserted = await db
+      .insert(cards)
+      .values({ term, definition, weight, deck_id });
+
+    res.status(201).json(inserted);
+  } catch (err) {
+    console.error("Fehler beim Hinzufügen der Karte:", err);
+    res.status(500).json("Fehler beim Speichern der Karte");
+  }
+});
