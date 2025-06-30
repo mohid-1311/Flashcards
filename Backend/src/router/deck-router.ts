@@ -5,6 +5,7 @@ import { decks, deleteDeckSchema } from "../db/schema/decks-schema"
 import { users } from "../db/schema/users-schema"
 import { z } from "zod"
 import { deckSchema } from "../db/schema/decks-schema"
+import { cards } from "../db/schema/cards-schema"
 
 export const router = express.Router()
 router.use(express.json())
@@ -58,22 +59,29 @@ router.delete("/:username/:deckname", async (req, res) => {
   }
 
   try {
-    const existing = await db
+    // Deck suchen
+    const [deck] = await db
       .select()
       .from(decks)
       .where(and(eq(decks.name, deckname), eq(decks.user_name, username)));
 
-    if (existing.length === 0) {
+    if (!deck) {
       res.status(404).json("Deck nicht gefunden oder gehört nicht dem Benutzer");
       return;
     }
 
-    await db.delete(decks).where(and(eq(decks.name, deckname), eq(decks.user_name, username)));
+    // Alle zugehörigen Karten löschen
+    await db.delete(cards).where(eq(cards.deck_id, deck.id));
+
+    // Das Deck selbst löschen
+    await db.delete(decks).where(eq(decks.id, deck.id));
+
     res.status(204).send();
   } catch (err) {
     console.error("Fehler beim Löschen des Decks:", err);
     res.status(500).json("Serverfehler beim Löschen des Decks");
   }
 });
+
 
 
