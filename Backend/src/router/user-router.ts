@@ -22,6 +22,11 @@ router.get("/{:username}", async (request, response) => {
   response.status(200).json(query)
 })
 
+router.get("/", async (req, res) => {
+  const alle = await db.select().from(users);
+  res.status(200).json(alle);
+});
+
 router.post("/", async (request, response) => {
   const body = request.body
 

@@ -5,7 +5,7 @@ import { decks, deckSchema } from "../db/schema/decks-schema"
 import { users } from "../db/schema/users-schema"
 
 export const router = express.Router()
-
+router.use(express.json())
 const db = drizzle(process.env.DATABASE_FILE!)
 
 /**
@@ -45,3 +45,28 @@ router.put("/:username/:deckname", async (request, response) => {
     response.status(404).send("No rows were affected!")
   }
 })
+
+router.post("/", async (req, res) => {
+  const { name, user } = req.body;
+
+  if (!name || !user) {
+    res.status(400).json("Deckname oder Benutzername fehlen");
+    return;
+  }
+
+  const existing = await db
+    .select()
+    .from(decks)
+    .where(and(eq(decks.name, name), eq(decks.user_name, user)));
+
+  if (existing.length > 0) {
+    res.status(409).json("Deck existiert bereits");
+    return
+  }
+
+  const existingUser = await db.select().from(users).where(eq(users.name, user));
+  console.log("Benutzerprüfung:", existingUser);
+  console.log("Neues Deck anlegen:", req.body);
+  const result = await db.insert(decks).values({ name, user_name: user }).returning();
+  res.status(201).json(result[0]);
+});

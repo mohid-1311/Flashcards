@@ -1,46 +1,72 @@
-import { useState } from "react";
-import { setDecks } from "../../deckState"
+import { useState, useEffect } from "react";
 import { DeckModalProps } from "../../types";
+import { addDeck, getDeck, getDeckNames } from "../../data";
 import { sliceHeader } from "../AddCardForm/AddCardForm";
-import styles from "./DeckModal.module.css"
+import styles from "./DeckModal.module.css";
 
-function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModalProps){
+function DeckModal({ setDeckIndex, closeModal, reloadDecks }:DeckModalProps) {
+  const currentUser = localStorage.getItem("user")?.toLowerCase() || "";
+  const [searchValue, setSearchValue] = useState("");
+  const [deckList, setDeckList] = useState<{ name: string }[]>([]);
 
-  const currentUser = localStorage.getItem("user")?.toLowerCase() || ""
-  const [searchValue, setSearchValue] = useState("")
 
-  // Neues Deck hinzufügen (über die Suchfilterfunktion)
-  function addNewDeck(){
+  useEffect(() => {
+    loadDecksFromBackend();
+  }, []);
 
-    if(searchValue.trim() === ""){
-      alert("Ungültige Eingabe") //#TODO replace
-      return
-    }
-
-    if(decks.some(deck => deck.name.toLowerCase() === searchValue.toLowerCase().trim())){
-      alert("Deck existiert bereits") //#TODO replace
-      return
-    }
-    const newDeck = {name: searchValue.trim(), user: currentUser, cards: []}
-
-    setLocalDecks((prevDecks) => {
-      const updatedDecks = [...prevDecks, newDeck]
-      setDeckIndex(updatedDecks.length-1)
-      setDecks(updatedDecks)
-      return updatedDecks
-    })
+  async function loadDecksFromBackend() {
+    const names = await getDeckNames();
+    const filtered = names.map(name => ({ name }));
+    setDeckList(filtered);
   }
 
-  return(
-    <div className={styles["modal-container"]}>
+  async function addNewDeck() {
+    const trimmed = searchValue.trim();
+    if (!trimmed) {
+      alert("Ungültige Eingabe");
+      return;
+    }
 
+    if (deckList.some(deck => deck.name.toLowerCase() === trimmed.toLowerCase())) {
+      alert("Deck existiert bereits");
+      return;
+    }
+
+    const newDeck = {
+      name: trimmed,
+      user: currentUser,
+      cards: []
+    };
+
+    try {
+      const backendDeck = await addDeck(newDeck);
+
+      const updatedNames = await getDeckNames();
+      const updatedList = updatedNames.map(name => ({ name }));
+      setDeckList(updatedList);
+
+      const newIndex = updatedList.findIndex(deck => deck.name === newDeck.name);
+      console.log("setting deck index to " + newIndex);
+      if (newIndex !== -1)
+        {
+          setDeckIndex(newIndex);
+          await reloadDecks();  
+          console.log("Set deckindex to " + newIndex);
+        } 
+
+    } catch (err) {
+      console.error("Fehler beim Erstellen:", err);
+    }
+  }
+
+  return (
+    <div className={styles["modal-container"]}>
       <div className={styles["modal-content"]}>
-        
-        <button 
+        <button
           onClick={() => closeModal()}
           className={styles["close-modal"]}
         >
-          &times; {/* "X" */}
+          &times;
         </button>
 
         <h2 className={styles["modal-header"]}>Wähle ein Deck</h2>
@@ -53,33 +79,43 @@ function DeckModal({ setLocalDecks, decks, setDeckIndex, closeModal } : DeckModa
           name="search"
           onChange={(e) => setSearchValue(e.target.value)}
           className={styles["search-input"]}
-          />
+        />
 
-          {/*(Gefilterte)Decks anzeigen*/}
-          <ul className={styles["modal-list"]}>
-            {decks
-              .filter((deck) =>
-                searchValue.trim()
-                  ? deck.name.toLowerCase().includes(searchValue.toLowerCase())
-                  : true
-              )
-              .map((deck, index) => (
-                <li
-                  key={index}
-                  className={styles["modal-list-item"]}
-                  onClick={() => {
-                    setDeckIndex(index);
-                    closeModal();
-                  }}
-                >
-                  {sliceHeader(deck.name, 30)}
-                </li>
-              ))}
-          </ul>
-          {/*Wenn etwas in die Suchleiste eingegeben wurde, soll die Möglichkeit geben, ein Deck mit dem Namen der Suchleiste zu erstellen*/}
-          {searchValue.trim() && <button className={styles["add-deck"]} onClick={() => {addNewDeck(); closeModal()}}>{sliceHeader(searchValue)} Deck hinzufügen</button>}
+        <ul className={styles["modal-list"]}>
+          {deckList
+            .filter((deck) =>
+              searchValue.trim()
+                ? deck.name.toLowerCase().includes(searchValue.toLowerCase())
+                : true
+            )
+            .map((deck, index) => (
+              <li
+                key={deck.name}
+                className={styles["modal-list-item"]}
+                onClick={() => {
+                  setDeckIndex(index);
+                  closeModal();
+                }}
+              >
+                {sliceHeader(deck.name, 30)}
+              </li>
+            ))}
+        </ul>
+
+        {searchValue.trim() && (
+          <button
+            className={styles["add-deck"]}
+            onClick={() => {
+              addNewDeck();
+              closeModal();
+            }}
+          >
+            {sliceHeader(searchValue)} Deck hinzufügen
+          </button>
+        )}
       </div>
     </div>
   );
 }
-export default DeckModal
+
+export default DeckModal;
