@@ -67,7 +67,7 @@ function Management(): JSX.Element {
 
 
   /** 
-   * Funktion, die beim Klicken auf den Hinzufügen-Button der Decks 
+   * Funktion, die beim Klicken auf den Hinzufügen-Button der Decks
    * aufgerufen wird, um ein neues Deck zur Liste der Decks hinzuzufügen.
    * Bearbeitetes Decks wird synchronisiert.
    *

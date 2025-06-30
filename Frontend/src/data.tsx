@@ -274,6 +274,54 @@ export async function addCard(card: Card, deck_id: number): Promise<any> {
   }
 }
 
+export async function deleteCard(cardId: number): Promise<boolean> {
+  try {
+    const response = await fetch(`http://localhost:4000/cards/${cardId}`, {
+      method: "DELETE",
+      headers: {
+        "Accept": "application/json"
+      }
+    });
+
+    if (!response.ok) 
+    {
+      const errorText = await response.text();
+      throw new Error(`Fehler beim Löschen der Karte: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+
+    return true;
+  } 
+  
+  catch (error) 
+  {
+    console.error("Fehler beim Löschen der Karte:", error);
+    return false;
+  }
+}
+
+export async function deleteDeck(deckname: string, username?: string): Promise<boolean> {
+  try {
+    username = username || localStorage.getItem("user") || "default";
+
+    const response = await fetch(`${url}/decks/${encodeURIComponent(username)}/${encodeURIComponent(deckname)}`, {
+      method: "DELETE",
+      headers: {
+        "Accept": "application/json"
+      }
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Fehler beim Löschen des Decks: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Fehler beim Löschen des Decks:", error);
+    return false;
+  }
+}
+
 /*
 export function setData(dataParam: User[]) {
   localStorage.setItem("loginData", JSON.stringify(dataParam))
