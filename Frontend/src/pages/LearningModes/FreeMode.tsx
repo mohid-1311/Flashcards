@@ -2,18 +2,7 @@ import React, { useState } from 'react';
 import { getDecks } from '../../deckState';
 import styles from './FreeMode.module.css';
 import { useLocation } from 'react-router';
-
-
-interface Card {
-  ausdruck: string;
-  definition: string;
-}
-
-interface Deck {
-  name: string;
-  user: string;
-  cards: Card[];
-}
+import { Deck } from "../../types";
 
 function FreeMode() {
   const location = useLocation();
@@ -51,8 +40,8 @@ function FreeMode() {
               <h3>{currentIndex+1}/{selectedDeck.cards.length}</h3>
               <button onClick={handleToggleDefinition} className={styles.card}>
               {showDefinition
-                ? selectedDeck.cards[currentIndex].definition || "<Keine Definition vorhanden>"
-                : selectedDeck.cards[currentIndex].ausdruck || "<Kein Ausdruck vorhanden>"}
+                ? selectedDeck.cards[currentIndex].definition
+                : selectedDeck.cards[currentIndex].term}
                </button>
             </>
           )}
