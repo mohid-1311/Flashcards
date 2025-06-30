@@ -6,5 +6,5 @@
 # production
 */build
 
-# database
-Backend/db.db
+# other
+.env

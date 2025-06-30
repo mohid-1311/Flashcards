@@ -6,7 +6,6 @@ import { Deck, Card } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark, faPlus, faPenToSquare, faPen, faSquareCaretLeft, faCheck } from "@fortawesome/free-solid-svg-icons"
 import { tl } from "../../translation";
-import { updateDeck } from "../../data";
 
 /**
  * Management-Komponente:
@@ -74,19 +73,13 @@ function Management(): JSX.Element {
    * @param {string} deckName - Name des Decks 
    * @return {void}
    */
-  async function addDeck(deckName: string): Promise<void> {
+  function addDeck(deckName: string): void {
     deckName = deckName.trim() // Leerzeichen vor und nach dem Namen remove
 
     const newDecks = [...decks, {name: deckName, user: currentUser, cards: []}]
     
     setLocalDecks(newDecks)
     setDecks(newDecks)
-    setCurrentDeck(deckName)
-    setRenameDeckForm(false)
-    setCardIndex(-1)
-    setRemoveCardIndex(-1)
-    setRemoveDeckIndex("")
-    setNewCardForm(false)
   }
 
   /**
@@ -107,11 +100,11 @@ function Management(): JSX.Element {
    * aufgerufen wird, um den neuen Namen des Decks zu setzen.
    *
    * @param {string} newName - Neuer Name des Decks 
-   * @return {Promise<void>}
+   * @return {void}
    */
-  function renameDeck(newName: string): Promise<boolean> {
+  function renameDeck(newName: string): void {
     newName = newName.trim() // Leerzeichen vor und nach dem Namen remove
-    /*
+
     const newDecks = decks.map((deck: Deck) => {
       if (deck.name === currentDeck && deck.user.toLowerCase() === currentUser) {
         return {
@@ -126,9 +119,6 @@ function Management(): JSX.Element {
     setDecks(newDecks)
 
     setCurrentDeck(newName)
-    */
-    return updateDeck(currentDeck, newName)
-    //setLocalDecks(getDecks()) from data.tsx
   }
 
   /**
@@ -139,7 +129,7 @@ function Management(): JSX.Element {
    * @param {number} cardIndex - Index der Karteikarte 
    * @return {void}
    */
-  function removeCard(cardIndex: number): void {
+  function karteEntfernen(cardIndex: number): void {
     const newDecks = decks.map((deck: Deck) => {
       if (deck.name === currentDeck && deck.user.toLowerCase() === currentUser) {
         return {
@@ -163,7 +153,7 @@ function Management(): JSX.Element {
    * @param {string} newValue - Neuer Wert des Karten-Attributs
    * @return {void}
    */
-  function setCardAttribute<K extends keyof Card>(attribute: K, newValue: Card[K]): void {
+  function setzeKartenAttribut<K extends keyof Card>(attribute: K, newValue: Card[K]): void {
     decks.find((deck: Deck) => (deck.name === currentDeck && deck.user.toLowerCase() === currentUser))?.cards.forEach((card: Card, index: number) => {
       if (index === cardIndex) {
         card[attribute] = newValue
@@ -501,7 +491,7 @@ function Management(): JSX.Element {
                                   setCardIndex(-1)
                                   setRemoveCardIndex(-1)
                                   setRemoveDeckIndex("")
-                                  removeCard(index)
+                                  karteEntfernen(index)
                                 } else {
                                   setRemoveCardIndex(index)
                                 }
@@ -544,7 +534,7 @@ function Management(): JSX.Element {
                         required
                         onChange={(e) => {
                           e.stopPropagation()
-                          setCardAttribute(attributName as keyof Card, e.target.value)
+                          setzeKartenAttribut(attributName as keyof Card, e.target.value)
                         }}
                       >
                       </textarea>

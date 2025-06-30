@@ -3,7 +3,6 @@ import { drizzle } from "drizzle-orm/libsql"
 import { and, eq } from "drizzle-orm"
 import { decks, deckSchema, deleteDeckSchema } from "../db/schema/decks-schema"
 import { users } from "../db/schema/users-schema"
-import { z } from "zod"
 
 export const router = express.Router()
 router.use(express.json())
@@ -102,3 +101,4 @@ router.delete("/:username/:deckname", async (req, res) => {
 });
 
 
+})

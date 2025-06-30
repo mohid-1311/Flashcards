@@ -62,48 +62,6 @@ export function addUser(user: User): void {
   }
 }
 
-export async function updateDeck(deckName: string, newDeckName: string): Promise<boolean> {
-  const username = localStorage.getItem("user");
-  if(!username) throw new Error("No user in local storage declared")
-  
-  try {
-    const headers: Headers = new Headers()
-    headers.set("Content-Type", "application/json")
-    headers.set("Accept", "application/json")
-    
-    const request: RequestInfo = new Request(`${url}/decks/${encodeURIComponent(username)}/${encodeURIComponent(deckName)}`, {
-      method: 'PUT',
-      headers: headers,
-      body: JSON.stringify({name: newDeckName, user_name: username})
-    })
-
-    const response = await fetch(request)
-      .then(response => {
-        if (!response.ok) {
-          response.text().then(text => {
-            if (text) {
-              console.error("Error message from server:", text)
-            }
-          })
-          throw new Error(`Server responded with status: ${response.status} ${response.statusText}`)
-        }
-        return response.json()
-      })
-      .catch(error => {
-        console.error("Fehler beim Bearbeiten des Decks:", error)
-      })
-      
-    if(response && response.name === newDeckName && response.user_name === username) {
-      return true
-    }
-    
-  } catch(error) {
-    console.error("Fehler bei der Abfrage:", error)
-  }
-
-  return false
-}
-
 //================================================================================================================
 /*
 export function setData(dataParam: User[]) {
