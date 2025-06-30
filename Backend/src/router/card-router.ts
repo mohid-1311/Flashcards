@@ -36,7 +36,7 @@ router.get("/:username/:deckname", async (request, response) => {
 router.post("/", async (req, res) => {
   const { term, definition, weight, deck_id } = req.body;
 
-  const parseResult = cardSchema.safeParse({ term, definition, weight });
+  const parseResult = cardSchema.safeParse({ term, definition, weight, deck_id });
   if (!parseResult.success) {
     res.status(400).json({ error: "Ungültige Kartendaten" });
     return;

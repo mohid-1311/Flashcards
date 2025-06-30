@@ -27,6 +27,11 @@ function DeckModal({ setDeckIndex, closeModal, reloadDecks }:DeckModalProps) {
       return;
     }
 
+    if (!currentUser) {
+      alert("Kein Benutzer eingeloggt.");
+      return;
+    }
+
     if (deckList.some(deck => deck.name.toLowerCase() === trimmed.toLowerCase())) {
       alert("Deck existiert bereits");
       return;
@@ -39,25 +44,26 @@ function DeckModal({ setDeckIndex, closeModal, reloadDecks }:DeckModalProps) {
     };
 
     try {
+      if (!currentUser || currentUser.trim() === "") {
+        alert("Kein Benutzer eingeloggt.");
+        return;
+      }
       const backendDeck = await addDeck(newDeck);
-
       const updatedNames = await getDeckNames();
       const updatedList = updatedNames.map(name => ({ name }));
       setDeckList(updatedList);
 
       const newIndex = updatedList.findIndex(deck => deck.name === newDeck.name);
-      console.log("setting deck index to " + newIndex);
-      if (newIndex !== -1)
-        {
-          setDeckIndex(newIndex);
-          await reloadDecks();  
-          console.log("Set deckindex to " + newIndex);
-        } 
+      if (newIndex !== -1) {
+        setDeckIndex(newIndex);
+        await reloadDecks();
+      }
 
     } catch (err) {
       console.error("Fehler beim Erstellen:", err);
     }
   }
+
 
   return (
     <div className={styles["modal-container"]}>

@@ -25,7 +25,8 @@ router.get("/:username", async (request, response) => {
 router.post("/", async (req, res) => {
   const { name, user } = req.body;
 
-  const parseResult = deckSchema.safeParse({ name, user });
+  const parseResult = deckSchema.safeParse({ name, user_name: user });
+  
   if (!parseResult.success) {
     res.status(400).json("Deckname oder Benutzername fehlen");
     return;
