@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import {getDeck, getDeckNames, addCard, getCards } from "../../data"
+import { getDeck, getDeckNames, addCard, getCards } from "../../data"
 import { Card, Deck } from "../../types"; 
 import DeckModal from "../../Components/DeckModal/DeckModal";
 import styles from "./Add.module.css"

@@ -2,7 +2,6 @@ import express from "express"
 import { drizzle } from "drizzle-orm/libsql"
 import { eq } from "drizzle-orm"
 import { users, userSchema } from "../db/schema/users-schema"
-import { z } from "zod"
 
 export const router = express.Router()
 router.use(express.json())

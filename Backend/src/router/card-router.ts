@@ -3,7 +3,6 @@ import { drizzle } from "drizzle-orm/libsql"
 import { eq, and } from "drizzle-orm"
 import { decks } from "../db/schema/decks-schema"
 import { cards } from "../db/schema/cards-schema"
-import { z } from "zod"
 import { cardSchema } from "../db/schema/cards-schema"
 
 export const router = express.Router()

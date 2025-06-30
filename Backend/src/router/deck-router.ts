@@ -99,6 +99,3 @@ router.delete("/:username/:deckname", async (req, res) => {
     res.status(500).json("Serverfehler beim Löschen des Decks");
   }
 });
-
-
-})

@@ -6,6 +6,7 @@ import { Deck, Card } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark, faPlus, faPenToSquare, faPen, faSquareCaretLeft, faCheck } from "@fortawesome/free-solid-svg-icons"
 import { tl } from "../../translation";
+import { updateDeck } from "../../data";
 
 /**
  * Management-Komponente:
@@ -66,20 +67,26 @@ function Management(): JSX.Element {
 
 
   /** 
-   * Funktion, die beim Klicken auf den Hinzufügen-Button der Decks
+   * Funktion, die beim Klicken auf den Hinzufügen-Button der Decks 
    * aufgerufen wird, um ein neues Deck zur Liste der Decks hinzuzufügen.
    * Bearbeitetes Decks wird synchronisiert.
    *
    * @param {string} deckName - Name des Decks 
    * @return {void}
    */
-  function addDeck(deckName: string): void {
+  async function addDeck(deckName: string): Promise<void> {
     deckName = deckName.trim() // Leerzeichen vor und nach dem Namen remove
 
     const newDecks = [...decks, {name: deckName, user: currentUser, cards: []}]
     
     setLocalDecks(newDecks)
     setDecks(newDecks)
+    setCurrentDeck(deckName)
+    setRenameDeckForm(false)
+    setCardIndex(-1)
+    setRemoveCardIndex(-1)
+    setRemoveDeckIndex("")
+    setNewCardForm(false)
   }
 
   /**
@@ -100,11 +107,11 @@ function Management(): JSX.Element {
    * aufgerufen wird, um den neuen Namen des Decks zu setzen.
    *
    * @param {string} newName - Neuer Name des Decks 
-   * @return {void}
+   * @return {Promise<void>}
    */
-  function renameDeck(newName: string): void {
+  function renameDeck(newName: string): Promise<boolean> {
     newName = newName.trim() // Leerzeichen vor und nach dem Namen remove
-
+    /*
     const newDecks = decks.map((deck: Deck) => {
       if (deck.name === currentDeck && deck.user.toLowerCase() === currentUser) {
         return {
@@ -119,6 +126,9 @@ function Management(): JSX.Element {
     setDecks(newDecks)
 
     setCurrentDeck(newName)
+    */
+    return updateDeck(currentDeck, newName)
+    //setLocalDecks(getDecks()) from data.tsx
   }
 
   /**
@@ -129,7 +139,7 @@ function Management(): JSX.Element {
    * @param {number} cardIndex - Index der Karteikarte 
    * @return {void}
    */
-  function karteEntfernen(cardIndex: number): void {
+  function removeCard(cardIndex: number): void {
     const newDecks = decks.map((deck: Deck) => {
       if (deck.name === currentDeck && deck.user.toLowerCase() === currentUser) {
         return {
@@ -153,7 +163,7 @@ function Management(): JSX.Element {
    * @param {string} newValue - Neuer Wert des Karten-Attributs
    * @return {void}
    */
-  function setzeKartenAttribut<K extends keyof Card>(attribute: K, newValue: Card[K]): void {
+  function setCardAttribute<K extends keyof Card>(attribute: K, newValue: Card[K]): void {
     decks.find((deck: Deck) => (deck.name === currentDeck && deck.user.toLowerCase() === currentUser))?.cards.forEach((card: Card, index: number) => {
       if (index === cardIndex) {
         card[attribute] = newValue
@@ -491,7 +501,7 @@ function Management(): JSX.Element {
                                   setCardIndex(-1)
                                   setRemoveCardIndex(-1)
                                   setRemoveDeckIndex("")
-                                  karteEntfernen(index)
+                                  removeCard(index)
                                 } else {
                                   setRemoveCardIndex(index)
                                 }
@@ -534,7 +544,7 @@ function Management(): JSX.Element {
                         required
                         onChange={(e) => {
                           e.stopPropagation()
-                          setzeKartenAttribut(attributName as keyof Card, e.target.value)
+                          setCardAttribute(attributName as keyof Card, e.target.value)
                         }}
                       >
                       </textarea>

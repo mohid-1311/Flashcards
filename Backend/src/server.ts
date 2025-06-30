@@ -13,7 +13,7 @@ if (!databaseFile) {
   throw new Error("DATABASE_FILE Umgebungsvariable ist nicht gesetzt!")
 }
 
-const app = express();
+export const app = express();
 app.use(express.json()); 
 
 const port = process.env.PORT || 4000 
@@ -26,9 +26,11 @@ app.use("/users", userRouter)
 app.use("/decks", deckRouter)
 app.use("/cards", cardRouter)
 
-app.listen(port, () => {
-  console.log("Server gestartet")
-});
+if (process.env.NODE_ENV !== "test") { // Wird gebraucht, da jest sonst nicht automatisch beednet wird.
+  app.listen(port, () => {
+    console.log("Server gestartet")
+  });
+}
 
 /*
 app.get("/user", async (request, response) => {
