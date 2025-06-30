@@ -3,10 +3,13 @@ import { drizzle } from "drizzle-orm/libsql"
 import { eq, and } from "drizzle-orm"
 import { decks } from "../db/schema/decks-schema"
 import { cards } from "../db/schema/cards-schema"
+import { z } from "zod"
+import { cardSchema } from "../db/schema/cards-schema"
 
 export const router = express.Router()
 
 const db = drizzle(process.env.DATABASE_FILE!)
+
 
 /**
  * ../cards/:username/:deckname
@@ -33,7 +36,8 @@ router.get("/:username/:deckname", async (request, response) => {
 router.post("/", async (req, res) => {
   const { term, definition, weight, deck_id } = req.body;
 
-  if (!term || !definition || weight == null || !deck_id) {
+  const parseResult = cardSchema.safeParse({ term, definition, weight });
+  if (!parseResult.success) {
     res.status(400).json({ error: "Ungültige Kartendaten" });
     return;
   }

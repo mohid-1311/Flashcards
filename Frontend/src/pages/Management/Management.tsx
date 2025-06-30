@@ -6,6 +6,7 @@ import { Deck, Card } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark, faPlus, faPenToSquare, faPen, faSquareCaretLeft, faCheck } from "@fortawesome/free-solid-svg-icons"
 import { tl } from "../../translation";
+import { deleteDeck } from "../../data";
 
 /**
  * Management-Komponente:
@@ -66,7 +67,7 @@ function Management(): JSX.Element {
 
 
   /** 
-   * Funktion, die beim Klicken auf den Hinzufügen-Button der Decks 
+   * Funktion, die beim Klicken auf den Hinzufügen-Button der Decks
    * aufgerufen wird, um ein neues Deck zur Liste der Decks hinzuzufügen.
    * Bearbeitetes Decks wird synchronisiert.
    *
