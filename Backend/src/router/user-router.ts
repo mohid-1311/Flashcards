@@ -35,5 +35,6 @@ router.post("/", async (request, response) => {
   const query = await db.insert(users).values(validData)
 
   response.setHeader("Content-Type", "application/json")
+  console.log(query.rows)
   response.status(201).json(body)
 })
