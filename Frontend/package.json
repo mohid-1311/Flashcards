@@ -20,7 +20,8 @@
     "react-router-dom": "^7.2.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zod": "^3.25.67"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -49,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/react-fontawesome": "^1.6.8",
     "@types/react-router-dom": "^5.3.3",
     "fortawesome": "^0.0.1-security",
