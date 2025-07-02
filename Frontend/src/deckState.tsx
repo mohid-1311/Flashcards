@@ -86,8 +86,9 @@ export function setDecks(newDecks : typeof decks){
 }
 
 /*
+alt: gewicht über local storage gespeichert
+neu: über Datenbank und untere Funktion wird überflüssig
 
-*/
 export function updateCardWeight(
   deckName: string,
   cardIndex: number,
@@ -111,4 +112,5 @@ export function updateCardWeight(
 
   localStorage.setItem("decks", JSON.stringify(updatedDecks));
 }
+  */
 
