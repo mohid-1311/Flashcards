@@ -6,7 +6,7 @@ import { Deck, Card } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark, faPlus, faPenToSquare, faPen, faSquareCaretLeft, faCheck } from "@fortawesome/free-solid-svg-icons"
 import { tl } from "../../translation";
-import { updateDeck } from "../../data";
+import { updateDeck, addDeck as data_addDeck } from "../../data";
 
 /**
  * Management-Komponente:
@@ -17,6 +17,8 @@ import { updateDeck } from "../../data";
  */
 function Management(): JSX.Element {
   const currentUser = localStorage.getItem("user")?.toLowerCase()
+
+  if(!currentUser) throw new Error("No user in local storage declared")
   
   const [decks, setLocalDecks] = useState(getDecks().filter((deck: Deck) => deck.user.toLowerCase() === currentUser) || [])
   
@@ -80,7 +82,8 @@ function Management(): JSX.Element {
     const newDecks = [...decks, {name: deckName, user: currentUser, cards: []}]
     
     setLocalDecks(newDecks)
-    setDecks(newDecks)
+    //setDecks(newDecks)
+    data_addDeck(deckName);
     setCurrentDeck(deckName)
     setRenameDeckForm(false)
     setCardIndex(-1)
@@ -99,7 +102,7 @@ function Management(): JSX.Element {
    */
   function removeDeck(deckName: string): void {
     setLocalDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user.toLowerCase() !== currentUser)))
-    setDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user.toLowerCase() !== currentUser)))
+    //setDecks(decks.filter((deck: Deck) => (deck.name !== deckName || deck.user.toLowerCase() !== currentUser)))
   }
 
   /**

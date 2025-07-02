@@ -62,12 +62,13 @@ export function addUser(user: User): void {
   }
 }
 
-export async function getDeck(deckname: string, username?: string): Promise<(Deck & { id: number }) | undefined> {
+export async function getDeck(deckname: string): Promise<(Deck & { id: number }) | undefined> {
+  const username = localStorage.getItem("user");
+  if(!username) throw new Error("No user in local storage declared")
+
   try {
     const headers: Headers = new Headers();
     headers.set("Accept", "application/json");
-
-    username = username || localStorage.getItem("user") || "default";
 
     const request: RequestInfo = new Request(`${url}/decks/${encodeURIComponent(username)}`, {
       method: 'GET',
@@ -144,7 +145,10 @@ export async function addCard(card: Card, deck_id: number): Promise<any> {
   }
 }
 
-export async function getCards(username: string, deckname: string): Promise<(Card & {id: number, deck_id: number})[] | undefined> {
+export async function getCards(deckname: string): Promise<(Card & {id: number, deck_id: number})[] | undefined> {
+  const username = localStorage.getItem("user");
+  if(!username) throw new Error("No user in local storage declared")
+  
   try{
     const headers: Headers = new Headers()
     headers.set("Accept", "application/json")
@@ -172,7 +176,10 @@ export async function getCards(username: string, deckname: string): Promise<(Car
   }
 }
 
-export async function addDeck(deck: {name: string, user: string}): Promise<{id: number, name: string, user: string} | undefined> {
+export async function addDeck(deckName: string): Promise<{id: number, name: string, user: string} | undefined> {
+  const username = localStorage.getItem("user");
+  if(!username) throw new Error("No user in local storage declared")
+  
   try {
     const headers: Headers = new Headers()
     headers.set("Content-Type", "application/json")
@@ -181,7 +188,7 @@ export async function addDeck(deck: {name: string, user: string}): Promise<{id: 
     const request = new Request(`${url}/decks`, {
       method: 'POST',
       headers,
-      body: JSON.stringify(deck)
+      body: JSON.stringify({name: deckName, user_name: username})
     })
 
     const response = await fetch(request)

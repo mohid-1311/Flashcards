@@ -21,9 +21,4 @@ export const deckSchema = z.object({
   user_name: z.string(),
 })
 
-export const deleteDeckSchema = z.object({
-  name: z.string()
-});
-
-
 export type Deck = z.infer<typeof deckSchema>

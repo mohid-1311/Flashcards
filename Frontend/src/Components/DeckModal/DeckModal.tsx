@@ -5,7 +5,6 @@ import { sliceHeader } from "../AddCardForm/AddCardForm";
 import styles from "./DeckModal.module.css";
 
 function DeckModal({ setDeckIndex, closeModal, reloadDecks }:DeckModalProps) {
-  const currentUser = localStorage.getItem("user")?.toLowerCase() || "";
   const [searchValue, setSearchValue] = useState("");
   const [deckList, setDeckList] = useState<{ name: string }[]>([]);
 
@@ -32,20 +31,14 @@ function DeckModal({ setDeckIndex, closeModal, reloadDecks }:DeckModalProps) {
       return;
     }
 
-    const newDeck = {
-      name: trimmed,
-      user: currentUser,
-      cards: []
-    };
-
     try {
-      const backendDeck = await addDeck(newDeck);
+      const backendDeck = await addDeck(trimmed);
 
       const updatedNames = await getDeckNames();
       const updatedList = updatedNames.map(name => ({ name }));
       setDeckList(updatedList);
 
-      const newIndex = updatedList.findIndex(deck => deck.name === newDeck.name);
+      const newIndex = updatedList.findIndex(deck => deck.name === trimmed);
       console.log("setting deck index to " + newIndex);
       if (newIndex !== -1)
         {

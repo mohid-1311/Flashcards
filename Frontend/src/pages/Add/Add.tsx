@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 function Add(){
 
   const navigate = useNavigate()
-  const currentUser = localStorage.getItem("user")?.toLowerCase()
 
   const [decks, setDecks] = useState<(Deck & { id: number })[]>([]);
   const [deckIndex, setDeckIndex] = useState(0)
@@ -25,14 +24,9 @@ function Add(){
       const names = await getDeckNames();
       const deckObjects = await Promise.all(
         names.map(async name => {
-          const deck = await getDeck(name, currentUser);
+          const deck = await getDeck(name);
           if (deck && "id" in deck) {
-            if (!currentUser) 
-            {
-              console.error("Kein Benutzer eingeloggt.");
-              return;
-            } 
-            const cards = await getCards(currentUser, name);
+            const cards = await getCards(name);
             return { ...deck, cards: cards || [] };
           }
           return null;

@@ -1,7 +1,7 @@
 import express from "express"
 import { drizzle } from "drizzle-orm/libsql"
 import { and, eq } from "drizzle-orm"
-import { decks, deckSchema, deleteDeckSchema } from "../db/schema/decks-schema"
+import { decks, deckSchema } from "../db/schema/decks-schema"
 import { users } from "../db/schema/users-schema"
 
 export const router = express.Router()
@@ -47,52 +47,54 @@ router.put("/:username/:deckname", async (request, response) => {
 })
 
 router.post("/", async (req, res) => {
-  const { name, user } = req.body;
+  const body = req.body;
 
-  const parseResult = deckSchema.safeParse({ name, user });
+  const parseResult = deckSchema.safeParse(body);
   if (!parseResult.success) {
-    res.status(400).json("Deckname oder Benutzername fehlen");
+    res.status(400).json({ error: parseResult.error.errors })
     return;
   }
+  const validData = parseResult.data
 
   const existing = await db
     .select()
     .from(decks)
-    .where(and(eq(decks.name, name), eq(decks.user_name, user)));
+    .where(and(eq(decks.name, validData.name), eq(decks.user_name, validData.user_name)));
 
   if (existing.length > 0) {
     res.status(409).json("Deck existiert bereits");
     return
   }
 
-  const existingUser = await db.select().from(users).where(eq(users.name, user));
+  const existingUser = await db.select().from(users).where(eq(users.name, validData.user_name));
   console.log("Benutzerprüfung:", existingUser);
   console.log("Neues Deck anlegen:", req.body);
-  const result = await db.insert(decks).values({ name, user_name: user }).returning();
+  const result = await db.insert(decks).values(validData).returning();
   res.status(201).json(result[0]);
 });
 
-router.delete("/:username/:deckname", async (req, res) => {
-  const { username, deckname } = req.params;
+router.delete("/:user_name/:name", async (req, res) => {
+  const params = req.params;
 
-  const result = deleteDeckSchema.safeParse({ name: deckname, user_name: username });
-  if (!result.success) {
-    res.status(400).json("Ungültiger Deckname oder Benutzername");
+  const parseResult = deckSchema.safeParse(params);
+  if (!parseResult.success) {
+    res.status(400).json({ error: parseResult.error.errors });
     return;
   }
+  const validData = parseResult.data
 
   try {
     const existing = await db
       .select()
       .from(decks)
-      .where(and(eq(decks.name, deckname), eq(decks.user_name, username)));
+      .where(and(eq(decks.name, validData.name), eq(decks.user_name, validData.user_name)));
 
     if (existing.length === 0) {
       res.status(404).json("Deck nicht gefunden oder gehört nicht dem Benutzer");
       return;
     }
 
-    await db.delete(decks).where(and(eq(decks.name, deckname), eq(decks.user_name, username)));
+    await db.delete(decks).where(and(eq(decks.name, validData.name), eq(decks.user_name, validData.user_name)));
     res.status(204).send();
   } catch (err) {
     console.error("Fehler beim Löschen des Decks:", err);
