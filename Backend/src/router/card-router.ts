@@ -86,3 +86,42 @@ router.delete("/:cardid", async (req, res) => {
     res.status(500).json({ error: "Fehler beim Löschen der Karte" });
   }
 });
+
+
+
+
+
+router.put("/:username/:deckname/:cardId", async (request, response) => {
+
+  const { username, deckname, cardId } = request.params;
+
+  const updateSchema = cardSchema.partial().omit({ id: true, deck_id: true })
+  const updateData = updateSchema.parse(request.body)
+
+  const deckResult = await db
+      .select()
+      .from(decks)
+      .where(
+        and(
+          eq(decks.user_name, username),
+          eq(decks.name, deckname)
+        )
+      )
+      .limit(1)
+
+    const deck = deckResult[0]
+    if (!deck) {
+      return;
+    }
+
+    const updateResult = await db
+      .update(cards)
+      .set(updateData)
+      .where(
+        and(
+          eq(cards.id, Number(cardId)),
+          eq(cards.deck_id, deck.id)
+        )
+      )
+
+})
