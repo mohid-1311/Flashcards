@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getDecks, updateCardWeight } from '../../deckState'; 
+import { getDecks /*, updateCardWeight */} from '../../deckState'; 
 import styles from './ClassicMode.module.css';
 import { useLocation } from 'react-router';
 import { Deck } from "../../types";
+import { updateCard } from "../../data";
 
 function ClassicMode() {
   const location = useLocation();
@@ -20,7 +21,8 @@ function ClassicMode() {
   if (updatedDeck) setSelectedDeck(updatedDeck);
   }, [currentIndex, deckName, username]);
 
-  const adjustWeight = (result: 'falsch' | 'schwer' | 'richtig') => {
+
+  const adjustWeight = async (result: 'falsch' | 'schwer' | 'richtig') => {
     if (!selectedDeck) return;
 
     const currentCard = selectedDeck.cards[currentIndex];
@@ -42,7 +44,14 @@ function ClassicMode() {
         break;
     }
 
-    updateCardWeight(selectedDeck.name, currentIndex, newWeight);
+    //updateCardWeight(selectedDeck.name, currentIndex, newWeight); //alt: über local storage
+
+    await updateCard(
+      selectedDeck.user,
+      selectedDeck.name,
+      currentIndex,
+      { weight: newWeight }
+    );
 
     const updatedDecks = getDecks();
     const updatedDeck = updatedDecks.find((deck: Deck) => deck.name === selectedDeck.name && deck.user === selectedDeck.user);
@@ -74,8 +83,8 @@ function ClassicMode() {
 };
 
 
-  const handleNextCard = (result: 'falsch' | 'schwer' | 'richtig') => {
-    adjustWeight(result);
+  const handleNextCard = async (result: 'falsch' | 'schwer' | 'richtig') => {
+    await adjustWeight(result);
     setShowDefinition(false);
     setCurrentIndex(getWeightedRandomIndex());
   };
