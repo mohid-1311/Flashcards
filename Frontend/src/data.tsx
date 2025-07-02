@@ -108,6 +108,14 @@ export async function getDeck(deckId: number): Promise<Omit<Deck, "cards">> {
   if(!deck) throw new Error(`Kein Deck mit der ID vorhanden!`)
 
   return deck;
+export function updateCard(): void{
+  
+}
+
+//================================================================================================================
+/*
+export function setData(dataParam: User[]) {
+  localStorage.setItem("loginData", JSON.stringify(dataParam))
 }
 
 export async function addDeck(deckName: string): Promise<Omit<Deck, "cards">> {
