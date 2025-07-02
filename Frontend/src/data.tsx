@@ -62,8 +62,31 @@ export function addUser(user: User): void {
   }
 }
 
-export function updateCard(): void{
-  
+
+export async function updateCard(username: string, deckname: string, cardId: number, paramsToUpdate: Partial<Omit<Card, "id" | "deck_id">>): Promise<boolean> {
+  try {
+    const headers: Headers = new Headers();
+    headers.set("Content-Type", "application/json");
+    headers.set("Accept", "application/json");
+
+    const request = new Request(`${url}/cards/${encodeURIComponent(username)}/${encodeURIComponent(deckname)}/${cardId}`, {
+      method: "PUT",
+      headers: headers,
+      body: JSON.stringify(paramsToUpdate)
+    })
+
+    const response = await fetch(request);
+
+    if (!response.ok) {
+      console.error(`Fehler beim Aktualisieren der Karte: ${response.status} ${response.statusText}`);
+      return false;
+    }
+    return true
+
+  } catch (error) {
+    console.error("Fehler bei der Anfrage:", error);
+    return false;
+  }
 }
 
 //================================================================================================================
