@@ -62,6 +62,10 @@ export function addUser(user: User): void {
   }
 }
 
+export function updateCard(): void{
+  
+}
+
 //================================================================================================================
 /*
 export function setData(dataParam: User[]) {
