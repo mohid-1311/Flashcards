@@ -49,7 +49,7 @@ function ClassicMode() {
     await updateCard(
       selectedDeck.user,
       selectedDeck.name,
-      currentIndex,
+      currentIndex,///////////////braucht Index von der Datenbank nicht den currentIndex
       { weight: newWeight }
     );
 
