@@ -26,11 +26,6 @@ function DeckModal({ setDeckIndex, closeModal, reloadDecks }:DeckModalProps) {
       return;
     }
 
-    if (!currentUser) {
-      alert("Kein Benutzer eingeloggt.");
-      return;
-    }
-
     if (deckList.some(deck => deck.name.toLowerCase() === trimmed.toLowerCase())) {
       alert("Deck existiert bereits");
       return;

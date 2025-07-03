@@ -212,7 +212,6 @@ export async function addDeck(deckName: string): Promise<{id: number, name: stri
   }
 }
 
-
 export async function updateDeck(deckName: string, newDeckName: string): Promise<boolean> {
   const username = localStorage.getItem("user");
   if(!username) throw new Error("No user in local storage declared")
@@ -261,12 +260,6 @@ export function setData(dataParam: User[]) {
   localStorage.setItem("loginData", JSON.stringify(dataParam))
 }
 
-export async function getUser(username: string): Promise<User | undefined> {
-
-
-
-
-
 export async function addDeckWithCards(deck: Deck): Promise<void> {
   console.log("addDeckWithCards aufgerufen für:", deck);
   const {cards, ...deckWithoutCards} = deck
@@ -285,12 +278,6 @@ export async function addDeckWithCards(deck: Deck): Promise<void> {
     addCard(card, deckId)
   }
 }
-
-
-
-
-
-
 
 export async function deleteCard(cardId: number): Promise<boolean> {
   try {
@@ -317,10 +304,11 @@ export async function deleteCard(cardId: number): Promise<boolean> {
   }
 }
 
-export async function deleteDeck(deckname: string, username?: string): Promise<boolean> {
-  try {
-    username = username || localStorage.getItem("user") || "default";
+export async function deleteDeck(deckname: string): Promise<boolean> {
+  const username = localStorage.getItem("user");
+  if(!username) throw new Error("No user in local storage declared")
 
+  try {
     const response = await fetch(`${url}/decks/${encodeURIComponent(username)}/${encodeURIComponent(deckname)}`, {
       method: "DELETE",
       headers: {
@@ -338,22 +326,5 @@ export async function deleteDeck(deckname: string, username?: string): Promise<b
     console.error("Fehler beim Löschen des Decks:", error);
     return false;
   }
-}
-
-/*
-export function setData(dataParam: User[]) {
-  localStorage.setItem("loginData", JSON.stringify(dataParam))
-}
-
-
-
-
-
-
-
-
-
-
-
 }
 */

@@ -5,7 +5,6 @@ import { users, userSchema } from "../db/schema/users-schema"
 
 export const router = express.Router()
 router.use(express.json())
-
 const db = drizzle(process.env.DATABASE_FILE!)
 
 /**
