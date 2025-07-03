@@ -84,12 +84,13 @@ router.delete("/:user_name/:name", async (req, res) => {
   const validData = parseResult.data
 
   try {
-    const existing = await db
+    // Deck suchen
+    const [deck] = await db
       .select()
       .from(decks)
       .where(and(eq(decks.name, validData.name), eq(decks.user_name, validData.user_name)));
 
-    if (existing.length === 0) {
+    if (!deck) {
       res.status(404).json("Deck nicht gefunden oder gehört nicht dem Benutzer");
       return;
     }
