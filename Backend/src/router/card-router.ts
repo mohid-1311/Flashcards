@@ -36,7 +36,7 @@ router.get("/:username/:deckname", async (request, response) => {
 router.post("/", async (req, res) => {
   const { term, definition, weight, deck_id } = req.body;
 
-  const parseResult = cardSchema.safeParse({ term, definition, weight });
+  const parseResult = cardSchema.safeParse({ term, definition, weight, deck_id });
   if (!parseResult.success) {
     res.status(400).json({ error: "Ungültige Kartendaten" });
     return;
@@ -51,5 +51,30 @@ router.post("/", async (req, res) => {
   } catch (err) {
     console.error("Fehler beim Hinzufügen der Karte:", err);
     res.status(500).json("Fehler beim Speichern der Karte");
+  }
+});
+
+router.delete("/:cardId", async (req, res) => {
+  const cardId = Number(req.params.cardId);
+
+  if (isNaN(cardId)) {
+    res.status(400).json({ error: "Ungültige Karten-ID" });
+    return;
+  }
+
+  try {
+    const deleted = await db
+      .delete(cards)
+      .where(eq(cards.id, cardId));
+
+    if (deleted.rowsAffected === 0) {
+      res.status(404).json({ error: "Karte nicht gefunden" });
+      return;
+    }
+
+    res.status(200).json({ message: "Karte erfolgreich gelöscht" });
+  } catch (err) {
+    console.error("Fehler beim Löschen der Karte:", err);
+    res.status(500).json({ error: "Fehler beim Löschen der Karte" });
   }
 });
