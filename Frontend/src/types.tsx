@@ -28,10 +28,9 @@ export type LoginCompProps = {
 }
 
 export type DeckModalProps = {
-  setLocalDecks: React.Dispatch<React.SetStateAction<Deck[]>>;
-  decks: Deck[];
   setDeckIndex: React.Dispatch<React.SetStateAction<number>>; 
   closeModal: () => void;
+  reloadDecks: () => Promise<void>;
 };
 
 export type SetLogin = {

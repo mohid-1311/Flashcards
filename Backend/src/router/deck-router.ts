@@ -1,10 +1,11 @@
 import express from "express"
 import { drizzle } from "drizzle-orm/libsql"
-import { eq } from "drizzle-orm"
-import { decks } from "../db/schema/decks-schema"
+import { and, eq } from "drizzle-orm"
+import { decks, deckSchema } from "../db/schema/decks-schema"
+import { users } from "../db/schema/users-schema"
 
 export const router = express.Router()
-
+router.use(express.json())
 const db = drizzle(process.env.DATABASE_FILE!)
 
 /**
@@ -18,3 +19,85 @@ router.get("/:username", async (request, response) => {
   response.setHeader("Content-Type", "application/json")
   response.status(200).json(query)
 })
+
+router.put("/:username/:deckname", async (request, response) => {
+  const body = request.body
+  
+  const parseResult = deckSchema.safeParse(body)
+  if (!parseResult.success) {
+    response.status(400).json({ error: parseResult.error.errors })
+    return
+  }
+  const validData = parseResult.data
+
+  const query = await db
+    .update(decks)
+    .set(validData)
+    .where(
+      and(
+        eq(decks.user_name, request.params.username),
+        eq(decks.name, request.params.deckname)
+      )
+    )
+  if(query.rowsAffected === 1) {
+    response.status(200).json(validData)
+  } else {
+    response.status(404).send("No rows were affected!")
+  }
+})
+
+router.post("/", async (req, res) => {
+  const body = req.body;
+
+  const parseResult = deckSchema.safeParse(body);
+  if (!parseResult.success) {
+    res.status(400).json({ error: parseResult.error.errors })
+    return;
+  }
+  const validData = parseResult.data
+
+  const existing = await db
+    .select()
+    .from(decks)
+    .where(and(eq(decks.name, validData.name), eq(decks.user_name, validData.user_name)));
+
+  if (existing.length > 0) {
+    res.status(409).json("Deck existiert bereits");
+    return
+  }
+
+  const existingUser = await db.select().from(users).where(eq(users.name, validData.user_name));
+  console.log("Benutzerprüfung:", existingUser);
+  console.log("Neues Deck anlegen:", req.body);
+  const result = await db.insert(decks).values(validData).returning();
+  res.status(201).json(result[0]);
+});
+
+router.delete("/:user_name/:name", async (req, res) => {
+  const params = req.params;
+
+  const parseResult = deckSchema.safeParse(params);
+  if (!parseResult.success) {
+    res.status(400).json({ error: parseResult.error.errors });
+    return;
+  }
+  const validData = parseResult.data
+
+  try {
+    const existing = await db
+      .select()
+      .from(decks)
+      .where(and(eq(decks.name, validData.name), eq(decks.user_name, validData.user_name)));
+
+    if (existing.length === 0) {
+      res.status(404).json("Deck nicht gefunden oder gehört nicht dem Benutzer");
+      return;
+    }
+
+    await db.delete(decks).where(and(eq(decks.name, validData.name), eq(decks.user_name, validData.user_name)));
+    res.status(204).send();
+  } catch (err) {
+    console.error("Fehler beim Löschen des Decks:", err);
+    res.status(500).json("Serverfehler beim Löschen des Decks");
+  }
+});

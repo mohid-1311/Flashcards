@@ -3,10 +3,12 @@ import { drizzle } from "drizzle-orm/libsql"
 import { eq, and } from "drizzle-orm"
 import { decks } from "../db/schema/decks-schema"
 import { cards } from "../db/schema/cards-schema"
+import { cardSchema } from "../db/schema/cards-schema"
 
 export const router = express.Router()
 
 const db = drizzle(process.env.DATABASE_FILE!)
+
 
 /**
  * ../cards/:username/:deckname
@@ -29,3 +31,24 @@ router.get("/:username/:deckname", async (request, response) => {
   response.setHeader("Content-Type", "application/json")
   response.status(200).json(cardsOnly)
 })
+
+router.post("/", async (req, res) => {
+  const { term, definition, weight, deck_id } = req.body;
+
+  const parseResult = cardSchema.safeParse({ term, definition, weight });
+  if (!parseResult.success) {
+    res.status(400).json({ error: "Ungültige Kartendaten" });
+    return;
+  }
+
+  try {
+    const inserted = await db
+      .insert(cards)
+      .values({ term, definition, weight, deck_id });
+
+    res.status(201).json(inserted);
+  } catch (err) {
+    console.error("Fehler beim Hinzufügen der Karte:", err);
+    res.status(500).json("Fehler beim Speichern der Karte");
+  }
+});

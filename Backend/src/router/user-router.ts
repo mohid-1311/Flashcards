@@ -2,7 +2,6 @@ import express from "express"
 import { drizzle } from "drizzle-orm/libsql"
 import { eq } from "drizzle-orm"
 import { users, userSchema } from "../db/schema/users-schema"
-import { z } from "zod"
 
 export const router = express.Router()
 router.use(express.json())
@@ -21,6 +20,11 @@ router.get("/{:username}", async (request, response) => {
   response.setHeader("Content-Type", "application/json")
   response.status(200).json(query)
 })
+
+router.get("/", async (req, res) => {
+  const alle = await db.select().from(users);
+  res.status(200).json(alle);
+});
 
 router.post("/", async (request, response) => {
   const body = request.body
