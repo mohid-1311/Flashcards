@@ -7,5 +7,5 @@
 */build
 
 
-# other
-.env
+# database
+*/db.db
