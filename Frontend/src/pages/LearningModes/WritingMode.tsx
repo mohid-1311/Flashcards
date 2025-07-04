@@ -3,7 +3,6 @@ import styles from './WritingMode.module.css';
 import { getDecks } from '../../deckState';
 import { Deck } from "../../types";
 import { useLocation } from 'react-router';
-import { Console } from 'console';
 
 function WritingMode() {
     const location = useLocation();
