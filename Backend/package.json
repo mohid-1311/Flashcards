@@ -8,7 +8,8 @@
   "scripts": {
     "start": "nodemon src/server.ts",
     "db": "npx drizzle-kit push",
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc --outDir build"
   },
   "dependencies": {
     "@libsql/client": "^0.15.9",
