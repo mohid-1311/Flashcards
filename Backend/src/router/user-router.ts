@@ -6,7 +6,6 @@ import { z } from "zod"
 
 export const router = express.Router()
 router.use(express.json())
-
 const db = drizzle(process.env.DATABASE_FILE!)
 
 /**
@@ -15,25 +14,30 @@ const db = drizzle(process.env.DATABASE_FILE!)
  *  - Benutzer mit bestimmtem Namen
  * @return {JSX.Element}
  */
-router.get("/{:username}", async (request, response) => {
-  const query = await db.select().from(users).where(eq(users.name, request.params.username || users.name))
+router.get("/{:user_name}", async (req, res) => {
+  const query = await db.select().from(users).where(eq(users.name, req.params.user_name || users.name))
 
-  response.setHeader("Content-Type", "application/json")
-  response.status(200).json(query)
+  res.setHeader("Content-Type", "application/json")
+  res.status(200).json(query)
 })
 
-router.post("/", async (request, response) => {
-  const body = request.body
+router.get("/", async (req, res) => {
+  const allUsers = await db.select().from(users);
+  res.status(200).json(allUsers);
+});
+
+router.post("/", async (req, res) => {
+  const body = req.body
 
   const parseResult = userSchema.safeParse(body)
   if (!parseResult.success) {
-    response.status(400).json({ error: parseResult.error.errors })
+    res.status(400).json({ error: parseResult.error.errors })
     return
   }
   const validData = parseResult.data
 
   const query = await db.insert(users).values(validData)
 
-  response.setHeader("Content-Type", "application/json")
-  response.status(201).json(body)
+  res.setHeader("Content-Type", "application/json")
+  res.status(201).json(body)
 })
