@@ -14,12 +14,12 @@ const db = drizzle(process.env.DATABASE_FILE!)
  *  - Alle Karten eines Decks eines Benutzers
  * @return {JSX.Element}
  */
-router.get("/:user_name/:name", async (request, response) => {
-  const params = request.params;
+router.get("/:user_name/:name", async (req, res) => {
+  const params = req.params;
 
   const parseResult = deckSchema.safeParse(params);
   if (!parseResult.success) {
-    response.status(400).json({ error: parseResult.error.errors });
+    res.status(400).json({ error: parseResult.error.errors });
     return;
   }
   const validData = parseResult.data
@@ -36,8 +36,8 @@ router.get("/:user_name/:name", async (request, response) => {
     )
   const cardsOnly = query.map((row) => row.cards)
 
-  response.setHeader("Content-Type", "application/json")
-  response.status(200).json(cardsOnly)
+  res.setHeader("Content-Type", "application/json")
+  res.status(200).json(cardsOnly)
 })
 
 router.post("/", async (req, res) => {
@@ -62,8 +62,8 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:cardId", async (req, res) => {
-  const cardId = Number(req.params.cardId);
+router.delete("/:cardid", async (req, res) => {
+  const cardId = Number(req.params.cardid);
 
   if (isNaN(cardId)) {
     res.status(400).json({ error: "Ungültige Karten-ID" });

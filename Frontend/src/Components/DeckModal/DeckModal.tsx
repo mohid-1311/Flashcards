@@ -32,8 +32,6 @@ function DeckModal({ setDeckIndex, closeModal, reloadDecks }:DeckModalProps) {
     }
 
     try {
-      const backendDeck = await addDeck(trimmed);
-
       const updatedNames = await getDeckNames();
       const updatedList = updatedNames.map(name => ({ name }));
       setDeckList(updatedList);
