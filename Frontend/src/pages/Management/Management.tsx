@@ -40,7 +40,7 @@ function Management(): JSX.Element {
     const filtered = await Promise.all(
       decks.map(async (deck: Omit<Deck, "cards">) => {
         const cards = await data_getCards(deck.name)
-        return ({id: deck.id, name: deck.name, user: deck.user, cards: cards})
+        return ({...deck, cards: cards})
       })
     )
     setDeckList(filtered)

@@ -160,35 +160,6 @@ export async function addDeckWithCards(deck: Deck): Promise<void> {
   }
 }
 
-export async function getDeckNames(): Promise<string[]> {
-  const username = localStorage.getItem("user");
-  if(!username) throw new Error("No user in local storage declared")
-
-  try {
-    const headers: Headers = new Headers();
-    headers.set("Accept", "application/json");
-
-    const request: RequestInfo = new Request(`${url}/decks/${encodeURIComponent(username)}`, {
-      method: 'GET',
-      headers: headers
-    });
-
-    const response = await fetch(request);
-    if (!response.ok) {
-      throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
-    }
-
-    const raw = await response.json();
-
-    const result = raw.map((entry: { name: string }) => entry.name);
-
-    return result;
-  } catch (error) {
-    console.error("Fehler bei der Abfrage der Decknamen:", error);
-    return [];
-  }
-}
-
 export async function getDecks(): Promise<Omit<Deck, "cards">[]> {
   const username = localStorage.getItem("user");
   if(!username) throw new Error("No user in local storage declared")
