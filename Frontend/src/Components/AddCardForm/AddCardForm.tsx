@@ -9,7 +9,7 @@ export function sliceHeader(text: string, length: number = 15){
   return text.length <= length ? text : (text.slice(0, length-3) + "...")
 }
 
-function AddCardForm({ onAddCard, deckIndex = 0, decks}: AddCardFormProps){
+function AddCardForm({ onAddCard, deckId: deckIndex = 0, decks}: AddCardFormProps){
   const [term, setTerm] = useState("")
   const [definition, setDefinition] = useState("")
   const [weight, setWeight] = useState(10)
@@ -22,11 +22,6 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks}: AddCardFormProps){
 
     /*Verhindert, dass die Seite neugeladen wird. States bleiben also erhalten*/
     e.preventDefault()
-
-    if(!term.trim() || !definition.trim()){
-      alert("Bitte füllen Sie alle Felder aus.")
-      return
-    }
     
     const newCard = { term: term.trim(), definition: definition.trim(), weight }
 
@@ -40,9 +35,11 @@ function AddCardForm({ onAddCard, deckIndex = 0, decks}: AddCardFormProps){
     <>
       <form onSubmit={submitCard} className={styles["form-container"]}>
         <h2>Deck</h2>
+        {decks[deckIndex]  &&(
         <h2 title={decks[deckIndex].name} className={styles["form-header"]}>
           {decks[deckIndex].name}
         </h2>
+        )}
         <div className={styles["form-group"]}>
           {/*Ausdruck Eingabe*/}
           <label htmlFor="term" className={styles["form-label"]}>Ausdruck</label>

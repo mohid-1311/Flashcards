@@ -1,5 +1,5 @@
-import { useState } from "react"
-import {getDecks, setDecks} from "../../deckState"
+import { useState, useEffect } from "react"
+import { addCard, getCards, getDecks } from "../../data"
 import { Card, Deck } from "../../types"; 
 import DeckModal from "../../Components/DeckModal/DeckModal";
 import styles from "./Add.module.css"
@@ -9,28 +9,42 @@ import { useNavigate } from "react-router-dom";
 function Add(){
 
   const navigate = useNavigate()
-  
-  const currentUser = localStorage.getItem("user")?.toLowerCase()
 
-  const [decks, setLocalDecks] = useState(getDecks().filter((deck: Deck) => deck.user.toLowerCase() === currentUser) || [])
-
+  const [decks, setDecks] = useState<(Deck & { id: number })[]>([]);
   const [deckIndex, setDeckIndex] = useState(0)
-
   const [showModal, setShowModal] = useState(false)
 
   /* 
     Diese Funktion wird im Komponent AddCardForm benutzt, 
     um eine Karte im aktuell ausgewählten Deck hinzuzufügen 
   */
-  function addCardToDeck(newCard : Card, ind : number){
-    const updatedDeck = decks.map((deck: Deck, index: number) => {
-      if (index === ind){
-        return {...deck, cards: [...deck.cards, newCard]}
-      }
-      return deck;
-    });
-    setLocalDecks(updatedDeck)
-    setDecks(updatedDeck)
+
+  async function loadDecks(): Promise<void> {
+    const decks = await getDecks()
+    const filtered = await Promise.all(
+      decks.map(async (deck: Omit<Deck, "cards">) => {
+        const cards = await getCards(deck.name)
+        return {...deck, cards: cards}
+      })
+    )
+    setDecks(filtered);
+  }
+
+  useEffect(() => {
+    loadDecks();
+  }, []);
+
+  async function addCardToDeck(newCard: Omit<Card, "id">, ind: number) {
+    const deck = decks[ind];
+    if (!deck || !("id" in deck)) {
+      alert("Deck nicht gefunden oder keine ID vorhanden.");
+      return;
+    }
+
+    await addCard(newCard, deck.id);
+
+    // Neu laden, um State zu aktualisieren
+    await loadDecks();
   }
 
   return(
@@ -50,13 +64,13 @@ function Add(){
               </button>
           </>
           ) : (
-            <AddCardForm onAddCard={addCardToDeck} deckIndex={deckIndex} decks={decks}/>
+            <AddCardForm onAddCard={addCardToDeck} deckId={deckIndex} decks={decks}/>
           )}
         </div>
 
         <div className={styles["deck-list"]}>
             {/* Hier werden alle Karten des ausgewählten Decks ausgegeben*/}
-          {decks.length !== 0 && (
+          {decks.length !== 0 && decks[deckIndex]?.cards &&(
             <ul className={styles["card-list"]}>
             {decks[deckIndex].cards.map((card: Card, index: number) => (
               <li 
@@ -85,10 +99,9 @@ function Add(){
      */}
       {showModal && (
         <DeckModal
-          setLocalDecks={setLocalDecks}
-          decks={decks}
           setDeckIndex={setDeckIndex}
           closeModal={() => setShowModal(false)}
+          reloadDecks={loadDecks}
         />
       )}
 

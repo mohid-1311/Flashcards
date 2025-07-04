@@ -4,20 +4,22 @@ export type User = {
 }
 
 export type Card = {
+  id: number,
   term: string,
   definition: string,
   weight: number
 }
 
 export type Deck = {
+  id: number,
   name: string,
   user: string,
   cards: Card[]
 }
 
 export type AddCardFormProps = {
-  onAddCard: (card: { term: string; definition: string; weight: number}, deckIndex: number) => void;
-  deckIndex: number;
+  onAddCard: (card: Omit<Card, "id">, deckIndex: number) => void;
+  deckId: number;
   decks: Deck[]
 }
 
@@ -28,10 +30,9 @@ export type LoginCompProps = {
 }
 
 export type DeckModalProps = {
-  setLocalDecks: React.Dispatch<React.SetStateAction<Deck[]>>;
-  decks: Deck[];
   setDeckIndex: React.Dispatch<React.SetStateAction<number>>; 
   closeModal: () => void;
+  reloadDecks: () => Promise<void>;
 };
 
 export type SetLogin = {
