@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@libsql/client": "^0.15.9",
+    "better-sqlite3": "^12.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.43.1",
@@ -27,6 +28,7 @@
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
     "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.10",
     "@types/supertest": "^6.0.3",
     "drizzle-kit": "^0.31.1",
     "jest": "^30.0.3",

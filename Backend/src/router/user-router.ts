@@ -1,5 +1,5 @@
 import express from "express"
-import { drizzle } from "drizzle-orm/libsql"
+import { drizzle } from "drizzle-orm/mysql2"
 import { eq } from "drizzle-orm"
 import { users, userSchema } from "../db/schema/users-schema"
 
@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
   }
   const validData = parseResult.data
 
-  const query = await db.insert(users).values(validData)
+  await db.insert(users).values(validData)
 
   res.setHeader("Content-Type", "application/json")
   res.status(201).json(body)

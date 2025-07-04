@@ -8,3 +8,6 @@
 
 # database
 */db.db
+
+# other
+*/.env

@@ -1,5 +1,5 @@
 import express from "express"
-import { drizzle } from "drizzle-orm/libsql"
+import { drizzle } from "drizzle-orm/mysql2"
 import { and, eq } from "drizzle-orm"
 import { decks, deckSchema } from "../db/schema/decks-schema"
 import { users } from "../db/schema/users-schema"
@@ -37,7 +37,7 @@ router.put("/:user_name/:id", async (req, res) => {
     return
   }
 
-  const query = await db
+  const [query] = await db
     .update(decks)
     .set(validData)
     .where(
@@ -46,7 +46,8 @@ router.put("/:user_name/:id", async (req, res) => {
         eq(decks.id, validId)
       )
     )
-  if(query.rowsAffected === 1) {
+  
+  if(query.affectedRows === 1) {
     res.status(200).json(validData)
   } else {
     res.status(404).send("No rows were affected!")
@@ -76,7 +77,9 @@ router.post("/", async (req, res) => {
   const existingUser = await db.select().from(users).where(eq(users.name, validData.user_name));
   console.log("Benutzerprüfung:", existingUser);
   console.log("Neues Deck anlegen:", req.body);
-  const result = await db.insert(decks).values(validData).returning();
+  const [query] = await db.insert(decks).values(validData);
+  
+  const result = await db.select().from(decks).where(eq(decks.id, query.insertId));
   res.status(201).json(result[0]);
 });
 
@@ -90,9 +93,9 @@ router.delete("/:user_name/:id", async (req, res) => {
   }
 
   try {
-    const query = await db.delete(decks).where(and(eq(decks.id, validId), eq(decks.user_name, params.user_name)));
+    const [query] = await db.delete(decks).where(and(eq(decks.id, validId), eq(decks.user_name, params.user_name)));
     
-    if(query.rowsAffected === 1) {
+    if(query.affectedRows === 1) {
       res.status(200).send()
     } else {
       res.status(404).send("No rows were affected!")

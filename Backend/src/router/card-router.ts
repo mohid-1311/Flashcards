@@ -1,5 +1,5 @@
 import express from "express"
-import { drizzle } from "drizzle-orm/libsql"
+import { drizzle } from "drizzle-orm/mysql2"
 import { eq, and } from "drizzle-orm"
 import { decks, deckSchema } from "../db/schema/decks-schema"
 import { cards } from "../db/schema/cards-schema"
@@ -75,7 +75,7 @@ router.delete("/:cardid", async (req, res) => {
       .delete(cards)
       .where(eq(cards.id, cardId));
 
-    if (deleted.rowsAffected === 0) {
+    if (deleted.values.length === 0) {
       res.status(404).json({ error: "Karte nicht gefunden" });
       return;
     }
