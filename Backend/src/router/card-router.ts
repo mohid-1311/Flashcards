@@ -97,6 +97,9 @@ router.put("/:username/:deckname/:cardId", async (request, response) => {
   const updateSchema = cardSchema.partial().omit({ id: true, deck_id: true })
   const updateData = updateSchema.parse(request.body)
 
+  console.log("cardId:", cardId);
+  console.log("updateData:", updateData);
+
   const deckResult = await db
       .select()
       .from(decks)
@@ -110,6 +113,8 @@ router.put("/:username/:deckname/:cardId", async (request, response) => {
 
     const deck = deckResult[0]
     if (!deck) {
+      console.log("Deck nicht gefunden:", { username, deckname });
+      response.status(404).json({ error: "Deck nicht gefunden" });
       return;
     }
 
@@ -122,5 +127,5 @@ router.put("/:username/:deckname/:cardId", async (request, response) => {
           eq(cards.deck_id, deck.id)
         )
       )
-
+    response.status(200).json({ updatedRows: updateResult });
 })

@@ -4,6 +4,7 @@ import styles from './ClassicMode.module.css';
 import { useLocation } from 'react-router';
 import { Deck, Card } from "../../types";
 import { updateCard, getCards } from "../../data";
+import { Console } from 'console';
 
 function ClassicMode() {
   const location = useLocation();
@@ -54,7 +55,7 @@ function ClassicMode() {
     }
 
     //updateCardWeight(selectedDeck.name, currentIndex, newWeight); //alt: über local storage
-
+    console.log(currentCard.id)
     await updateCard(
       username,
       deckName,
