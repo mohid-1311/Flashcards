@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getDecks /*, updateCardWeight */} from '../../deckState'; 
 import styles from './ClassicMode.module.css';
 import { useLocation } from 'react-router';
-import { Deck } from "../../types";
+import { Deck, Card } from "../../types";
 import { updateCard, getCards } from "../../data";
 
 function ClassicMode() {
@@ -13,7 +13,7 @@ function ClassicMode() {
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [showDefinition, setShowDefinition] = useState<boolean>(false);
-  const [selectedDeck, setSelectedDeck] = useState<Deck | null>(null);
+  const [selectedCards, setSelectedCards] = useState<Card[] | null>(null);
 
   useEffect(() => {
     /* alt
@@ -23,14 +23,8 @@ function ClassicMode() {
   */
     const getDeckFromDatabase = async () => {
       if (!deckName || !username) return;
-      const cards = await getCards(deckName);
-    
-      setSelectedDeck({
-        id: 1,//////richtige id muss eingesetzt werden
-        name: deckName,
-        user: username,
-        cards: cards,
-      });
+      const cards: Card[] = await getCards(deckName);
+      setSelectedCards(cards);
     };
 
     getDeckFromDatabase();
@@ -38,9 +32,9 @@ function ClassicMode() {
     
 
   const adjustWeight = async (result: 'falsch' | 'schwer' | 'richtig') => {
-    if (!selectedDeck) return;
+    if (!selectedCards) return;
 
-    const currentCard = selectedDeck.cards[currentIndex];
+    const currentCard = selectedCards.cards[currentIndex];
     if (!currentCard) return;
 
     let newWeight = currentCard.weight;
@@ -62,24 +56,24 @@ function ClassicMode() {
     //updateCardWeight(selectedDeck.name, currentIndex, newWeight); //alt: über local storage
 
     await updateCard(
-      selectedDeck.user,
-      selectedDeck.name,
+      selectedCards.user,
+      selectedCards.name,
       currentIndex,///////////////braucht Index von der Datenbank nicht den currentIndex
       { weight: newWeight }
     );
 
     const updatedDecks = getDecks();
-    const updatedDeck = updatedDecks.find((deck: Deck) => deck.name === selectedDeck.name && deck.user === selectedDeck.user);
-    if (updatedDeck) setSelectedDeck(updatedDeck);
+    const updatedDeck = updatedDecks.find((deck: Deck) => deck.name === selectedCards.name && deck.user === selectedCards.user);
+    if (updatedDeck) setSelectedCards(updatedDeck);
   };
 
   const getWeightedRandomIndex = (): number => {
-  if (!selectedDeck || selectedDeck.cards.length <=1 ) return 0;
+  if (!selectedCards || selectedCards.cards.length <=1 ) return 0;
 
   let lastIndex = currentIndex; 
   let newIndex = lastIndex;
 
-  const weights = selectedDeck.cards.map(card => 1 / card.weight);
+  const weights = selectedCards.cards.map(card => 1 / card.weight);
   const totalWeight = weights.reduce((a, b) => a + b, 0);
 
   while (newIndex === lastIndex) { 
@@ -108,25 +102,25 @@ function ClassicMode() {
     setShowDefinition(!showDefinition);
   };
 
-  if (!selectedDeck) return <h1 className={styles.fehlerMeldung}>Deck nicht gefunden!</h1>;
+  if (!selectedCards) return <h1 className={styles.fehlerMeldung}>Deck nicht gefunden!</h1>;
 
   return (
     <div className={styles.container}>
       <h1 className={styles.deckName}>{deckName}</h1>
       <h2>Klassischer Lernmodus</h2>
       <div className={styles.deckContainer}>
-        {selectedDeck.cards.length === 0 ? (
+        {selectedCards.cards.length === 0 ? (
           <h1 className={styles.fehlerMeldung}>Es sind keine Karten im Deck. Füge Karten hinzu, um zu lernen!</h1>
         ) : (
           <>
-            <h3>{currentIndex + 1}/{selectedDeck.cards.length}</h3>
+            <h3>{currentIndex + 1}/{selectedCards.cards.length}</h3>
             <button onClick={handleToggleDefinition} className={styles.card}>
-              {showDefinition ? selectedDeck.cards[currentIndex].definition : selectedDeck.cards[currentIndex].term}
+              {showDefinition ? selectedCards.cards[currentIndex].definition : selectedCards.cards[currentIndex].term}
             </button>
           </>
         )}
       </div>
-      {selectedDeck.cards.length > 0 && (
+      {selectedCards.cards.length > 0 && (
         <div className={styles.buttonContainer}>
           <button className={`${styles.button} ${styles.falsch}`} onClick={() => handleNextCard('falsch')}>Falsch</button>
           <button className={`${styles.button} ${styles.schwer}`} onClick={() => handleNextCard('schwer')}>Schwer</button>
