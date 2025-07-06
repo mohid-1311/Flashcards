@@ -1,6 +1,6 @@
 import { User, Deck, Card } from "./types"
 
-const url = "http://localhost:4000"//"https://flashcards-3swd.onrender.com"
+const url = "https://flashcards-moritz.up.railway.app"
 
 // NEUE FUNKTIONEN:
 
