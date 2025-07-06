@@ -3,7 +3,7 @@ import { getDecks /*, updateCardWeight */} from '../../deckState';
 import styles from './ClassicMode.module.css';
 import { useLocation } from 'react-router';
 import { Deck } from "../../types";
-import { updateCard } from "../../data";
+import { updateCard, getCards } from "../../data";
 
 function ClassicMode() {
   const location = useLocation();
@@ -16,11 +16,26 @@ function ClassicMode() {
   const [selectedDeck, setSelectedDeck] = useState<Deck | null>(null);
 
   useEffect(() => {
+    /* alt
   const decks: Deck[] = getDecks();
   const updatedDeck = decks.find(deck => deck.name === deckName && deck.user === username);
-  if (updatedDeck) setSelectedDeck(updatedDeck);
-  }, [currentIndex, deckName, username]);
+  if (updatedDeck) setSelectedDeck(updatedDeck); 
+  */
+    const getDeckFromDatabase = async () => {
+      if (!deckName || !username) return;
+      const cards = await getCards(deckName);
+    
+      setSelectedDeck({
+        id: 1,//////richtige id muss eingesetzt werden
+        name: deckName,
+        user: username,
+        cards: cards,
+      });
+    };
 
+    getDeckFromDatabase();
+  }, [currentIndex, deckName, username]);
+    
 
   const adjustWeight = async (result: 'falsch' | 'schwer' | 'richtig') => {
     if (!selectedDeck) return;
