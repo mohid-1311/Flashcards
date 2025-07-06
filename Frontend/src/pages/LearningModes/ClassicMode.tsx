@@ -13,7 +13,7 @@ function ClassicMode() {
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [showDefinition, setShowDefinition] = useState<boolean>(false);
-  const [selectedCards, setSelectedCards] = useState<Card[] | null>(null);
+  const [selectedCards, setSelectedCards] = useState<(Card & { id: number })[] | null>(null);
 
   useEffect(() => {
     /* alt
@@ -23,7 +23,7 @@ function ClassicMode() {
   */
     const getDeckFromDatabase = async () => {
       if (!deckName || !username) return;
-      const cards: Card[] = await getCards(deckName);
+      const cards: (Card & { id: number })[] = await getCards(deckName);
       setSelectedCards(cards);
     };
 
@@ -32,9 +32,9 @@ function ClassicMode() {
     
 
   const adjustWeight = async (result: 'falsch' | 'schwer' | 'richtig') => {
-    if (!selectedCards) return;
+    if (!selectedCards || !username || !deckName) return;
 
-    const currentCard = selectedCards.cards[currentIndex];
+    const currentCard = selectedCards[currentIndex];
     if (!currentCard) return;
 
     let newWeight = currentCard.weight;
@@ -56,15 +56,19 @@ function ClassicMode() {
     //updateCardWeight(selectedDeck.name, currentIndex, newWeight); //alt: über local storage
 
     await updateCard(
-      selectedCards.user,
-      selectedCards.name,
-      currentIndex,///////////////braucht Index von der Datenbank nicht den currentIndex
+      username,
+      deckName,
+      currentCard.id,
       { weight: newWeight }
     );
 
+    /* alt
     const updatedDecks = getDecks();
-    const updatedDeck = updatedDecks.find((deck: Deck) => deck.name === selectedCards.name && deck.user === selectedCards.user);
+    const updatedDeck = updatedDecks.find((deck: Deck) => deck.name === deckName && deck.user === username);
     if (updatedDeck) setSelectedCards(updatedDeck);
+    */
+    const cards: (Card & { id: number })[] = await getCards(deckName);
+    setSelectedCards(cards);
   };
 
   const getWeightedRandomIndex = (): number => {
