@@ -72,12 +72,12 @@ function ClassicMode() {
   };
 
   const getWeightedRandomIndex = (): number => {
-  if (!selectedCards || selectedCards.cards.length <=1 ) return 0;
+  if (!selectedCards || selectedCards.length <=1 ) return 0;
 
   let lastIndex = currentIndex; 
   let newIndex = lastIndex;
 
-  const weights = selectedCards.cards.map(card => 1 / card.weight);
+  const weights = selectedCards.map(card => 1 / card.weight);
   const totalWeight = weights.reduce((a, b) => a + b, 0);
 
   while (newIndex === lastIndex) { 
@@ -113,18 +113,18 @@ function ClassicMode() {
       <h1 className={styles.deckName}>{deckName}</h1>
       <h2>Klassischer Lernmodus</h2>
       <div className={styles.deckContainer}>
-        {selectedCards.cards.length === 0 ? (
+        {selectedCards.length === 0 ? (
           <h1 className={styles.fehlerMeldung}>Es sind keine Karten im Deck. Füge Karten hinzu, um zu lernen!</h1>
         ) : (
           <>
-            <h3>{currentIndex + 1}/{selectedCards.cards.length}</h3>
+            <h3>{currentIndex + 1}/{selectedCards.length}</h3>
             <button onClick={handleToggleDefinition} className={styles.card}>
-              {showDefinition ? selectedCards.cards[currentIndex].definition : selectedCards.cards[currentIndex].term}
+              {showDefinition ? selectedCards[currentIndex].definition : selectedCards[currentIndex].term}
             </button>
           </>
         )}
       </div>
-      {selectedCards.cards.length > 0 && (
+      {selectedCards.length > 0 && (
         <div className={styles.buttonContainer}>
           <button className={`${styles.button} ${styles.falsch}`} onClick={() => handleNextCard('falsch')}>Falsch</button>
           <button className={`${styles.button} ${styles.schwer}`} onClick={() => handleNextCard('schwer')}>Schwer</button>
