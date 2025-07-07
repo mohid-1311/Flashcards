@@ -7,8 +7,6 @@ import { getDeckNames } from "../../data"
 
 function Homepage(){
 
-  const [decks, setLocalDecks] = useState(getDecks())
-
   const [deckNames, setDeckNames] = useState<string[]>([])
 
   function addDeckName(deckName: string) {
