@@ -64,7 +64,6 @@ function ImportField({ addDeckName }: { addDeckName: any }) {
    * 
    */
   async function submitFiles() {
-    let tempDecks: Deck[] = decks
     for (let file of files) {
       // in ein Objekt parsen
       let newDeck: Deck
@@ -95,31 +94,7 @@ function ImportField({ addDeckName }: { addDeckName: any }) {
       console.log(`füge ${newDeck.name} zur DB hinzu`)
       addDeckName(newDeck.name)
       addDeckWithCards(newDeck)
-
-      // Zum localstorage hinzufügen, kann später gelöscht werden
-
-      // nach Deck mit gleichem Namen suchen
-      let deckToUpdate = tempDecks.find((deck: Deck) => deck.name === newDeck.name)
-      
-      // falls noch kein Deck mit dem Namen existiert, wird ein neues erstellt
-      if(!deckToUpdate) {
-        console.log(`deck ${newDeck.name} existiert noch nicht`)
-        tempDecks.push(newDeck)
-        console.log(`deck ${newDeck.name} wurde hinzugefügt`)
-        continue
-      }
-
-      // falls ein Deck mit dem Namen bereits existiert
-      newDeck.cards.forEach((newCard: Card) => {
-        if (deckToUpdate?.cards.every((card: Card) => card.term !== newCard.term)) {
-          deckToUpdate?.cards.push(newCard)
-        }
-      })
     }
-    console.log(tempDecks)
-    setLocalDecks([...tempDecks])
-    setDecks(tempDecks)
-
     deleteFiles()
   }
 
