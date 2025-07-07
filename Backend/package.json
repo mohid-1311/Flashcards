@@ -11,8 +11,6 @@
     "build": "tsc --outDir build"
   },
   "dependencies": {
-    "@libsql/client": "^0.15.9",
-    "better-sqlite3": "^12.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.43.1",
