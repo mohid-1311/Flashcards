@@ -7,13 +7,13 @@ describe('Decks Router', () => {
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
   });
-  it('PUT /decks/test/nonexistingdeck should return status 400, because of wrong body', async () => {
-    const response = await request(app).put('/decks/test/nonexistingdeck').send();
+  it('PUT /decks/test/0 should return status 400, because of wrong body', async () => {
+    const response = await request(app).put('/decks/test/0').send();
     
     expect(response.status).toBe(400);
   });
-  it('PUT /decks/test/nonexistingdeck should return status 404 because deck does not ecist', async () => {
-    const response = await request(app).put('/decks/test/nonexistingdeck').send({name: "nonexistingdeck", user_name: "test"});
+  it('PUT /decks/test/0 should return status 404 because deck does not ecist', async () => {
+    const response = await request(app).put('/decks/test/0').send({name: "0", user_name: "test"});
     
     expect(response.status).toBe(404);
     expect(response.text).toBe("No rows were affected!");
