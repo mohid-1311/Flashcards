@@ -2,11 +2,10 @@ import ImportField from "../../Components/ImportField/ImportField";
 import styles from "./Import.module.css"
 import { useEffect, useState } from "react"
 import { getDecks } from "../../deckState"
-import { getCards, getDeck, getDeckNames } from "../../data";
+import { Deck, DeckNoCards, Card, ExportDeck } from "../../types";
+import { getCards, getDeckByName, getDeckNames } from "../../data";
 
 function Import(){
-
-  const [decks, setLocalDecks] = useState(getDecks())
 
   const [deckNames, setDeckNames] = useState<string[]>([])
 
@@ -45,26 +44,19 @@ function Import(){
   }
 
   async function downloadDeck() {
-    let deckToExport = await getDeck(selectedDeck)
-    if (deckToExport) {
-      deckToExport.cards = (await getCards(deckToExport.name) || []).map(card => {
-        const {id, deck_id, ...cardNoIds} = card
-        return cardNoIds
-      })
-    } else {
-      let i = 0
-      while(decks[i].name !== selectedDeck && i <  decks.length) {
-        i++
-      }
-      deckToExport = decks[i]
-    }
-    // die Nutzer-Property heißt manchmal "user" und manchmal "user_name"
-    const {id, user, user_name, ...deckNoUser} = deckToExport as any
-    const blob = new Blob([JSON.stringify(deckNoUser, null, "\t")], {type: "application/json"});
+    if (!selectedDeck) return
+
+    let cardsToExport = (await getCards(selectedDeck) || []).map(card => {
+      const {deck_id, id, ...cardNoIds} = card
+      return cardNoIds
+    })
+    let deckToExport: ExportDeck = {name: selectedDeck, cards: cardsToExport}
+
+    const blob = new Blob([JSON.stringify(deckToExport, null, "\t")], {type: "application/json"});
     const formatedURL = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = formatedURL;
-    link.setAttribute('download', "Flashcards_" + deckNoUser.name + ".json");
+    link.setAttribute('download', "Flashcards_" + deckToExport.name + ".json");
     document.body.appendChild(link);
     link.click();
     link.remove();
