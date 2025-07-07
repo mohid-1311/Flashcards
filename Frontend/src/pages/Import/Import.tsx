@@ -1,9 +1,8 @@
 import ImportField from "../../Components/ImportField/ImportField";
 import styles from "./Import.module.css"
 import { useEffect, useState } from "react"
-import { getDecks } from "../../deckState"
-import { Deck, DeckNoCards, Card, ExportDeck } from "../../types";
-import { getCards, getDeckByName, getDeckNames } from "../../data";
+import { ExportDeck } from "../../types";
+import { getCards, getDeckNames } from "../../data";
 
 function Import(){
 
