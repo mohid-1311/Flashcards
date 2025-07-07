@@ -1,51 +1,66 @@
 import express from "express"
-import { drizzle } from "drizzle-orm/libsql"
+import { drizzle } from "drizzle-orm/mysql2"
 import { eq, and } from "drizzle-orm"
-import { decks } from "../db/schema/decks-schema"
+import { decks, deckSchema } from "../db/schema/decks-schema"
 import { cards } from "../db/schema/cards-schema"
-import { z } from "zod"
 import { cardSchema } from "../db/schema/cards-schema"
+import dotenv from "dotenv";
+
+dotenv.config();
+
+if (!process.env.DATABASE_FILE) {
+  throw new Error("DATABASE_FILE Umgebungsvariable ist nicht gesetzt!")
+}
 
 export const router = express.Router()
-
+router.use(express.json())
 const db = drizzle(process.env.DATABASE_FILE!)
-
 
 /**
  * ../cards/:username/:deckname
  *  - Alle Karten eines Decks eines Benutzers
  * @return {JSX.Element}
  */
-router.get("/:username/:deckname", async (request, response) => {
+router.get("/:user_name/:name", async (req, res) => {
+  const params = req.params;
+
+  const parseResult = deckSchema.safeParse(params);
+  if (!parseResult.success) {
+    res.status(400).json({ error: parseResult.error.errors });
+    return;
+  }
+  const validData = parseResult.data
+  
   const query = await db
     .select({ cards: cards })
     .from(cards)
     .innerJoin(decks, eq(decks.id, cards.deck_id))
     .where(
       and(
-        eq(decks.user_name, request.params.username),
-        eq(decks.name, request.params.deckname)
+        eq(decks.user_name, validData.user_name),
+        eq(decks.name, validData.name)
       )
     )
   const cardsOnly = query.map((row) => row.cards)
 
-  response.setHeader("Content-Type", "application/json")
-  response.status(200).json(cardsOnly)
+  res.setHeader("Content-Type", "application/json")
+  res.status(200).json(cardsOnly)
 })
 
 router.post("/", async (req, res) => {
-  const { term, definition, weight, deck_id } = req.body;
+  const body = req.body;
 
-  const parseResult = cardSchema.safeParse({ term, definition, weight, deck_id });
+  const parseResult = cardSchema.safeParse(body);
   if (!parseResult.success) {
-    res.status(400).json({ error: "Ungültige Kartendaten" });
+    res.status(400).json({ error: parseResult.error.errors });
     return;
   }
+  const validData = parseResult.data
 
   try {
     const inserted = await db
       .insert(cards)
-      .values({ term, definition, weight, deck_id });
+      .values(validData);
 
     res.status(201).json(inserted);
   } catch (err) {
@@ -54,8 +69,8 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:cardId", async (req, res) => {
-  const cardId = Number(req.params.cardId);
+router.delete("/:cardid", async (req, res) => {
+  const cardId = Number(req.params.cardid);
 
   if (isNaN(cardId)) {
     res.status(400).json({ error: "Ungültige Karten-ID" });
@@ -67,7 +82,7 @@ router.delete("/:cardId", async (req, res) => {
       .delete(cards)
       .where(eq(cards.id, cardId));
 
-    if (deleted.rowsAffected === 0) {
+    if (deleted.values.length === 0) {
       res.status(404).json({ error: "Karte nicht gefunden" });
       return;
     }
@@ -78,3 +93,43 @@ router.delete("/:cardId", async (req, res) => {
     res.status(500).json({ error: "Fehler beim Löschen der Karte" });
   }
 });
+
+router.put("/:username/:deckname/:cardId", async (request, response) => {
+
+  const { username, deckname, cardId } = request.params;
+
+  const updateSchema = cardSchema.partial().omit({ id: true, deck_id: true })
+  const updateData = updateSchema.parse(request.body)
+
+  console.log("cardId:", cardId);
+  console.log("updateData:", updateData);
+
+  const deckResult = await db
+      .select()
+      .from(decks)
+      .where(
+        and(
+          eq(decks.user_name, username),
+          eq(decks.name, deckname)
+        )
+      )
+      .limit(1)
+
+    const deck = deckResult[0]
+    if (!deck) {
+      console.log("Deck nicht gefunden:", { username, deckname });
+      response.status(404).json({ error: "Deck nicht gefunden" });
+      return;
+    }
+
+    const updateResult = await db
+      .update(cards)
+      .set(updateData)
+      .where(
+        and(
+          eq(cards.id, Number(cardId)),
+          eq(cards.deck_id, deck.id)
+        )
+      )
+    response.status(200).json({ updatedRows: updateResult });
+})

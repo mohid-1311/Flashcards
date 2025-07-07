@@ -1,15 +1,15 @@
-import { sqliteTable, text } from "drizzle-orm/sqlite-core"
+import { mysqlTable, varchar } from "drizzle-orm/mysql-core"
 import { relations } from "drizzle-orm"
 import { decks } from "./decks-schema"
 import { cards } from "./cards-schema"
 import { z } from "zod"
 
-export const users = sqliteTable('users', {
-  name: text().primaryKey(),
-  password: text().notNull()
+export const users = mysqlTable('users', {
+  name: varchar({ length: 16 }).primaryKey(),
+  password: varchar({ length: 64 }).notNull()
 })
 
-export const usersRelations = relations(users, ({many}) => ({
+export const usersRelations = relations(users, ({ many }) => ({
   decks: many(decks),
   cards: many(cards)
 }))

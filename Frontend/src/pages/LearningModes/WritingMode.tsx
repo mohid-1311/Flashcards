@@ -1,82 +1,100 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './WritingMode.module.css';
-import { getDecks } from '../../deckState';
+import { useLocation } from 'react-router';
+import { Card } from "../../types";
+import { getCards } from "../../data";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
-const deckName = "Mathe"; // Deck muss übergeben werden!
 
-interface Card {
-    ausdruck: string;
-    definition: string;
-}
-
-interface Deck {
-    name: string;
-    cards: Card[];
-}
-
-//TO-DO: Auslagerung von Codedopplungen
 function WritingMode() {
-    const decks: Deck[] = getDecks();
-    const selectedDeck: Deck = decks.find((deck: Deck) => deck.name === deckName) || { name: deckName, cards: [] };
 
+  const navigate = useNavigate();
+  const handleNavigation = (path: string) => {
+      navigate(path);
+  };
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const deckName = queryParams.get('deckName');
+    const username = localStorage.getItem("user");
+  
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [showDefinition, setShowDefinition] = useState<boolean>(false);
-    const [submitted, setSubmitted] = useState<boolean>(false);
     const [text, setText] = useState<string>('');
-    //const [submittedText, setSubmittedText] = useState<string>('');
+    const [correct, setCorrect] = useState<boolean>(false);
+    const [submitted, setSubmitted] = useState<boolean>(false);
+    const [selectedCards, setSelectedCards] = useState<(Card & { id: number })[] | null>(null);
+    
+    useEffect(() => {
+      const getDeckFromDatabase = async () => {
+        if (!deckName || !username) return;
+        const cards: (Card & { id: number })[] = await getCards(deckName);
+        setSelectedCards(cards);
+      };
+
+      getDeckFromDatabase();
+    }, [ deckName, username]);
 
     const handleNextCard = () => {
         setShowDefinition(false);
+        setText("");
         setSubmitted(false);
-        if (currentIndex < selectedDeck.cards.length - 1) {
+        if (selectedCards && currentIndex < selectedCards.length - 1) {
             setCurrentIndex(currentIndex + 1);
         } else {
-            setCurrentIndex(0); // Loop zum Anfang zurück
+            setCurrentIndex(0);
         }
     };
-    /*
-    const handleToggleDefinition = () => {
-        setShowDefinition(!showDefinition);
-    };
-    */
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setText(event.target.value);
     };
 
     const handleSubmit = () => {
+        setShowDefinition(true);
         setSubmitted(true);
-        //setSubmittedText(text);
+        if(selectedCards) setCorrect(text.toLowerCase() === selectedCards[currentIndex].definition.toLowerCase());
     };
 
-    return (
-        <div className={styles.container}>
-            <h2 className={styles.deckName}>Schreib Modus - {deckName}</h2>
-            <input
-                type="text"
-                value={selectedDeck.cards[currentIndex].ausdruck}
-                readOnly
-                placeholder="Ausdruck"
-            />
-            <input
+return (
+    <>
+      <span className={styles.backArrow}><FontAwesomeIcon icon={faArrowLeft} onClick={() => handleNavigation(`/Lernmodi?deckName=${deckName}`)} /> </span>
+      <div className={styles.container}>
+        <h1 className={styles.deckName}>{deckName}</h1>
+        <h2>Schriftlicher Lernmodus</h2>
+        <div className={styles.buttonContainer}>
+          { selectedCards == null ? (<h1 className={styles.fehlerMeldung}>Fehler beim Laden der Karten!</h1>) :
+            selectedCards.length === 0 ? (
+            <h1 className={styles.fehlerMeldung}>Es sind keine Karten im Deck. Füge Karten hinzu, um zu lernen!</h1>) : (
+            <>
+              <h3>{currentIndex+1}/{selectedCards.length}</h3>
+              <button className={styles.card}>
+              {showDefinition
+                ? selectedCards[currentIndex].definition
+                : selectedCards[currentIndex].term}
+            </button>
+            <button className={`${styles.inputField} ${submitted ? correct ? styles.correctInput : styles.incorrectInput : ""}`}>
+                <input
                 type="text"
                 value={text}
                 onChange={handleChange}
-                placeholder="..."
-            />
-            <button onClick={handleSubmit}>Überprüfen</button>
-            {submitted && (
-                <button onClick={handleNextCard}>
-                    Nächste Karte
-                </button>
-            )}
-            {showDefinition && (
-                <div>
-                    <h3>Definition:</h3>
-                    <p>{selectedDeck.cards[currentIndex].definition}</p>
-                </div>
-            )}
+                placeholder="Tippe..."
+               />
+            </button>
+            </>
+          )}
         </div>
-    );
+        {selectedCards && selectedCards.length > 0 && (
+            <div>
+                <button className={styles.button} onClick={handleSubmit}>Überprüfen</button>
+                <button className={styles.button} onClick={handleNextCard}>Nächste</button>
+            </div>
+        )}
+      </div>
+    </>
+  );
 }
 
 export default WritingMode;

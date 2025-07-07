@@ -6,12 +6,12 @@
     font-family: sans-serif;
   }
 
-  .buttonContainer {
+.buttonContainer {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap:20px;
-  }
+}
   
 .button {
     padding: 10px 20px;
@@ -45,7 +45,7 @@
   }
 
   .schwer {
-    background-color: darkorange;
+    background-color: orange;
   }
 
   .richtig {
@@ -75,9 +75,32 @@
     color: red;
 }
 
-  .deckName {
+.deckName {
     text-overflow: ellipsis;
     overflow: hidden;
     text-wrap: nowrap;
     max-width: 50vw; 
-  }
+}
+
+.hardButtonPressed {
+    background-color: darkorange;
+    font-weight: bold;
+    border-color: red;
+}
+
+
+.backArrow {
+  margin-left: 2%; 
+  font-size: 200%;
+  color: black;
+  position: absolute;
+}
+
+.backArrow:hover {
+  color: darkgrey;
+}
+
+.deckContainer {
+  text-align: right;
+  margin: 3% 2% 2% 2%;
+}

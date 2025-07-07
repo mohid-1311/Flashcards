@@ -4,20 +4,34 @@ export type User = {
 }
 
 export type Card = {
+  id: number,
   term: string,
   definition: string,
   weight: number
 }
 
 export type Deck = {
+  id: number,
   name: string,
   user: string,
   cards: Card[]
 }
 
+export type DeckNoCards = Omit<Deck, "cards">
+
+export type ExportDeck = Omit<Deck, "id" | "user" | "cards"> & {
+  cards: Omit<Card, "id">[]
+}
+
+export type ImportedDeck = Omit<ExportDeck, "cards"> & {
+  cards: (Omit<Card, "id" | "weight"> & {
+    weight?: number
+  })[]
+}
+
 export type AddCardFormProps = {
-  onAddCard: (card: { term: string; definition: string; weight: number}, deckIndex: number) => void;
-  deckIndex: number;
+  onAddCard: (card: Omit<Card, "id">, deckIndex: number) => void;
+  deckId: number;
   decks: Deck[]
 }
 

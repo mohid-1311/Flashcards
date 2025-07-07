@@ -1,11 +1,16 @@
 import { useState } from "react";
 import styles from "./ImportField.module.css"
-import { setDecks } from "../../deckState"
-import { Card, Deck } from "../../types"
+import { Deck } from "../../types"
+import { addDeckWithCards } from "../../data";
 
-function ImportField({ decks, setLocalDecks }: { decks: any, setLocalDecks: any }) {
+function ImportField({ addDeckName }: { addDeckName: any }) {
 
-  function isDeck(o: Deck) {
+  /**
+   * checks if an Object is enough Deck to be imported (card.weight and user not required)
+   * @param {Object} o
+   * @returns {boolean}
+   */
+  function isDeck(o: Deck): boolean {
     if (typeof o.name !== "string") return false;
     if (typeof o.cards !== "object") return false;
     for (let card of o.cards) {
@@ -58,7 +63,6 @@ function ImportField({ decks, setLocalDecks }: { decks: any, setLocalDecks: any 
    * 
    */
   async function submitFiles() {
-    let tempDecks: Deck[] = decks
     for (let file of files) {
       // in ein Objekt parsen
       let newDeck: Deck
@@ -76,6 +80,9 @@ function ImportField({ decks, setLocalDecks }: { decks: any, setLocalDecks: any 
         continue
       }
 
+      // user wird gesetzt
+      newDeck["user"] = localStorage.getItem("user")?.toLowerCase() || "default"
+
       // weight wird falls nicht vorhanden auf standard wert 10 gesetzt
       for (let card of newDeck.cards) {
         if (!card.weight) {
@@ -83,30 +90,10 @@ function ImportField({ decks, setLocalDecks }: { decks: any, setLocalDecks: any 
         }
       }
       
-      // nach Deck mit gleichem Namen suchen
-      let deckToUpdate = tempDecks.find((deck: Deck) => deck.name === newDeck.name)
-      
-      // falls noch kein Deck mit dem Namen existiert, wird ein neues erstellt
-      if(!deckToUpdate) {
-        console.log(`deck ${newDeck.name} existiert noch nicht`)
-        newDeck["user"] = localStorage.getItem("user")?.toLowerCase() || "default"
-        tempDecks.push(newDeck)
-        console.log(`deck ${newDeck.name} wurde hinzugefügt`)
-        continue
-      }
-
-      // falls ein Deck mit dem Namen bereits existiert
-      newDeck.cards.forEach((newCard: Card) => {
-        if (deckToUpdate?.cards.every((card: Card) => card.term !== newCard.term)) {
-          deckToUpdate?.cards.push(newCard)
-        }
-      })
-      
+      console.log(`füge ${newDeck.name} zur DB hinzu`)
+      addDeckName(newDeck.name)
+      addDeckWithCards(newDeck)
     }
-    console.log(tempDecks)
-    setLocalDecks([...tempDecks])
-    setDecks(tempDecks)
-
     deleteFiles()
   }
 

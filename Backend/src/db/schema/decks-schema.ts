@@ -1,16 +1,16 @@
-import { sqliteTable, integer, text, AnySQLiteColumn } from "drizzle-orm/sqlite-core"
+import { mysqlTable, int, text, AnyMySqlColumn } from "drizzle-orm/mysql-core"
 import { relations } from "drizzle-orm"
 import { users } from "./users-schema"
 import { cards } from "./cards-schema"
 import { z } from "zod"
 
-export const decks = sqliteTable('decks', {
-  id: integer().primaryKey({ autoIncrement: true }),
+export const decks = mysqlTable('decks', {
+  id: int().primaryKey().autoincrement(),
   name: text().notNull(),
-  user_name: text().notNull().references((): AnySQLiteColumn => users.name),
+  user_name: text().notNull().references((): AnyMySqlColumn => users.name),
 })
 
-export const decksRelations = relations(decks, ({many}) => ({
+export const decksRelations = relations(decks, ({ many }) => ({
   cards: many(cards)
 }))
 
@@ -20,10 +20,5 @@ export const deckSchema = z.object({
   name: z.string(),
   user_name: z.string(),
 })
-
-export const deleteDeckSchema = z.object({
-  name: z.string()
-});
-
 
 export type Deck = z.infer<typeof deckSchema>

@@ -2,9 +2,13 @@
 
 # dependencies
 */node_modules
+*/package-lock.json
 
 # production
 */build
 
+# database
+*/db.db
+
 # other
-.env
+*/.env*

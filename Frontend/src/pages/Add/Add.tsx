@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import {getDeck, getDeckNames, addCard, getCards } from "../../data"
+import { addCard, getCards, getDecks } from "../../data"
 import { Card, Deck } from "../../types"; 
 import DeckModal from "../../Components/DeckModal/DeckModal";
 import styles from "./Add.module.css"
@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 function Add(){
 
   const navigate = useNavigate()
-  const currentUser = localStorage.getItem("user")?.toLowerCase()
 
   const [decks, setDecks] = useState<(Deck & { id: number })[]>([]);
   const [deckIndex, setDeckIndex] = useState(0)
@@ -21,36 +20,21 @@ function Add(){
   */
 
   async function loadDecks(): Promise<void> {
-    try {
-      const names = await getDeckNames();
-      const deckObjects = await Promise.all(
-        names.map(async name => {
-          const deck = await getDeck(name, currentUser);
-          if (deck && "id" in deck) {
-            if (!currentUser) 
-            {
-              console.error("Kein Benutzer eingeloggt.");
-              return;
-            } 
-            const cards = await getCards(currentUser, name);
-            return { ...deck, cards: cards || [] };
-          }
-          return null;
-        })
-      );
-      setDecks(deckObjects.filter(Boolean) as (Deck & { id: number })[]);
-
-    } catch (err) {
-      console.log("Noch keine Decks angelegt");
-    }
+    const decks = await getDecks()
+    const filtered = await Promise.all(
+      decks.map(async (deck: Omit<Deck, "cards">) => {
+        const cards = await getCards(deck.name)
+        return {...deck, cards: cards}
+      })
+    )
+    setDecks(filtered);
   }
-
 
   useEffect(() => {
     loadDecks();
   }, []);
 
-  async function addCardToDeck(newCard: Card, ind: number) {
+  async function addCardToDeck(newCard: Omit<Card, "id">, ind: number) {
     const deck = decks[ind];
     if (!deck || !("id" in deck)) {
       alert("Deck nicht gefunden oder keine ID vorhanden.");
@@ -80,7 +64,7 @@ function Add(){
               </button>
           </>
           ) : (
-            <AddCardForm onAddCard={addCardToDeck} deckIndex={deckIndex} decks={decks}/>
+            <AddCardForm onAddCard={addCardToDeck} deckId={deckIndex} decks={decks}/>
           )}
         </div>
 
