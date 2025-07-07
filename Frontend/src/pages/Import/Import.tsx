@@ -1,14 +1,24 @@
 import ImportField from "../../Components/ImportField/ImportField";
 import styles from "./Import.module.css"
-import { useState } from "react"
-import { Deck } from "../../types"
-import { getDecks } from "../../deckState"
+import { useEffect, useState } from "react"
+import { ExportDeck } from "../../types";
+import { getCards, getDeckNames } from "../../data";
 
 function Import(){
 
-  const [decks, setLocalDecks] = useState(getDecks())
+  const [deckNames, setDeckNames] = useState<string[]>([])
+
+  function addDeckName(deckName: string) {
+    setDeckNames([...deckNames, deckName])
+  }
 
   const [selectedDeck, setSelectedDeck] = useState("")
+
+  useEffect(() => {
+    getDeckNames().then(names => {
+      setDeckNames(names);
+    })
+  }, [])
 
   function cutString(str: string, maxLen: number = 30) {
     if (str.length <= maxLen) {
@@ -32,18 +42,20 @@ function Import(){
     }
   }
 
-  function downloadDeck() {
-    let i = 0
-    while(decks[i].name !== selectedDeck) {
-      i++
-    }
-    const deckToExport = decks[i]
-    delete deckToExport.user
+  async function downloadDeck() {
+    if (!selectedDeck) return
+
+    let cardsToExport = (await getCards(selectedDeck) || []).map(card => {
+      const {deck_id, id, ...cardNoIds} = card
+      return cardNoIds
+    })
+    let deckToExport: ExportDeck = {name: selectedDeck, cards: cardsToExport}
+
     const blob = new Blob([JSON.stringify(deckToExport, null, "\t")], {type: "application/json"});
     const formatedURL = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = formatedURL;
-    link.setAttribute('download', deckToExport.name + ".json");
+    link.setAttribute('download', "Flashcards_" + deckToExport.name + ".json");
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -57,19 +69,20 @@ function Import(){
         </div>
         <div className={styles["export-body"]}>
           <ul className={styles["export-deck-list"]}>
-            {decks.length === 0
-            ? <i><br />no decks available</i>
-            : decks.map((deck: Deck, index: number)=> {
-            return (
-              <li 
-                onClick={selectDeckOnClick(deck.name)} 
-                className={styles["export-deck-list-element"] +
-                  (deck.name === selectedDeck ? " " + styles["element-chosen"] : "")}
-                  >
-                {cutString(deck.name)}
-              </li>
-            )
-          })}
+            {deckNames.length === 0
+              ? <i><br />no decks available</i>
+              : deckNames.map((name: string) => {
+                return (
+                  <li 
+                    onClick={selectDeckOnClick(name)} 
+                    className={styles["export-deck-list-element"] +
+                      (name === selectedDeck ? " " + styles["element-chosen"] : "")}
+                      >
+                    {cutString(name)}
+                  </li>
+                )
+              })
+            }
           </ul>
           <div className={styles["export-buttons"]}>
             <button 
@@ -86,7 +99,7 @@ function Import(){
         <div className={styles["import-header"]}>
           <h3>Importieren</h3>
         </div>
-        <ImportField decks={decks} setLocalDecks={setLocalDecks} />
+        <ImportField addDeckName={addDeckName} />
       </div>
     </div>
   );

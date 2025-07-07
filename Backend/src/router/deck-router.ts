@@ -24,6 +24,13 @@ router.get("/:user_name", async (req, res) => {
   res.status(200).json(query)
 })
 
+router.get("/names/:user_name", async (req, res) => {
+  const query = await db.select({name: decks.name}).from(decks).where(eq(decks.user_name, req.params.user_name))
+
+  res.setHeader("Content-Type", "application/json")
+  res.status(200).json(query)
+})
+
 router.put("/:user_name/:id", async (req, res) => {
   const body = req.body
   
