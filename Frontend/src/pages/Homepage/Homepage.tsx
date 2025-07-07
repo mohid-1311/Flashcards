@@ -9,6 +9,12 @@ function Homepage(){
 
   const [decks, setLocalDecks] = useState(getDecks())
 
+  const [deckNames, setDeckNames] = useState<string[]>([])
+
+  function addDeckName(deckName: string) {
+    setDeckNames([...deckNames, deckName])
+  }
+
   return(
     <div className={styles["start-flex-container"]}>
       <div className={styles["start-box-learning"]}>
@@ -24,7 +30,7 @@ function Homepage(){
       <div className={styles["start-box-import"]}>
         <div className={styles["start-import"]}>
           {/* <h4>Schnell-Importieren</h4> */}
-          <ImportField decks={decks} setLocalDecks={setLocalDecks} />
+          <ImportField addDeckName={addDeckName} />
         </div>
       </div>
     </div>

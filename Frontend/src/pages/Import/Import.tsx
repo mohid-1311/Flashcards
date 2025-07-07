@@ -10,6 +10,10 @@ function Import(){
 
   const [deckNames, setDeckNames] = useState<string[]>([])
 
+  function addDeckName(deckName: string) {
+    setDeckNames([...deckNames, deckName])
+  }
+
   const [selectedDeck, setSelectedDeck] = useState("")
 
   useEffect(() => {
@@ -104,7 +108,7 @@ function Import(){
         <div className={styles["import-header"]}>
           <h3>Importieren</h3>
         </div>
-        <ImportField decks={decks} setLocalDecks={setLocalDecks} />
+        <ImportField addDeckName={addDeckName} />
       </div>
     </div>
   );

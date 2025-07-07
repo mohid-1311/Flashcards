@@ -4,7 +4,7 @@ import { setDecks } from "../../deckState"
 import { Card, Deck } from "../../types"
 import { addDeckWithCards } from "../../data";
 
-function ImportField({ decks, setLocalDecks }: { decks: any, setLocalDecks: any }) {
+function ImportField({ addDeckName }: { addDeckName: any }) {
 
   /**
    * checks if an Object is enough Deck to be imported (card.weight and user not required)
@@ -93,6 +93,7 @@ function ImportField({ decks, setLocalDecks }: { decks: any, setLocalDecks: any 
       }
       
       console.log(`füge ${newDeck.name} zur DB hinzu`)
+      addDeckName(newDeck.name)
       addDeckWithCards(newDeck)
 
       // Zum localstorage hinzufügen, kann später gelöscht werden
