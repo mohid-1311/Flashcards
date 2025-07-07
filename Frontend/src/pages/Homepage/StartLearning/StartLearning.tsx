@@ -1,7 +1,7 @@
 import styles from "./StartLearning.module.css"
 import {Link} from "react-router-dom"
 
-function StartLearning({decks}: {decks: any}) {
+function StartLearning({deckNames}: {deckNames: string[]}) {
 
   return (
     <div className={styles["site-root"]}>
@@ -9,13 +9,13 @@ function StartLearning({decks}: {decks: any}) {
         <h1 className={styles["start-learning-title"]}>Jetzt Lernen</h1>
       </div>
       <ul className={styles["deck-list"]}>
-        {decks.length === 0
+        {deckNames.length === 0
         ? <i><br />no decks available</i>
-        : decks.map((deck: {name:string}, index: number)=> {
+        : deckNames.map(deckName => {
           return (
-            <Link className={styles["deck-list-link"]} to={`/Lernmodi?deckName=${deck.name}`}>
+            <Link className={styles["deck-list-link"]} to={`/Lernmodi?deckName=${deckName}`}>
               <li className={styles["deck-list-element"]}>
-                {deck.name}
+                {deckName}
               </li>
             </Link>
           )
