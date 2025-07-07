@@ -3,7 +3,10 @@ import { drizzle } from "drizzle-orm/mysql2"
 import { and, eq } from "drizzle-orm"
 import { decks, deckSchema } from "../db/schema/decks-schema"
 import { users } from "../db/schema/users-schema"
-import { number } from "zod"
+
+if (!process.env.DATABASE_FILE) {
+  throw new Error("DATABASE_FILE Umgebungsvariable ist nicht gesetzt!")
+}
 
 export const router = express.Router()
 router.use(express.json())
