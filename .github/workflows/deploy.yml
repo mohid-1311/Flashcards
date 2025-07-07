@@ -25,6 +25,8 @@ jobs:
     - name: Frontend - Build Project
       run: npm run build
       working-directory: ./Frontend
+      env:
+        REACT_APP_BACKEND_URL: ${{ secrets.REACT_APP_BACKEND_URL }}
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
