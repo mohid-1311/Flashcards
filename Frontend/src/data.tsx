@@ -98,7 +98,7 @@ export async function getDeckNames(): Promise<string[]> {
 
     const username = localStorage.getItem("user") || "";
 
-    const request: RequestInfo = new Request(`${url}/decks/names/${encodeURIComponent(username)}`, {
+    const request: RequestInfo = new Request(`${url}/decks/${encodeURIComponent(username)}`, {
       method: 'GET',
       headers: headers
     });
@@ -213,6 +213,25 @@ export async function addDeck(deckName: string): Promise<{id: number, name: stri
 }
 
 
+export async function addDeckWithCards(deck: Deck): Promise<void> {
+  const {cards, ...deckWithoutCards} = deck
+  let addedDeck = await addDeck(deckWithoutCards.name)
+  if (!addedDeck) {
+    addedDeck = await getDeck(deckWithoutCards.name)
+    if (!addedDeck) {
+      console.error("neu angelegtes Deck nicht gefunden")
+      return
+    }
+  }
+  console.log("neu angelegtes deck gefunden, füge karten hinzu")
+  const deckId: number = addedDeck.id
+
+  for (let card of deck.cards) {
+    addCard(card, deckId)
+  }
+}
+
+
 export async function updateDeck(deckName: string, newDeckName: string): Promise<boolean> {
   const username = localStorage.getItem("user");
   if(!username) throw new Error("No user in local storage declared")
@@ -267,23 +286,7 @@ export async function getUser(username: string): Promise<User | undefined> {
 
 
 
-export async function addDeckWithCards(deck: Deck): Promise<void> {
-  const {cards, ...deckWithoutCards} = deck
-  let addedDeck = await addDeck(deckWithoutCards)
-  if (!addedDeck) {
-    addedDeck = await getDeck(deck.name, deck.user)
-    if (!addedDeck) {
-      console.error("neu angelegtes Deck nicht gefunden")
-      return
-    }
-  }
-  console.log("neu angelegtes deck gefunden, füge karten hinzu")
-  const deckId: number = addedDeck.id
 
-  for (let card of deck.cards) {
-    addCard(card, deckId)
-  }
-}
 
 
 
