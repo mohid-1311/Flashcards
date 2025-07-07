@@ -73,3 +73,14 @@
     text-wrap: nowrap;
     max-width: 50vw; 
   }
+
+.backArrow {
+  margin-left: 2%; 
+  font-size: 200%;
+  color: black;
+  position: absolute;
+}
+
+.backArrow:hover {
+  color: darkgrey;
+}

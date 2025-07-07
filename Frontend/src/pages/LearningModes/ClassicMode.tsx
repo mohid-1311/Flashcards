@@ -3,8 +3,17 @@ import styles from './ClassicMode.module.css';
 import { useLocation } from 'react-router';
 import { Card } from "../../types";
 import { updateCard, getCards } from "../../data";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 function ClassicMode() {
+
+  const navigate = useNavigate();
+  const handleNavigation = (path: string) => {
+      navigate(path);
+  };
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const deckName = queryParams.get('deckName');
@@ -100,6 +109,8 @@ function ClassicMode() {
   if (!selectedCards) return <h1 className={styles.fehlerMeldung}>Deck nicht gefunden!</h1>;
 
   return (
+    <> 
+    <span className={styles.backArrow}><FontAwesomeIcon icon={faArrowLeft} onClick={() => handleNavigation(`/Lernmodi?deckName=${deckName}`)} /> </span>
     <div className={styles.container}>
       <h1 className={styles.deckName}>{deckName}</h1>
       <h2>Klassischer Lernmodus</h2>
@@ -123,6 +134,7 @@ function ClassicMode() {
         </div>
       )}
     </div>
+    </>
   );
 }
 

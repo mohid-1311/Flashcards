@@ -1,9 +1,9 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './LearningModes.module.css';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -19,6 +19,8 @@ function LearningModes() {
     const deckName = queryParams.get('deckName');
 
     return (
+        <>
+        <span className={styles.backArrow}><FontAwesomeIcon icon={faArrowLeft} onClick={() => handleNavigation(`/Startseite`)} /> </span>
         <div className={styles.container}>
             <h1 className ={styles.deckName}>{deckName}</h1>
             <h2>Spielmodus auswählen</h2>
@@ -47,6 +49,7 @@ function LearningModes() {
                 </div>
             </div>
         </div>
+        </>
     );
 }
 

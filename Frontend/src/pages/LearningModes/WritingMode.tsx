@@ -3,8 +3,18 @@ import styles from './WritingMode.module.css';
 import { useLocation } from 'react-router';
 import { Card } from "../../types";
 import { getCards } from "../../data";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+
 
 function WritingMode() {
+
+  const navigate = useNavigate();
+  const handleNavigation = (path: string) => {
+      navigate(path);
+  };
+
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const deckName = queryParams.get('deckName');
@@ -50,6 +60,7 @@ function WritingMode() {
 
 return (
     <>
+      <span className={styles.backArrow}><FontAwesomeIcon icon={faArrowLeft} onClick={() => handleNavigation(`/Lernmodi?deckName=${deckName}`)} /> </span>
       <div className={styles.container}>
         <h1 className={styles.deckName}>{deckName}</h1>
         <h2>Schriftlicher Lernmodus</h2>
