@@ -5,6 +5,10 @@ import { decks, deckSchema } from "../db/schema/decks-schema"
 import { cards } from "../db/schema/cards-schema"
 import { cardSchema } from "../db/schema/cards-schema"
 
+if (!process.env.DATABASE_FILE) {
+  throw new Error("DATABASE_FILE Umgebungsvariable ist nicht gesetzt!")
+}
+
 export const router = express.Router()
 router.use(express.json())
 const db = drizzle(process.env.DATABASE_FILE!)

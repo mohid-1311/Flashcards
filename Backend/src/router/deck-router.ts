@@ -3,7 +3,10 @@ import { drizzle } from "drizzle-orm/mysql2"
 import { and, eq } from "drizzle-orm"
 import { decks, deckSchema } from "../db/schema/decks-schema"
 import { users } from "../db/schema/users-schema"
-import { number } from "zod"
+
+if (!process.env.DATABASE_FILE) {
+  throw new Error("DATABASE_FILE Umgebungsvariable ist nicht gesetzt!")
+}
 
 export const router = express.Router()
 router.use(express.json())
@@ -16,6 +19,13 @@ const db = drizzle(process.env.DATABASE_FILE!)
  */
 router.get("/:user_name", async (req, res) => {
   const query = await db.select().from(decks).where(eq(decks.user_name, req.params.user_name))
+
+  res.setHeader("Content-Type", "application/json")
+  res.status(200).json(query)
+})
+
+router.get("/names/:user_name", async (req, res) => {
+  const query = await db.select({name: decks.name}).from(decks).where(eq(decks.user_name, req.params.user_name))
 
   res.setHeader("Content-Type", "application/json")
   res.status(200).json(query)
