@@ -17,6 +17,18 @@ export type Deck = {
   cards: Card[]
 }
 
+export type DeckNoCards = Omit<Deck, "cards">
+
+export type ExportDeck = Omit<Deck, "id" | "user" | "cards"> & {
+  cards: Omit<Card, "id">[]
+}
+
+export type ImportedDeck = Omit<ExportDeck, "cards"> & {
+  cards: (Omit<Card, "id" | "weight"> & {
+    weight?: number
+  })[]
+}
+
 export type AddCardFormProps = {
   onAddCard: (card: Omit<Card, "id">, deckIndex: number) => void;
   deckId: number;
