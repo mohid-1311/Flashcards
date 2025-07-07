@@ -9,6 +9,7 @@ function FreeMode() {
   const queryParams = new URLSearchParams(location.search);
   const deckName = queryParams.get('deckName');
   const username = localStorage.getItem("user");
+  
   const [selectedCards, setSelectedCards] = useState<(Card & { id: number })[] | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [showDefinition, setShowDefinition] = useState<boolean>(false);
