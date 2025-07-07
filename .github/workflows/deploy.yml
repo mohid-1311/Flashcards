@@ -18,6 +18,14 @@ jobs:
       with:
         node-version: '16'
 
+    - name: Backend - Install Dependencies
+      run: npm install
+      working-directory: ./Backend
+
+    - name: Backend - Run Tests
+      run: npm run test
+      working-directory: ./Backend
+
     - name: Frontend - Install Dependencies
       run: npm install
       working-directory: ./Frontend
