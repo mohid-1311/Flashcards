@@ -2,6 +2,9 @@ import express from "express"
 import { drizzle } from "drizzle-orm/mysql2"
 import { eq } from "drizzle-orm"
 import { users, userSchema } from "../db/schema/users-schema"
+import dotenv from "dotenv";
+
+dotenv.config();
 
 if (!process.env.DATABASE_FILE) {
   throw new Error("DATABASE_FILE Umgebungsvariable ist nicht gesetzt!")
