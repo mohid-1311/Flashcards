@@ -4,6 +4,9 @@ import { eq, and } from "drizzle-orm"
 import { decks, deckSchema } from "../db/schema/decks-schema"
 import { cards } from "../db/schema/cards-schema"
 import { cardSchema } from "../db/schema/cards-schema"
+import dotenv from "dotenv";
+
+dotenv.config();
 
 if (!process.env.DATABASE_FILE) {
   throw new Error("DATABASE_FILE Umgebungsvariable ist nicht gesetzt!")
@@ -90,9 +93,6 @@ router.delete("/:cardid", async (req, res) => {
     res.status(500).json({ error: "Fehler beim Löschen der Karte" });
   }
 });
-
-
-
 
 router.put("/:username/:deckname/:cardId", async (request, response) => {
 

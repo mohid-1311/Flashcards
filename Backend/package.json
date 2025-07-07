@@ -7,14 +7,12 @@
   "main": "src/server.js",
   "scripts": {
     "start": "nodemon src/server.ts",
-    "test": "jest",
+    "test": "jest --runInBand --logHeapUsage --detectOpenHandles --forceExit",
     "build": "tsc --outDir build"
   },
   "dependencies": {
-    "@libsql/client": "^0.15.9",
-    "better-sqlite3": "^12.2.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
+    "dotenv": "^17.0.1",
     "drizzle-orm": "^0.43.1",
     "express": "^5.1.0",
     "mysql2": "^3.14.1",
