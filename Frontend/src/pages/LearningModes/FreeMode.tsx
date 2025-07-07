@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-//import { getDecks } from '../../deckState';
 import styles from './FreeMode.module.css';
 import { useLocation } from 'react-router';
 import { Card } from "../../types";
@@ -10,7 +9,6 @@ function FreeMode() {
   const queryParams = new URLSearchParams(location.search);
   const deckName = queryParams.get('deckName');
   const username = localStorage.getItem("user");
-  //const selectedDeck: Deck = getDecks().filter((deck:Deck) => deck.user === username).find((deck: Deck) => deck.name === deckName);
   const [selectedCards, setSelectedCards] = useState<(Card & { id: number })[] | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [showDefinition, setShowDefinition] = useState<boolean>(false);
