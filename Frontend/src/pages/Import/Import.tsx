@@ -43,7 +43,7 @@ function Import(){
   async function downloadDeck() {
     let deckToExport = await getDeck(selectedDeck)
     if (deckToExport) {
-      deckToExport.cards = (await getCards(deckToExport.id) || []).map(card => {
+      deckToExport.cards = (await getCards(deckToExport.name) || []).map(card => {
         const {id, deck_id, ...cardNoIds} = card
         return cardNoIds
       })
