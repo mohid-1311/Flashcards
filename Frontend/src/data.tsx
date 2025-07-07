@@ -1,6 +1,6 @@
 import { User, Deck, Card } from "./types"
 
-const url = "https://flashcards-moritz.up.railway.app"
+const url = process.env.REACT_APP_BACKEND_URL!
 
 // NEUE FUNKTIONEN:
 
