@@ -3,7 +3,6 @@ import StartLearning from "./StartLearning/StartLearning"
 import Motivation from "../../Components/Motivation/Motivation"
 import ImportField from "../../Components/ImportField/ImportField"
 import { useEffect, useState } from "react"
-import { getDecks } from "../../deckState"
 import { getDeckNames } from "../../data"
 
 function Homepage(){

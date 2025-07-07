@@ -1,7 +1,6 @@
 import { useState } from "react";
 import styles from "./ImportField.module.css"
-import { setDecks } from "../../deckState"
-import { Card, Deck } from "../../types"
+import { Deck } from "../../types"
 import { addDeckWithCards } from "../../data";
 
 function ImportField({ addDeckName }: { addDeckName: any }) {
