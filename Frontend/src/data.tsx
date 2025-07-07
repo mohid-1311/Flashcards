@@ -326,13 +326,6 @@ export async function deleteDeck(deckId: number): Promise<boolean> {
   }
 }
 
-/*
-export function setData(dataParam: User[]) {
-  localStorage.setItem("loginData", JSON.stringify(dataParam))
-}
-
-*/
-
 export async function updateCard(username: string, deckname: string, cardId: number, paramsToUpdate: Partial<Omit<Card, "id" | "deck_id">>): Promise<boolean> {
   try {
     const headers: Headers = new Headers();
