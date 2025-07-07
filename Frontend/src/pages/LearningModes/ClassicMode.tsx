@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { getDecks /*, updateCardWeight */} from '../../deckState'; 
+import { useState, useEffect } from 'react';
 import styles from './ClassicMode.module.css';
 import { useLocation } from 'react-router';
-import { Deck, Card } from "../../types";
+import { Card } from "../../types";
 import { updateCard, getCards } from "../../data";
-import { Console } from 'console';
 
 function ClassicMode() {
   const location = useLocation();
@@ -17,11 +15,6 @@ function ClassicMode() {
   const [selectedCards, setSelectedCards] = useState<(Card & { id: number })[] | null>(null);
 
   useEffect(() => {
-    /* alt
-  const decks: Deck[] = getDecks();
-  const updatedDeck = decks.find(deck => deck.name === deckName && deck.user === username);
-  if (updatedDeck) setSelectedDeck(updatedDeck); 
-  */
     const getDeckFromDatabase = async () => {
       if (!deckName || !username) return;
       const cards: (Card & { id: number })[] = await getCards(deckName);
@@ -63,11 +56,6 @@ function ClassicMode() {
       { weight: newWeight }
     );
 
-    /* alt
-    const updatedDecks = getDecks();
-    const updatedDeck = updatedDecks.find((deck: Deck) => deck.name === deckName && deck.user === username);
-    if (updatedDeck) setSelectedCards(updatedDeck);
-    */
     const cards: (Card & { id: number })[] = await getCards(deckName);
     setSelectedCards(cards);
   };
