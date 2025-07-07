@@ -1,17 +1,9 @@
 import "dotenv/config"
 import express from "express"
 import cors from "cors"
-import { eq, and } from "drizzle-orm"
-import { decks } from "./db/schema/decks-schema"
-import { cards } from "./db/schema/cards-schema"
 import { router as userRouter } from "./router/user-router"
 import { router as deckRouter } from "./router/deck-router"
 import { router as cardRouter } from "./router/card-router"
-
-const databaseFile = process.env.DATABASE_FILE
-if (!databaseFile) {
-  throw new Error("DATABASE_FILE Umgebungsvariable ist nicht gesetzt!")
-}
 
 export const app = express();
 app.use(express.json()); 
@@ -26,7 +18,7 @@ app.use("/users", userRouter)
 app.use("/decks", deckRouter)
 app.use("/cards", cardRouter)
 
-if (process.env.NODE_ENV !== "test") { // Wird gebraucht, da jest sonst nicht automatisch beednet wird.
+if (process.env.NODE_ENV !== "test") { // Wird gebraucht, da jest sonst nicht automatisch beendet wird.
   app.listen(port, () => {
     console.log("Server gestartet")
   });

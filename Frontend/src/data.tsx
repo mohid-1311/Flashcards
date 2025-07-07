@@ -1,11 +1,11 @@
 import { User, Deck, Card } from "./types"
 
-const url = "https://flashcards-moritz.up.railway.app"
+const url = process.env.REACT_APP_BACKEND_URL!
 
 // NEUE FUNKTIONEN:
 
 export async function updateDeck(deckId: number, newDeckName: string): Promise<boolean> {
-  const username = localStorage.getItem("user");
+  const username = localStorage.getItem("user")
   if(!username) throw new Error("No user in local storage declared")
   
   try {
