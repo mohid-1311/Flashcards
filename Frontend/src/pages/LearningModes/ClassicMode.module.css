@@ -45,7 +45,7 @@
   }
 
   .schwer {
-    background-color: darkorange;
+    background-color: orange;
   }
 
   .richtig {
@@ -81,3 +81,9 @@
     text-wrap: nowrap;
     max-width: 50vw; 
   }
+
+.hardButtonPressed {
+    background-color: darkorange;
+    font-weight: bold;
+    border-color: red;
+}

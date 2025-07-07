@@ -12,6 +12,7 @@ function ClassicMode() {
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [showDefinition, setShowDefinition] = useState<boolean>(false);
+  const [isHard, setIsHard] = useState<boolean>(false);
   const [selectedCards, setSelectedCards] = useState<(Card & { id: number })[] | null>(null);
 
   useEffect(() => {
@@ -25,7 +26,7 @@ function ClassicMode() {
   }, [currentIndex, deckName, username]);
     
 
-  const adjustWeight = async (result: 'falsch' | 'schwer' | 'richtig') => {
+  const adjustWeight = async (result: 'falsch' | 'richtig') => {
     if (!selectedCards || !username || !deckName) return;
 
     const currentCard = selectedCards[currentIndex];
@@ -35,15 +36,11 @@ function ClassicMode() {
 
     switch (result) {
       case 'falsch': 
-        newWeight = Math.max(1, newWeight - 2); 
-        break;
-
-      case 'schwer': 
-        newWeight = Math.max(1, newWeight - 1);
+        newWeight = isHard ? Math.max(1, newWeight - 2) : Math.max(1, newWeight - 1); 
         break;
 
       case 'richtig':
-        newWeight = newWeight + 1; 
+        newWeight = isHard ? newWeight + 1 : newWeight + 2; 
         break;
     }
 
@@ -85,14 +82,19 @@ function ClassicMode() {
 };
 
 
-  const handleNextCard = async (result: 'falsch' | 'schwer' | 'richtig') => {
+  const handleNextCard = async (result: 'falsch' | 'richtig') => {
     await adjustWeight(result);
     setShowDefinition(false);
+    setIsHard(false);
     setCurrentIndex(getWeightedRandomIndex());
   };
 
   const handleToggleDefinition = () => {
     setShowDefinition(!showDefinition);
+  };
+
+  const handleToggleHardButton = () => {
+    setIsHard(!isHard);
   };
 
   if (!selectedCards) return <h1 className={styles.fehlerMeldung}>Deck nicht gefunden!</h1>;
@@ -116,7 +118,7 @@ function ClassicMode() {
       {selectedCards.length > 0 && (
         <div className={styles.buttonContainer}>
           <button className={`${styles.button} ${styles.falsch}`} onClick={() => handleNextCard('falsch')}>Falsch</button>
-          <button className={`${styles.button} ${styles.schwer}`} onClick={() => handleNextCard('schwer')}>Schwer</button>
+          <button className={`${styles.button} ${styles.schwer} ${isHard ? styles.hardButtonPressed : ''}`} onClick={() => handleToggleHardButton()}>Schwer</button>
           <button className={`${styles.button} ${styles.richtig}`} onClick={() => handleNextCard('richtig')}>Richtig</button>
         </div>
       )}
