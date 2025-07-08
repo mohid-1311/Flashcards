@@ -10,7 +10,7 @@ function StartLearning({deckNames}: {deckNames: string[]}) {
       </div>
       <ul className={styles["deck-list"]}>
         {deckNames.length === 0
-        ? <i><br />no decks available</i>
+        ? <i><br />keine Decks gefunden</i>
         : deckNames.map(deckName => {
           return (
             <Link className={styles["deck-list-link"]} to={`/Lernmodi?deckName=${deckName}`}>

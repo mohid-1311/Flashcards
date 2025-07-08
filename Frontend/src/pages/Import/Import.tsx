@@ -70,7 +70,7 @@ function Import(){
         <div className={styles["export-body"]}>
           <ul className={styles["export-deck-list"]}>
             {deckNames.length === 0
-              ? <i><br />no decks available</i>
+              ? <i><br />keine Decks gefunden</i>
               : deckNames.map((name: string) => {
                 return (
                   <li 
