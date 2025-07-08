@@ -324,7 +324,6 @@ export async function deleteDeck(deckId: number): Promise<boolean> {
   }
 }
 
-
 /**
  * Sendet eine PUT-Anfrage an den Server, um die Eigenschaften einer Karte zu ändern.
  * @param username Benutzername
@@ -333,13 +332,16 @@ export async function deleteDeck(deckId: number): Promise<boolean> {
  * @param paramsToUpdate Objekt mit einzelnen Parametern vom Typ Card, die geupdatet werden sollen (Karten-ID und Deck-ID sind nicht veränderbar)
  * @returns Promise<boolean>, ob das Update erfolgreich war
  */
-export async function updateCard(username: string, deckname: string, cardId: number, paramsToUpdate: Partial<Omit<Card, "id" | "deck_id">>): Promise<boolean> {
+export async function updateCard(deckName: string, cardId: number, paramsToUpdate: Partial<Omit<Card, "id" | "deck_id">>): Promise<boolean> {
+  const username = localStorage.getItem("user");
+  if(!username) throw new Error("No user in local storage declared")
+  
   try {
     const headers: Headers = new Headers();
     headers.set("Content-Type", "application/json");
     headers.set("Accept", "application/json");
 
-    const request = new Request(`${url}/cards/${encodeURIComponent(username)}/${encodeURIComponent(deckname)}/${cardId}`, {
+    const request = new Request(`${url}/cards/${encodeURIComponent(username)}/${encodeURIComponent(deckName)}/${cardId}`, {
       method: "PUT",
       headers: headers,
       body: JSON.stringify(paramsToUpdate)

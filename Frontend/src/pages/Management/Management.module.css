@@ -285,7 +285,7 @@ button.deck-rename:enabled:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-button.deck-add:disabled, button.deck-rename:disabled {
+button.deck-add:disabled, button.deck-rename:disabled, button.card-edit-submit:disabled {
     background-color: gainsboro;
 }
 
@@ -362,7 +362,7 @@ div.card-edit-header {
 }
 
 /* Karteikartenattribute-Liste (flexbox) */
-div.card-edit-flexbox {
+form.card-edit-flexbox-form {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -374,7 +374,7 @@ div.card-edit-flexbox {
 }
 
 /* Attribut-Element für eine Karteikarte */
-div.card-edit-flexbox > h4 {
+form.card-edit-flexbox-form > h4 {
     margin-block-start: 1em;
     margin-block-end: 0.5em;
 }
@@ -384,6 +384,7 @@ textarea.card-edit-input {
     padding: 5px;
 
     height: 6.4em;
+
     min-height: 1.8em;
     resize: vertical;
 
@@ -391,4 +392,25 @@ textarea.card-edit-input {
     border-radius: 5px;
     
     background-color: gainsboro;
+}
+
+button.card-edit-submit {
+    aspect-ratio: 1 / 1;
+
+    height: 22px;
+
+    margin-top: 10px;
+    margin-right: 10px;
+
+    border: 0;
+    border-radius: 2px;
+
+    color: white;
+    background-color: #007bff;
+}
+
+button.card-edit-submit:enabled:hover {
+    cursor: pointer;
+    background-color: #0049c1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
