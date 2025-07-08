@@ -1,96 +1,96 @@
 .container {
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    margin: 3%;
-    font-family: sans-serif;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3%;
+  font-family: sans-serif;
+}
 
 .buttonContainer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap:20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
 }
-  
+
 .button {
-    padding: 10px 20px;
-    background-color: lightgrey;
-    color: black;
-    border: 2px solid black; 
-    cursor: pointer;
-    border-radius: 10px;
-  }
+  padding: 10px 20px;
+  background-color: lightgrey;
+  color: black;
+  border: 2px solid black;
+  cursor: pointer;
+  border-radius: 10px;
+}
 
-  .button:hover {
-    background-color: grey;
+.button:hover {
+  background-color: grey;
 
-  }
+}
 
-  .falsch:hover {
-    background-color: rgb(228, 12, 59);
-  }
+.falsch:hover {
+  background-color: rgb(228, 12, 59);
+}
 
-  .schwer:hover {
-    background-color: rgb(255, 184, 32);
-  }
+.schwer:hover {
+  background-color: rgb(255, 184, 32);
+}
 
-  .richtig:hover {
-    background-color: rgb(44, 255, 76);
-  }
+.richtig:hover {
+  background-color: rgb(44, 255, 76);
+}
 
 
-  .falsch {
-    background-color: red;
-  }
+.falsch {
+  background-color: red;
+}
 
-  .schwer {
-    background-color: orange;
-  }
+.schwer {
+  background-color: orange;
+}
 
-  .richtig {
-    background-color: green;
-  }
+.richtig {
+  background-color: green;
+}
 
-  .card {
-    background-color: lightgrey;
-    padding: 10px 20px 10px 20px;
-    width: 30vw;
-    height: 20vw;
-    color: black;
-    font-size: 125%;
-    border: 2px solid black; 
-    cursor: pointer;
-    border-radius: 10px;
-    margin: 2%;
-    word-wrap: break-word;
-    overflow: auto;
-  }
+.card {
+  background-color: lightgrey;
+  padding: 10px 20px 10px 20px;
+  width: 30vw;
+  height: 20vw;
+  color: black;
+  font-size: 125%;
+  border: 2px solid black;
+  cursor: pointer;
+  border-radius: 10px;
+  margin: 2%;
+  word-wrap: break-word;
+  overflow: auto;
+}
 
-  .card:hover {
-    background-color: grey;
-  }
+.card:hover {
+  background-color: grey;
+}
 
-  .fehlerMeldung{
-    color: red;
+.fehlerMeldung {
+  color: red;
 }
 
 .deckName {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    text-wrap: nowrap;
-    max-width: 50vw; 
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-wrap: nowrap;
+  max-width: 50vw;
 }
 
 .hardButtonPressed {
-    background-color: darkorange;
-    font-weight: bold;
-    border-color: red;
+  background-color: darkorange;
+  font-weight: bold;
+  border-color: red;
 }
 
 
 .backArrow {
-  margin-left: 2%; 
+  margin-left: 2%;
   font-size: 200%;
   color: black;
   position: absolute;
