@@ -7,10 +7,14 @@ import { getDeckNames } from "../../data"
 
 function Homepage(){
 
-  const [deckNames, setDeckNames] = useState<string[]>([])
+  const [deckNames, setDeckNames] = useState<string[] | undefined>(undefined)
 
   function addDeckName(deckName: string) {
-    setDeckNames([...deckNames, deckName])
+    if (deckNames === undefined) {
+      setDeckNames([deckName])
+    } else {
+      setDeckNames([...deckNames, deckName])
+    }
   }
 
   useEffect(() => {
