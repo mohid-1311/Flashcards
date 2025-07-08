@@ -6,10 +6,14 @@ import { getCards, getDeckNames } from "../../data";
 
 function Import(){
 
-  const [deckNames, setDeckNames] = useState<string[]>([])
+  const [deckNames, setDeckNames] = useState<string[] | undefined>(undefined)
 
   function addDeckName(deckName: string) {
-    setDeckNames([...deckNames, deckName])
+    if (deckNames === undefined) {
+      setDeckNames([deckName])
+    } else {
+      setDeckNames([...deckNames, deckName])
+    }
   }
 
   const [selectedDeck, setSelectedDeck] = useState("")
@@ -69,7 +73,10 @@ function Import(){
         </div>
         <div className={styles["export-body"]}>
           <ul className={styles["export-deck-list"]}>
-            {deckNames.length === 0
+            {
+              deckNames === undefined
+              ? <i></i>// <img src={process.env.PUBLIC_URL + "/loading_spinner.svg"} alt="Loading Content Animation" className="loading-spinner"/>
+              : deckNames.length === 0
               ? <i><br />keine Decks gefunden</i>
               : deckNames.map((name: string) => {
                 return (
