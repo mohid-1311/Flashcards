@@ -326,13 +326,16 @@ export async function deleteDeck(deckId: number): Promise<boolean> {
   }
 }
 
-export async function updateCard(username: string, deckname: string, cardId: number, paramsToUpdate: Partial<Omit<Card, "id" | "deck_id">>): Promise<boolean> {
+export async function updateCard(deckName: string, cardId: number, paramsToUpdate: Partial<Omit<Card, "id" | "deck_id">>): Promise<boolean> {
+  const username = localStorage.getItem("user");
+  if(!username) throw new Error("No user in local storage declared")
+  
   try {
     const headers: Headers = new Headers();
     headers.set("Content-Type", "application/json");
     headers.set("Accept", "application/json");
 
-    const request = new Request(`${url}/cards/${encodeURIComponent(username)}/${encodeURIComponent(deckname)}/${cardId}`, {
+    const request = new Request(`${url}/cards/${encodeURIComponent(username)}/${encodeURIComponent(deckName)}/${cardId}`, {
       method: "PUT",
       headers: headers,
       body: JSON.stringify(paramsToUpdate)

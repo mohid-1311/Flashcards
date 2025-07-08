@@ -23,7 +23,6 @@ function ClassicMode() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const deckName = queryParams.get('deckName');
-  const username = localStorage.getItem("user");
 
   const [currentIndex, setCurrentIndex] = useState<number>(0); //Index des Kartenarray. Hat nichts mit der Karten ID aus der Datenbank zu tun.
   const [showDefinition, setShowDefinition] = useState<boolean>(false); //Wird "definition" oder "term" angezeigt?
@@ -35,12 +34,12 @@ function ClassicMode() {
    */
   useEffect(() => {
     const getDeckFromDatabase = async () => {
-      if (!deckName || !username) return;
+      if (!deckName) return;
       const cards: (Card & { id: number })[] = await getCards(deckName);
       setSelectedCards(cards);
     };
     getDeckFromDatabase();
-  }, [deckName, username]);
+  }, [deckName]);
 
 
   /**
@@ -50,7 +49,7 @@ function ClassicMode() {
    * @param result welcher Button gedrückt wurde
    */
   const adjustWeight = async (result: 'falsch' | 'richtig') => {
-    if (!selectedCards || !username || !deckName) return;
+    if (!selectedCards || !deckName) return;
 
     const currentCard = selectedCards[currentIndex];
     if (!currentCard) return;
@@ -71,7 +70,6 @@ function ClassicMode() {
 
     //Aktualisiert Karte in Datenbank.
     await updateCard(
-      username,
       deckName,
       currentCard.id,
       { weight: newWeight }

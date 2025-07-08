@@ -2,8 +2,7 @@ import express from "express"
 import { drizzle } from "drizzle-orm/mysql2"
 import { eq, and } from "drizzle-orm"
 import { decks, deckSchema } from "../db/schema/decks-schema"
-import { cards } from "../db/schema/cards-schema"
-import { cardSchema } from "../db/schema/cards-schema"
+import { cards, cardSchema } from "../db/schema/cards-schema"
 import dotenv from "dotenv";
 
 dotenv.config();
