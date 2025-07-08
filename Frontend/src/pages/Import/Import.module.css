@@ -55,7 +55,7 @@
   flex: 1 1 auto;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   list-style-type: none;
   overflow-y: auto;
   scrollbar-gutter: 5px;
@@ -103,4 +103,9 @@
 
 .export-button-json:disabled {
   background-color: #80c0ff;
+}
+
+.loading-spinner {
+  align-self: center;
+  justify-self: center;
 }

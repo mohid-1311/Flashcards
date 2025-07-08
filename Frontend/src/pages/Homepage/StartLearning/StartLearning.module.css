@@ -57,3 +57,8 @@
   font-style: normal;
   text-decoration: none; 
 }
+
+.loading-spinner {
+  align-self: center;
+  justify-self: center;
+}
