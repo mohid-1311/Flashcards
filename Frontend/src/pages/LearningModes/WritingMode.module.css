@@ -1,16 +1,16 @@
 .container {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     margin: 3%;
     font-family: sans-serif;
 }
 
 .buttonContainer {
-  margin: 3% 2% 2% 2%;
-  text-align: right;
-  display:flex;
-  flex-direction: column;
+    margin: 3% 2% 2% 2%;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
 }
 
 .button {
@@ -18,7 +18,7 @@
     background-color: #3d8d36;
     color: black;
     font-size: 125%;
-    border: 2px solid black; 
+    border: 2px solid black;
     cursor: pointer;
     border-radius: 10px;
 }
@@ -34,7 +34,7 @@
     height: 15vw;
     color: black;
     font-size: 125%;
-    border: 2px solid black; 
+    border: 2px solid black;
     cursor: pointer;
     border-radius: 10px;
     margin: 2%;
@@ -48,7 +48,7 @@
     height: 7vw;
     color: black;
     font-size: 125%;
-    border: 2px solid black; 
+    border: 2px solid black;
     cursor: pointer;
     border-radius: 10px;
     margin: 2%;
@@ -56,7 +56,7 @@
     overflow: auto;
 }
 
-.correctInput{
+.correctInput {
     background-color: green;
 }
 
@@ -64,23 +64,24 @@
     background-color: red;
 }
 
-.fehlerMeldung{
+.fehlerMeldung {
     color: red;
 }
+
 .deckName {
     text-overflow: ellipsis;
     overflow: hidden;
     text-wrap: nowrap;
-    max-width: 50vw; 
-  }
+    max-width: 50vw;
+}
 
 .backArrow {
-  margin-left: 2%; 
-  font-size: 200%;
-  color: black;
-  position: absolute;
+    margin-left: 2%;
+    font-size: 200%;
+    color: black;
+    position: absolute;
 }
 
 .backArrow:hover {
-  color: darkgrey;
+    color: darkgrey;
 }

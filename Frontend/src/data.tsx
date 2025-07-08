@@ -6,17 +6,17 @@ const url = process.env.REACT_APP_BACKEND_URL!
 
 export async function updateDeck(deckId: number, newDeckName: string): Promise<boolean> {
   const username = localStorage.getItem("user")
-  if(!username) throw new Error("No user in local storage declared")
-  
+  if (!username) throw new Error("No user in local storage declared")
+
   try {
     const headers: Headers = new Headers()
     headers.set("Content-Type", "application/json")
     headers.set("Accept", "application/json")
-    
+
     const request: RequestInfo = new Request(`${url}/decks/${encodeURIComponent(username)}/${encodeURIComponent(deckId)}`, {
       method: 'PUT',
       headers: headers,
-      body: JSON.stringify({name: newDeckName, user_name: username})
+      body: JSON.stringify({ name: newDeckName, user_name: username })
     })
 
     const response = await fetch(request)
@@ -34,12 +34,12 @@ export async function updateDeck(deckId: number, newDeckName: string): Promise<b
       .catch(error => {
         throw new Error(`Fehler beim Bearbeiten des Decks: ${error}`);
       })
-      
-    if(response && response.name === newDeckName && response.user_name === username) {
+
+    if (response && response.name === newDeckName && response.user_name === username) {
       return true
     }
     return false
-  } catch(error) {
+  } catch (error) {
     throw new Error(`Fehler bei der Abfrage: ${error}`);
   }
 }
@@ -48,7 +48,7 @@ export async function getUser(username: string): Promise<User> {
   try {
     const headers: Headers = new Headers()
     headers.set("Accept", "application/json")
-    
+
     const request: RequestInfo = new Request(`${url}/users/${encodeURIComponent(username)}`, {
       method: 'GET',
       headers: headers
@@ -59,16 +59,16 @@ export async function getUser(username: string): Promise<User> {
         if (!response.ok) {
           throw new Error(`Server responded with status: ${response.status} ${response.statusText}`)
         }
-        
+
         const user = await response.json()
         return user[0]
       })
       .catch(error => {
-    throw new Error(`Fehler beim Abfragen des Benutzers: ${error}`);
+        throw new Error(`Fehler beim Abfragen des Benutzers: ${error}`);
       })
 
     return result
-  } catch(error) {
+  } catch (error) {
     throw new Error(`Fehler bei der Abfrage: ${error}`);
   }
 }
@@ -95,7 +95,7 @@ export function addUser(user: User): void {
       .catch(error => {
         console.error("Fehler beim Hinzufügen des Benutzers:", error)
       })
-  } catch(error) {
+  } catch (error) {
     throw new Error(`Fehler bei der Abfrage: ${error}`);
   }
 }
@@ -105,7 +105,7 @@ export async function getDeck(deckId: number): Promise<Omit<Deck, "cards">> {
 
   const deck = decks.find((d: Omit<Deck, "cards">) => d.id === deckId)
 
-  if(!deck) throw new Error(`Kein Deck mit der ID vorhanden!`)
+  if (!deck) throw new Error(`Kein Deck mit der ID vorhanden!`)
 
   return deck;
 }
@@ -115,15 +115,15 @@ export async function getDeckByName(deckName: string): Promise<Omit<Deck, "cards
 
   const deck = decks.find(d => d.name === deckName)
 
-  if(!deck) throw new Error(`kein Deck mit dem Namen vorhanden`)
+  if (!deck) throw new Error(`kein Deck mit dem Namen vorhanden`)
 
   return deck;
 }
 
 export async function getDeckNames(): Promise<string[]> {
   const username = localStorage.getItem("user");
-  if(!username) throw new Error("No user in local storage declared")
-    
+  if (!username) throw new Error("No user in local storage declared")
+
   try {
     const headers: Headers = new Headers();
     headers.set("Accept", "application/json");
@@ -151,7 +151,7 @@ export async function getDeckNames(): Promise<string[]> {
 
 export async function addDeck(deckName: string): Promise<Omit<Deck, "cards">> {
   const username = localStorage.getItem("user");
-  if(!username) throw new Error("No user in local storage declared")
+  if (!username) throw new Error("No user in local storage declared")
 
   try {
     const headers: Headers = new Headers()
@@ -176,7 +176,7 @@ export async function addDeck(deckName: string): Promise<Omit<Deck, "cards">> {
     result = await response.json();
 
     return result;
-  } catch(error) {
+  } catch (error) {
     throw new Error(`Fehler beim Anlegen des Decks: ${error}`);
   }
 }
@@ -186,9 +186,9 @@ export async function addDeckWithCards(deck: Deck): Promise<void> {
   let addedDeck = await addDeck(deck.name)
   if (!addedDeck) {
     addedDeck = await getDeck(deck.id)
-  if (!addedDeck) {
-    console.error("neu angelegtes Deck nicht gefunden")
-    return
+    if (!addedDeck) {
+      console.error("neu angelegtes Deck nicht gefunden")
+      return
     }
   }
   console.log("neu angelegtes deck gefunden, füge karten hinzu")
@@ -201,8 +201,8 @@ export async function addDeckWithCards(deck: Deck): Promise<void> {
 
 export async function getDecks(): Promise<Omit<Deck, "cards">[]> {
   const username = localStorage.getItem("user");
-  if(!username) throw new Error("No user in local storage declared")
-    
+  if (!username) throw new Error("No user in local storage declared")
+
   try {
     const headers: Headers = new Headers();
     headers.set("Accept", "application/json");
@@ -226,26 +226,26 @@ export async function getDecks(): Promise<Omit<Deck, "cards">[]> {
   }
 }
 
-export async function getCards(deckname: string): Promise<(Card & {deck_id: number})[]> {
+export async function getCards(deckname: string): Promise<(Card & { deck_id: number })[]> {
   const username = localStorage.getItem("user");
-  if(!username) throw new Error("No user in local storage declared")
+  if (!username) throw new Error("No user in local storage declared")
 
-  try{
+  try {
     const headers: Headers = new Headers()
     headers.set("Accept", "application/json")
-    
+
     const request = new Request(`${url}/cards/${encodeURIComponent(username)}/${encodeURIComponent(deckname)}`, {
       method: 'GET',
       headers
     })
-    
+
     const response = await fetch(request)
     if (!response.ok) {
       throw new Error(`Server responded with status: ${response.status} ${response.statusText}`)
     }
 
-    return await response.json() 
-  } catch(error) {
+    return await response.json()
+  } catch (error) {
     console.error("Fehler bei der Abfrage:", error)
     return []
   }
@@ -286,17 +286,15 @@ export async function deleteCard(cardId: number): Promise<boolean> {
       headers: headers
     });
 
-    if (!response.ok) 
-    {
+    if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`Fehler beim Löschen der Karte: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
     return true;
-  } 
-  
-  catch (error) 
-  {
+  }
+
+  catch (error) {
     console.error("Fehler beim Löschen der Karte:", error);
     return false;
   }
@@ -304,7 +302,7 @@ export async function deleteCard(cardId: number): Promise<boolean> {
 
 export async function deleteDeck(deckId: number): Promise<boolean> {
   const username = localStorage.getItem("user");
-  if(!username) throw new Error("No user in local storage declared")
+  if (!username) throw new Error("No user in local storage declared")
 
   try {
     const headers: Headers = new Headers()
@@ -326,6 +324,14 @@ export async function deleteDeck(deckId: number): Promise<boolean> {
   }
 }
 
+/**
+ * Sendet eine PUT-Anfrage an den Server, um die Eigenschaften einer Karte zu ändern.
+ * @param username Benutzername
+ * @param deckname Deckname
+ * @param cardId Karten-ID
+ * @param paramsToUpdate Objekt mit einzelnen Parametern vom Typ Card, die geupdatet werden sollen (Karten-ID und Deck-ID sind nicht veränderbar)
+ * @returns Promise<boolean>, ob das Update erfolgreich war
+ */
 export async function updateCard(deckName: string, cardId: number, paramsToUpdate: Partial<Omit<Card, "id" | "deck_id">>): Promise<boolean> {
   const username = localStorage.getItem("user");
   if(!username) throw new Error("No user in local storage declared")

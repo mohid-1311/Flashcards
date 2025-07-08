@@ -29,7 +29,7 @@ router.get("/:user_name/:name", async (req, res) => {
     return;
   }
   const validData = parseResult.data
-  
+
   const query = await db
     .select({ cards: cards })
     .from(cards)
@@ -93,17 +93,23 @@ router.delete("/:cardid", async (req, res) => {
   }
 });
 
+
+/**
+ * PUT-Route zum Aktualisieren einer Karte in einem bestimmten Deck eines Benutzers.
+ */
 router.put("/:username/:deckname/:cardId", async (request, response) => {
 
-  const { username, deckname, cardId } = request.params;
+  try {
+    const { username, deckname, cardId } = request.params;
+    if (isNaN(Number(cardId)) || Number(cardId) < 0) {
+      response.status(400).json({ error: "Ungültige Karten-ID" });
+      return;
+    }
+    const updateSchema = cardSchema.partial().omit({ id: true, deck_id: true })
+    const updateData = updateSchema.parse(request.body)
 
-  const updateSchema = cardSchema.partial().omit({ id: true, deck_id: true })
-  const updateData = updateSchema.parse(request.body)
-
-  console.log("cardId:", cardId);
-  console.log("updateData:", updateData);
-
-  const deckResult = await db
+    //Sucht das entsprechende Deck in der Datenbank, um sicherzustellen, dass es existiert und dem Benutzer gehört.
+    const deckResult = await db
       .select()
       .from(decks)
       .where(
@@ -121,6 +127,7 @@ router.put("/:username/:deckname/:cardId", async (request, response) => {
       return;
     }
 
+    //Führt das Update an der Datenbank aus
     const updateResult = await db
       .update(cards)
       .set(updateData)
@@ -131,4 +138,8 @@ router.put("/:username/:deckname/:cardId", async (request, response) => {
         )
       )
     response.status(200).json({ updatedRows: updateResult });
+  } catch (error) {
+    console.error("Fehler beim Aktualisieren der Karte:", error);
+    response.status(500).json({ error: "Fehler beim Aktualisieren der Karte" });
+  }
 })
