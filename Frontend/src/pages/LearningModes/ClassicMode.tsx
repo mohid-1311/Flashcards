@@ -84,7 +84,7 @@ function ClassicMode() {
 
 
   /**
-   * Wählt zufällig einen Kartenindex, abhängig von dem Gewicht der Karte.
+   * Wählt zufällig einen Kartenindex, abhängig von dem Gewicht der Karte. (Roulette-Wheel Selection)
    * Umso niedriger das Gewicht, desto höher die Wahrscheinlichkeit.
    * @returns Index der nächsten Karte 
    */
@@ -95,17 +95,17 @@ function ClassicMode() {
     let lastIndex = currentIndex;
     let newIndex = lastIndex;
 
-    const weights = selectedCards.map(card => 1 / card.weight);
-    const totalWeight = weights.reduce((a, b) => a + b, 0);
+    const weights = selectedCards.map(card => 1 / card.weight); //Nimmt den Kehrwert.
+    const totalWeight = weights.reduce((a, b) => a + b, 0); //Berechnet Summe der Gewichte.(Summe der Kehrwerte)
 
     //Vermeidet, dass die gleiche Karte mehrmals hintereinander kommt.
     while (newIndex === lastIndex) {
-      const rand = Math.random() * totalWeight;
-      let acc = 0;
-
+      const rand = Math.random() * totalWeight; //generiert eine Zufallszahl von 0 bis Summe alle Gewichte
+      //Summiert die Gewichte bis der Zufallswert überschritten ist => neuer Index
+      let accumulator = 0;
       for (let i = 0; i < weights.length; i++) {
-        acc += weights[i];
-        if (rand < acc) {
+        accumulator += weights[i];
+        if (rand < accumulator) {
           newIndex = i;
           break;
         }
@@ -115,6 +115,12 @@ function ClassicMode() {
   };
 
 
+  /**
+   * Gibt "result" an Funktion weiter, die das Gewicht anpasst.
+   * Setzt die Usestates wieder auf den Defaultwert.
+   * Holt sich den nächsten Kartenindex und setzt ihn.
+   * @param result welcher Button gedrückt wurde
+   */
   const handleNextCard = async (result: 'falsch' | 'richtig') => {
     await adjustWeight(result);
     setShowDefinition(false);
@@ -123,11 +129,19 @@ function ClassicMode() {
   };
 
 
+  /**
+   * "Dreht die Karte um".
+   * Invertiert den Wert "showDefinition".
+   */
   const handleToggleDefinition = () => {
     setShowDefinition(!showDefinition);
   };
 
 
+  /**
+   * Setzt oder löst den "schwer"-Button.
+   * Invertiert den Wert "isHard".
+   */
   const handleToggleHardButton = () => {
     setIsHard(!isHard);
   };
