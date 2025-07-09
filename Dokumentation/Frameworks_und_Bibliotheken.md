@@ -1,11 +1,11 @@
-#**Erläuterung der Grundsätzlichen Struktur:**
+# **Erläuterung der Grundsätzlichen Struktur:**
 
-##**Aufbau**
+## **Aufbau**
 
 Das Repository ist in zwei Ordner unterteilt, Frontend und Backend. Diese enthalten jeweils einen Unterordner „src“ in denen der Code abgelegt ist. Der src-Ordner im Frontend besteht aus einem Unterordner mit den Components, einem Unterordner mit den Pages und weiteren allgemeinen Codedateien.
 
 
-##**Welche externen Frameworks und Bibliotheken wurden benutzt?**
+## **Welche externen Frameworks und Bibliotheken wurden benutzt?**
 
 JavaScript Framework: React (JS Bibliothek) + Next.js
 Hosting Dienst: GitHub Pages
