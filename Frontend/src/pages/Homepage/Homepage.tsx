@@ -12,7 +12,7 @@ function Homepage(){
   function addDeckName(deckName: string) {
     if (deckNames === undefined) {
       setDeckNames([deckName])
-    } else {
+    } else if (!deckNames.includes(deckName)) {
       setDeckNames([...deckNames, deckName])
     }
   }
