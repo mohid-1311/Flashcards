@@ -17,10 +17,10 @@ Anschließend wird der Index der nächsten Karte ausgesucht. Dies passiert nach 
 ## **Angabe des entwickelten Codes:**
 
 Der Code ist zu finden unter 
-Frontend > src > pages > LearningModes > ClassicMode.tsx
-Frontend > src > pages > LearningModes > ClassicMode.module.css
-Frontend > src > data.tsx (function updateCard)
-Backend > src > router > card-router.ts (router.put)
+- Frontend > src > pages > LearningModes > ClassicMode.tsx
+- Frontend > src > pages > LearningModes > ClassicMode.module.css
+- Frontend > src > data.tsx (function updateCard)
+- Backend > src > router > card-router.ts (router.put)
 
 
 ## **Probleme:**

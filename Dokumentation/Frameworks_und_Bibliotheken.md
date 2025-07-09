@@ -7,19 +7,19 @@ Das Repository ist in zwei Ordner unterteilt, Frontend und Backend. Diese enthal
 
 ## **Welche externen Frameworks und Bibliotheken wurden benutzt?**
 
-JavaScript Framework: React (JS Bibliothek) + Next.js
-Hosting Dienst: GitHub Pages
-JavaScript Runtime: Node.js
-Paketmanager: npm
-Webframework für Node.js: express
-Middleware: cors
-Bibliothek zur Typ-Validierung zur Laufzeit: zod
-CI/CD-Tool: GitHub Actions
-Service zum serverless deployment: Railway.app
-Datenbank: MySQL
-ORM für Typescript: Drizzle
-Bibliothek zur Verschlüsselung von Passwörtern: bcrypt
-Bibliothek für Icons: Fontawesome
-Biblothek zum Testen: jest
-Bibliothek für Node.js zum Lesen von Umgebungsvariablen: dotenv
-Bibliothek für Popup-Meldungen: react-toastify 
+- JavaScript Framework: React (JS Bibliothek) + Next.js
+- Hosting Dienst: GitHub Pages
+- JavaScript Runtime: Node.js
+- Paketmanager: npm
+- Webframework für Node.js: express
+- Middleware: cors
+- Bibliothek zur Typ-Validierung zur Laufzeit: zod
+- CI/CD-Tool: GitHub Actions
+- Service zum serverless deployment: Railway.app
+- Datenbank: MySQL
+- ORM für Typescript: Drizzle
+- Bibliothek zur Verschlüsselung von Passwörtern: bcrypt
+- Bibliothek für Icons: Fontawesome
+- Biblothek zum Testen: jest
+- Bibliothek für Node.js zum Lesen von Umgebungsvariablen: dotenv
+- Bibliothek für Popup-Meldungen: react-toastify 
