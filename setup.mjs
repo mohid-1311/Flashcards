@@ -32,6 +32,7 @@ createEnvFile('./Backend', backendEnv);
 
 console.log('>>> Frontend .env erstellen...');
 const frontendEnv = `# frontend.env 
+PUBLIC_URL=""
 REACT_APP_BACKEND_URL="http://localhost:4000"
 # REACT_APP_BACKEND_URL="https://flashcards-moritz.up.railway.app"
 `;
