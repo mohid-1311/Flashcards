@@ -77,11 +77,11 @@ router.delete("/:cardid", async (req, res) => {
   }
 
   try {
-    const deleted = await db
+    const [deleted] = await db
       .delete(cards)
       .where(eq(cards.id, cardId));
 
-    if (deleted.values.length === 0) {
+    if (deleted.affectedRows === 0) {
       res.status(404).json({ error: "Karte nicht gefunden" });
       return;
     }
