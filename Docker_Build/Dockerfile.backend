@@ -1,0 +1,26 @@
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+COPY ./Backend/package.json ./
+
+RUN npm install
+
+COPY ./Backend .
+
+RUN npm run build
+
+# --- Production-Stage ---
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/package*.json .
+COPY --from=builder /app/.env .
+
+RUN npm install --omit=dev
+
+EXPOSE 4000
+
+CMD ["node", "build/src/server.js"]
