@@ -5,6 +5,7 @@ import DeckModal from "../../Components/DeckModal/DeckModal";
 import styles from "./Add.module.css"
 import AddCardForm from "../../Components/AddCardForm/AddCardForm"
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Add(){
 
@@ -37,7 +38,7 @@ function Add(){
   async function addCardToDeck(newCard: Omit<Card, "id">, ind: number) {
     const deck = decks[ind];
     if (!deck || !("id" in deck)) {
-      alert("Deck nicht gefunden oder keine ID vorhanden.");
+      toast.error("Deck nicht gefunden oder keine ID vorhanden.");
       return;
     }
 

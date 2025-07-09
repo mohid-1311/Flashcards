@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { LoginCompProps } from "../../types";
 import bcrypt from "bcryptjs";
 import { getUser } from "../../data";
+import { toast } from "react-toastify";
 
 function LoginComp({setLogin, setShowNav, setIsAuthentificated} : LoginCompProps){
 
@@ -16,7 +17,7 @@ function LoginComp({setLogin, setShowNav, setIsAuthentificated} : LoginCompProps
 
     const user = await getUser(username.toLowerCase());
     if(!user) {
-      alert("Ungültiger Benutzer") //#TODO replace
+      toast.error("Ungültiger Benutzer");
       return;
     }
     
@@ -25,7 +26,7 @@ function LoginComp({setLogin, setShowNav, setIsAuthentificated} : LoginCompProps
     const passwordCorrect = await bcrypt.compare(password, user.password);
     
     if (!passwordCorrect) {
-      alert("Ungültiges password") //#TODO replace
+      toast.error("Ungültiges Passwort")
       return;
     }
 

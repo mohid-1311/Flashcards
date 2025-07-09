@@ -3,6 +3,7 @@ import { getUser, addUser } from "../../data"
 import { User, SetLogin } from "../../types";
 import styles from "../Login/Login.module.css"
 import bcrypt from "bcryptjs";
+import { toast } from "react-toastify";
 
 function SignupComp({setLogin} : SetLogin){
 
@@ -18,18 +19,18 @@ function SignupComp({setLogin} : SetLogin){
     const userExists = await getUser(username) ? true : false;
     
     if (password !== passwordRepeat){
-      alert("Passwort stimmt nicht überein!") //#TODO replace
+      toast.error("Passwort stimmt nicht überein!");
       setPassword("")
       setPasswordRepeat("")
       return
     }
 
     if (userExists){
-      alert("Benutzername bereits vergeben") //#TODO replace
+      toast.error("Benutzername bereits vergeben");
       return
     }
     else {
-      alert("Erfolgreich registriert") //#TODO replace
+      toast.success("Erfolgreich registriert!");
       setLogin(true)
       const hashedPassword = await bcrypt.hash(password, 10);
       const data: User = {name: username, password: hashedPassword};

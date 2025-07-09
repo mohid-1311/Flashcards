@@ -10,6 +10,8 @@ import LearningModes from "./pages/LearningModes/LearningModes"
 import FreeMode from "./pages/LearningModes/FreeMode"
 import ClassicMode from "./pages/LearningModes/ClassicMode"
 import WritingMode from "./pages/LearningModes/WritingMode"
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 import { ProtectedRoute } from "./Authentication"
@@ -41,6 +43,7 @@ function App() {
   return (
     <>
       <div>
+        <ToastContainer position="top-right" autoClose={3000}/>
         {!showNav && (<NavBar/>)}
         <Routes>
           <Route path="/Anmeldung" element={<Login setShowNav={setShowNav} setIsAuthentificated={setIsAuthenticated}/>} />

@@ -3,6 +3,7 @@ import { DeckModalProps } from "../../types";
 import { addDeck, getDeckNames, getDecks } from "../../data";
 import { sliceHeader } from "../AddCardForm/AddCardForm";
 import styles from "./DeckModal.module.css";
+import { toast } from "react-toastify";
 
 function DeckModal({ setDeckIndex, closeModal, reloadDecks }:DeckModalProps) {
   const [searchValue, setSearchValue] = useState("");
@@ -31,12 +32,12 @@ function DeckModal({ setDeckIndex, closeModal, reloadDecks }:DeckModalProps) {
   async function addNewDeck() {
     const nameTrimmed = searchValue.trim();
     if (!nameTrimmed) {
-      alert("Ungültige Eingabe");
+      toast.error("Ungültige Eingabe");
       return;
     }
 
     if (deckList.some(deck => deck.name.toLowerCase() === nameTrimmed.toLowerCase())) {
-      alert("Deck existiert bereits");
+      toast.error("Deck existiert bereits");
       return;
     }
 
