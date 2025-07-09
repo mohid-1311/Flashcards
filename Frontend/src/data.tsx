@@ -183,9 +183,11 @@ export async function addDeck(deckName: string): Promise<Omit<Deck, "cards">> {
 
 export async function addDeckWithCards(deck: Deck): Promise<void> {
   console.log("addDeckWithCards aufgerufen für:", deck);
-  let addedDeck = await addDeck(deck.name)
-  if (!addedDeck) {
-    addedDeck = await getDeck(deck.id)
+  let addedDeck = undefined
+  try {
+    addedDeck = await addDeck(deck.name)
+  } catch (error) {
+    addedDeck = await getDeckByName(deck.name)
     if (!addedDeck) {
       console.error("neu angelegtes Deck nicht gefunden")
       return
@@ -194,8 +196,10 @@ export async function addDeckWithCards(deck: Deck): Promise<void> {
   console.log("neu angelegtes deck gefunden, füge karten hinzu")
   const deckId: number = addedDeck.id
 
-  for (let card of deck.cards) {
-    addCard(card, deckId)
+  let existingCards = await getCards(addedDeck.name)
+  for (let newCard of deck.cards) {
+    if (!(existingCards.find(existingCard => (existingCard.term = newCard.term))))
+    addCard(newCard, deckId)
   }
 }
 
