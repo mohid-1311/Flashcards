@@ -14,9 +14,9 @@ function StartLearning({deckNames}: {deckNames: string[] | undefined}) {
           ? <i></i> // <img src={process.env.PUBLIC_URL + "/loading_spinner.svg"} alt="Loading Content Animation" className={styles["loading-spinner"]}/>
           : deckNames.length === 0
           ? <i><br />keine Decks gefunden</i>
-          : deckNames.map(deckName => {
+          : deckNames.map((deckName, index) => {
             return (
-              <Link className={styles["deck-list-link"]} to={`/Lernmodi?deckName=${deckName}`}>
+              <Link className={styles["deck-list-link"]} to={`/Lernmodi?deckName=${deckName}`} key={index}>
                 <li className={styles["deck-list-element"]}>
                   {deckName}
                 </li>

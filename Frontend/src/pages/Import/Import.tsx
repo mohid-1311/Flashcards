@@ -78,13 +78,14 @@ function Import(){
               ? <i></i>// <img src={process.env.PUBLIC_URL + "/loading_spinner.svg"} alt="Loading Content Animation" className="loading-spinner"/>
               : deckNames.length === 0
               ? <i><br />keine Decks gefunden</i>
-              : deckNames.map((name: string) => {
+              : deckNames.map((name, index) => {
                 return (
                   <li 
                     onClick={selectDeckOnClick(name)} 
                     className={styles["export-deck-list-element"] +
                       (name === selectedDeck ? " " + styles["element-chosen"] : "")}
-                      >
+                    key={index}
+                  >
                     {cutString(name)}
                   </li>
                 )
