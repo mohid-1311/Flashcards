@@ -1,48 +1,60 @@
 import { useState, useEffect } from "react";
-import { Deck, DeckModalProps } from "../../types";
-import { getDecks } from "../../data";
+import { DeckModalProps } from "../../types";
+import { addDeck, getDeckNames, getDecks } from "../../data";
 import { sliceHeader } from "../AddCardForm/AddCardForm";
 import styles from "./DeckModal.module.css";
 
 function DeckModal({ setDeckIndex, closeModal, reloadDecks }:DeckModalProps) {
   const [searchValue, setSearchValue] = useState("");
-  const [deckList, setDeckList] = useState<Omit<Deck, "cards">[]>([]);
+  const [deckList, setDeckList] = useState<{ name: string }[]>([]);
 
   async function loadDecks() {
-    const decks = await getDecks()
-    const filtered = await Promise.all(
-      decks.map(async (deck: Omit<Deck, "cards">) => {
-        return (deck)
-      })
-    )
-    setDeckList(filtered)
+    const decks = await getDecks();
+    const filtered = decks.map(deck => ({ name: deck.name }));
+    setDeckList(filtered);
   }
-  
+
   useEffect(() => {
     loadDecks();
   }, []);
 
+  useEffect(() => {
+    loadDecksFromBackend();
+  }, []);
+
+  async function loadDecksFromBackend() {
+    const names = await getDeckNames();
+    const filtered = names.map(name => ({ name }));
+    setDeckList(filtered);
+  }
+
   async function addNewDeck() {
-    const trimmed = searchValue.trim();
-    if (!trimmed) {
+    const nameTrimmed = searchValue.trim();
+    if (!nameTrimmed) {
       alert("Ungültige Eingabe");
       return;
     }
 
-    if (deckList.some(deck => deck.name.toLowerCase() === trimmed.toLowerCase())) {
+    if (deckList.some(deck => deck.name.toLowerCase() === nameTrimmed.toLowerCase())) {
       alert("Deck existiert bereits");
       return;
     }
 
     try {
-      const updatedList = await getDecks();
+      await addDeck(nameTrimmed);
+
+      const updatedNames = await getDeckNames();
+      const updatedList = updatedNames.map(name => ({ name }));
       setDeckList(updatedList);
 
-      const newIndex = updatedList.findIndex(deck => deck.name === trimmed);
-      if (newIndex !== -1) {
-        setDeckIndex(newIndex);
-        await reloadDecks();
-      }
+      const newIndex = updatedList.findIndex(deck => deck.name === nameTrimmed);
+      console.log("setting deck index to " + newIndex);
+      if (newIndex !== -1)
+        {
+          setDeckIndex(newIndex);
+          await reloadDecks();  
+          console.log("Set deckindex to " + newIndex);
+        } 
 
     } catch (err) {
       console.error("Fehler beim Erstellen:", err);
