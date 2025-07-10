@@ -136,7 +136,7 @@ function Management(): JSX.Element {
    * Funktion, die beim Klicken auf den Entfernen-Button der Decks 
    * aufgerufen wird, um diese nach erneutem Klick zu löschen.
    *
-   * @param {number} deckId - Index der Karteikarte 
+   * @param {number} deckId - ID der Karteikarte 
    * @return {Promise<void>}
    */
   async function removeDeck(deckId: number): Promise<void> {
@@ -162,7 +162,7 @@ function Management(): JSX.Element {
    * Funktion, die beim Klicken auf den Entfernen-Button der Karteikarten 
    * aufgerufen wird, um diese nach erneutem Klick zu löschen.
    *
-   * @param {number} cardId - Index der Karteikarte 
+   * @param {number} cardId - ID der Karteikarte 
    * @return {Promise<void>}
    */
   async function removeCard(cardId: number): Promise<void> {
@@ -194,7 +194,7 @@ function Management(): JSX.Element {
    * Funktion, die überprüft, ob jedes, durch ein Leerzeichen getrenntes Wort 
    * der Suchleiste mit dem Inhalt eines Decks übereinstimmt.
    *
-   * @param {Deck} deck - Das zu überprüfende Deck
+   * @param {{name: string}} deck - Das zu überprüfende Deck (name)
    * @return {boolean} - True, wenn das Deck dem Suchfilter entspricht
    */
   function deckMatchesSearchFilter(deck: {name: string}): boolean {
@@ -220,10 +220,9 @@ function Management(): JSX.Element {
    * Funktion, die eine neue Karte zu dem aktuell ausgewählten Deck hinzufügt.
    * Bearbeitetes Deck wird synchronisiert.
    *
-   * @param {Card} newCard - neue Karte
+   * @param {Omit<Card, "id">} newCard - neue Karte
    * @return {void}
    */
-  /* Von Mohid's Komponente */
   async function addCardToDeck(newCard : Omit<Card, "id">): Promise<void> {
     await data_addCard(newCard, deckID)
     await loadDecks()
