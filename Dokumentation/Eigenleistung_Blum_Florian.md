@@ -24,9 +24,9 @@ Die Seite und zugehörige Funktion sollten intuitiv bedienbar sein. Auf der link
 Für das Importieren kann man mehrere Dateien per Drag und Drop ein Dateifeld ziehen. Über den Leeren-Button können die Dateien gelöscht und das Importieren abgebrochen werden, und mit dem Importieren-Button werden die Dateien ausgelesen und als Decks hinzugefügt.
 
 ## Funktionsweise
-Das fürs Exportieren ausgewählte Deck wird als useState gespeichert, sodass sich die Oberfläche automatisch aktualisiert. Das Deck wird zuerst in ein Blob-Objekt gespeichert, für welches mit URL.createObjectUrl eine URL erzeugt wird. Diese wird einem Html-Hyperlink-Element übergeben, welches danach sofort geklickt und gelöscht wird.
+Das fürs Exportieren ausgewählte Deck wird als useState gespeichert, sodass sich die Oberfläche automatisch aktualisiert. Das Deck wird zuerst in ein Blob-Objekt gespeichert, für welches mit `URL.createObjectUrl` eine URL erzeugt wird. Diese wird einem Html-Hyperlink-Element übergeben, welches danach sofort geklickt und gelöscht wird.
 
-Zum Importieren werden abgelegte Dateien in einem useState gespeichert, um sie in einer Liste anzeigen zu können. Nach dem Klicken des Importieren-Buttons wird aus jeder Datei ein json-Objekt geparst. Mit der Methode isDeck() aus ImportField.tsx wird danach überprüft, ob es sich um ein valides Deck Objekt handelt. Danach wird das Objekt, falls es ein Deck ist, mit der Funktion addDeckWithCards() hinzugefügt. Die Überprüfung, ob das Deck oder die Karten schon existieren, findet dabei in der addDeckWithCards() Funktion statt.
+Zum Importieren werden abgelegte Dateien in einem useState gespeichert, um sie in einer Liste anzeigen zu können. Nach dem Klicken des Importieren-Buttons wird aus jeder Datei ein json-Objekt geparst. Mit der Methode `isDeck()` aus ImportField.tsx wird danach überprüft, ob es sich um ein valides Deck Objekt handelt. Danach wird das Objekt, falls es ein Deck ist, mit der Funktion `addDeckWithCards()` hinzugefügt. Die Überprüfung, ob das Deck oder die Karten schon existieren, findet dabei in der `addDeckWithCards()` Funktion statt.
 
 ## Entscheidungen
 Wird ein Deck importiert, und der Nutzer hat bereits ein gleichnamiges Deck erstellt, so werden Karten, die noch nicht im vorhandenen Deck sind, hinzugefügt, es wird kein neues Deck erstellt.
