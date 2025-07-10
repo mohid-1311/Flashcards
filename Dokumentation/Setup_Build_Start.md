@@ -3,8 +3,8 @@ Alle Node-Pakete und Umgebungsvariablen können über das [Flashcards/setup.mjs]
 
 In den generierten `.env`-Dateien gibt es die Wahl zwischen dem selbst gehosteten (Standard) und extern gehosteten Varianten.
 
-ℹ️ Für die Entwicklungsumgebung sind, abgesehen von `node, npm & Docker` keine weiteren Werkzeuge zwingend notwendig.
-- Zum Anzeigen der Datensätze in der MySQL Datenbank empfiehlt sich jedoch [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) zu installieren.
+> Für die Entwicklungsumgebung sind, abgesehen von `node, npm & Docker` keine weiteren Werkzeuge zwingend notwendig.
+> - Zum Anzeigen der Datensätze in der MySQL Datenbank empfiehlt sich jedoch [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) zu installieren.
 
 # Starten der Anwendung
 Nach der erfolgreichen Einrichtung der Entwicklungsumgebung, kann die Datenbank zusammen mit dem Backend und Frontend über das [Flashcards/build+start.mjs](https://github.com/mohid-1311/Flashcards/blob/main/build%2Bstart.mjs)-Script mit folgendem Befehl (`node build+start.mjs`) automatisch gestartet werden.
