@@ -228,7 +228,7 @@ function Management(): JSX.Element {
     await loadDecks()
   }
 
-  /* Eigentliches JSX-Element mit dem Inhalt der Seite */
+  /* Eigentliches JSX-Element mit dem Inhalt der Seite. */
   return (
     <>
       <div className={styles["management-container"]}>
