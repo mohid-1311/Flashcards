@@ -9,6 +9,7 @@ export const app = express();
 app.use(express.json()); 
 app.use(cors())
 
+// Router definieren
 app.use("/users", userRouter)
 app.use("/decks", deckRouter)
 app.use("/cards", cardRouter)

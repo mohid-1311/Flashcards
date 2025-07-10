@@ -37,6 +37,7 @@ router.get("/names/:user_name", async (req, res) => {
 router.put("/:user_name/:id", async (req, res) => {
   const body = req.body
   
+  // Daten aus dem body mit dem Deck-Schema parsen
   const parseResult = deckSchema.safeParse(body)
   if (!parseResult.success) {
     res.status(400).json({ error: parseResult.error.errors })
@@ -44,22 +45,24 @@ router.put("/:user_name/:id", async (req, res) => {
   }
   const validData = parseResult.data
 
+  // Deck-ID muss eine Zahl sein
   const validId = Number(req.params.id)
   if (isNaN(validId)) {
     res.status(400).json({ error: "Ungültige ID" })
     return
   }
 
+  // Entsprechenden Datensatz bearbeiten und query für Validierung speichern 
   const [query] = await db
     .update(decks)
     .set(validData)
     .where(
       and(
-        eq(decks.user_name, req.params.user_name),
         eq(decks.id, validId)
       )
     )
   
+  // Falls ein Eintrag geändert wurde, diesen, ansonsten Fehler, zurückgeben
   if(query.affectedRows === 1) {
     res.status(200).json(validData)
   } else {
