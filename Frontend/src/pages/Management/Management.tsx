@@ -113,7 +113,6 @@ function Management(): JSX.Element {
   /** 
    * Funktion, die beim Klicken auf den Hinzufügen-Button der Decks 
    * aufgerufen wird, um ein neues Deck zur Liste der Decks hinzuzufügen.
-   * Bearbeitetes Decks wird synchronisiert.
    *
    * @param {string} deckName - Name des Decks 
    * @return {Promise<void>}
@@ -218,7 +217,6 @@ function Management(): JSX.Element {
 
   /**
    * Funktion, die eine neue Karte zu dem aktuell ausgewählten Deck hinzufügt.
-   * Bearbeitetes Deck wird synchronisiert.
    *
    * @param {Omit<Card, "id">} newCard - neue Karte
    * @return {void}

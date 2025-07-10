@@ -37,7 +37,7 @@ jobs:
       run: npm run build
       working-directory: ./Frontend
       env:
-        PUBLIC_URL: Flashcards
+        PUBLIC_URL: ""
         REACT_APP_BACKEND_URL: ${{ secrets.REACT_APP_BACKEND_URL }}
 
     - name: Deploy to GitHub Pages
