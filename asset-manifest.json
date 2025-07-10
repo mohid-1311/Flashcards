@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "https://mohid-1311.github.io/Flashcards/static/css/main.472a7012.css",
-    "main.js": "https://mohid-1311.github.io/Flashcards/static/js/main.50228025.js",
-    "static/js/453.670e15c7.chunk.js": "https://mohid-1311.github.io/Flashcards/static/js/453.670e15c7.chunk.js",
-    "index.html": "https://mohid-1311.github.io/Flashcards/index.html",
-    "main.472a7012.css.map": "https://mohid-1311.github.io/Flashcards/static/css/main.472a7012.css.map",
-    "main.50228025.js.map": "https://mohid-1311.github.io/Flashcards/static/js/main.50228025.js.map",
-    "453.670e15c7.chunk.js.map": "https://mohid-1311.github.io/Flashcards/static/js/453.670e15c7.chunk.js.map"
+    "main.css": "Flashcards/static/css/main.472a7012.css",
+    "main.js": "Flashcards/static/js/main.fbab47b8.js",
+    "static/js/453.670e15c7.chunk.js": "Flashcards/static/js/453.670e15c7.chunk.js",
+    "index.html": "Flashcards/index.html",
+    "main.472a7012.css.map": "Flashcards/static/css/main.472a7012.css.map",
+    "main.fbab47b8.js.map": "Flashcards/static/js/main.fbab47b8.js.map",
+    "453.670e15c7.chunk.js.map": "Flashcards/static/js/453.670e15c7.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.472a7012.css",
-    "static/js/main.50228025.js"
+    "static/js/main.fbab47b8.js"
   ]
 }
