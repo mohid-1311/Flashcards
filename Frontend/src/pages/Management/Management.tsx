@@ -82,7 +82,7 @@ function Management(): JSX.Element {
   /**
    * Funktion, die überprüft, ob der Name folgende Kriterien erfüllt:
    * - Keine Decks mit gleichem Namen
-   * - Keine Decks mit mit ungueltigem Namen
+   * - Keine Decks mit mit ungültigem Namen
    *
    * @param {string} deckName - Der zu überprüfenden Name
    * @return {boolean}
