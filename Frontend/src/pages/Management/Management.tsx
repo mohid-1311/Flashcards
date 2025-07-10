@@ -177,14 +177,15 @@ function Management(): JSX.Element {
    * @return {Promise<void>}
    */
   async function updateCard(elements: HTMLFormControlsCollection): Promise<void> {
-    Array.from(elements).forEach(async (element) => {
+    await Promise.all(Array.from(elements).map((element) => {
       if (element instanceof HTMLTextAreaElement) {
-        const attributeName = element.name
-        const newValue = element.value
-        const deckName = decks.find((deck: Deck) => deck.id === deckID)?.name!
-        await data_updateCard(deckName, cardID, {[attributeName]: newValue})
+        const attributeName = element.name;
+        const newValue = element.value;
+        const deckName = decks.find((deck: Deck) => deck.id === deckID)?.name!;
+        return data_updateCard(deckName, cardID, { [attributeName]: newValue });
       }
-    })
+      return Promise.resolve(); // für Elemente, die nicht verarbeitet werden
+    }));
 
     await loadDecks()
   }
